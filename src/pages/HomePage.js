@@ -1,15 +1,31 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import Page from '../components/Page'
+
+import { getUser } from '../services/getData'
 
 
 class HomePage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      username: 'angular'
+    }
+  }
+
+  componentDidMount() {
+    getUser(this.state.username).then(userInfo => {
+      this.setState({
+        userData: userInfo
+      });
+    })
+  }
+
   render() {
     return (
-      <div className="index">
-        <div className="notice"><h3>Home Page</h3>
-          <Link to="/test" >Link to Test Page</Link>
-        </div>
-      </div>
+      <Page>
+        <h1>Home Page</h1>
+        <h2>username: {this.state.username}</h2>
+      </Page>
     );
   }
 }
