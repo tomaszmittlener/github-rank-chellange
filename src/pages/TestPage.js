@@ -9,6 +9,7 @@ class TestPage extends React.Component {
           <ul>
             <li>Router</li>
             <li>SCSS</li>
+            <li>Susy</li>
           </ul>
         </div>
       </div>
