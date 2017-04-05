@@ -1,3 +1,10 @@
+//modular scale global settings
+
+$ms-base: 1rem;
+$ms-ratio: $major-third;
+
+//susy global settings
+
 $susy: (
   columns: 12,
   gutters: 1/4,
