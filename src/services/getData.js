@@ -6,11 +6,18 @@ const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
 
 // data requests
 
-function getUser(username) {
-  return fetch(`${config.apiHost}/users/${username}${auth}`)
+function getUserInfo(userName) {
+  return fetch(`${config.apiHost}/users/${userName}${auth}`)
     .then(response => {
       return response.json();
     })
 }
 
-export { getUser };
+function getUserRepos(userName) {
+  return fetch(`${config.apiHost}/users/${userName}/repos${auth}`)
+    .then(response => {
+      return response.json();
+    })
+}
+
+export { getUserInfo, getUserRepos };
