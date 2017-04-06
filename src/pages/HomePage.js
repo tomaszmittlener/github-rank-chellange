@@ -29,8 +29,6 @@ class HomePage extends React.Component {
   }
 
   render() {
-    console.log(this.state.userRepos);
-
     let {userName, userRepos} = this.state ;
 
     return (
