@@ -37,8 +37,8 @@ function getUserInfo(userName) {
     .then(checkForErrors)
 }
 
-function getUserRepos(userName) {
-  return fetch(`${config.apiHost}/users/${userName}/repos${auth}`)
+function getUserRepos(userName, pageNumber = 1) {
+  return fetch(`${config.apiHost}/users/${userName}/repos${auth}&page=${pageNumber}&per_page=100`)
     .then(status)
     .then(json)
     .then(checkForErrors)

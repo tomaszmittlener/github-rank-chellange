@@ -8,24 +8,35 @@ class HomePage extends React.Component {
   constructor() {
     super();
     this.state = {
-      userInfo: {},
       userName: 'angular',
+      userInfo: {},
+      userRepositoriesAmount: '',
       userRepos: []
     }
   }
 
   componentDidMount() {
-    getUserInfo(this.state.userName).then(userData => {
+    getUserInfo(this.state.userName).then(userInfo => {
       this.setState({
-        userInfo: userData
+        userInfo: userInfo,
+        userRepositoriesAmount: userInfo.public_repos
       });
-    }).then(
-      getUserRepos(this.state.userName).then(reposList => {
+    });
+
+    this._getAllRepos(this.state.userName)
+  }
+
+  _getAllRepos(userName, pagesNumber = 1){
+
+    if (this.state.userRepos.length !== this.state.userRepositoriesAmount)
+      getUserRepos(userName, pagesNumber).then(receivedRepos => {
         this.setState({
-          userRepos: reposList
+          userRepos: this.state.userRepos.concat(...receivedRepos)
         });
+        if (this.state.userRepos.length !== this.state.userRepositoriesAmount)
+          this._getAllRepos(userName, pagesNumber + 1)
       })
-    )
+
   }
 
   render() {
@@ -34,8 +45,8 @@ class HomePage extends React.Component {
     return (
       <Page>
         <h1>Home Page</h1>
-        <h2>{userName}'s repositories:</h2>
-        <ul>
+        <h2>{userName}'s repositories ({this.state.userRepositoriesAmount}):</h2>
+        <ol>
           {map(userRepos, (repo, index) =>
             <li key={index}>
               <strong>name: </strong>
@@ -43,7 +54,7 @@ class HomePage extends React.Component {
               <strong> id: </strong>
               {repo.id}
             </li>)}
-        </ul>
+        </ol>
       </Page>
     );
   }
