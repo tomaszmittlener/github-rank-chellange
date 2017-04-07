@@ -9,8 +9,6 @@ class RightPanel extends React.Component {
     return (
       <section className="rightPanel">
           {this.props.children}
-
-
       </section>
     );
   }

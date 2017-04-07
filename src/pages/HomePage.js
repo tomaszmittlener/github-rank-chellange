@@ -2,6 +2,7 @@ import React from 'react';
 import Page from '../components/Page';
 import LeftPanel from '../components/LeftPanel'
 import RightPanel from '../components/RightPanel'
+import List from '../components/List'
 
 import { getRepos, getContributors } from '../services/getData'
 import map from 'lodash/map'
@@ -71,29 +72,32 @@ class HomePage extends React.Component {
 
   render() {
     let { repos,  contributors, reposOwner, reposOwnerImage, reposOwnerType } = this.state;
-    console.log(`repos onwer: ${reposOwner} and owner's Image: ${reposOwnerImage} and type: ${reposOwnerType}`);
-
 
     return (
       <Page>
 
-        <LeftPanel image={reposOwnerImage} title={reposOwner} type={reposOwnerType} >
-        </LeftPanel>
+        <LeftPanel image={reposOwnerImage} title={reposOwner} type={reposOwnerType} />
 
         <RightPanel>
 
-          <h1>Home Page</h1>
-          <h2>Downloaded: </h2>
-          <ul>
-            <li>repos: {repos.length}</li>
-            <li>contributors: {contributors.length}</li>
-            <ol>
-              {map(contributors, (contributor, index)=>{
-                return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
-                </li>
-              })}
-            </ol>
-          </ul>
+          <List>
+
+            <h1>Home Page</h1>
+            <h2>Downloaded: </h2>
+            <ul>
+              <li>repos: {repos.length}</li>
+              <li>contributors: {contributors.length}</li>
+              <ol>
+                {map(contributors, (contributor, index)=>{
+                  return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
+                  </li>
+                })}
+              </ol>
+            </ul>
+
+          </List>
+
+
 
         </RightPanel>
 
