@@ -1,9 +1,10 @@
 import React from 'react';
-import Page from '../components/Page'
+import Page from '../components/Page';
 
 import { getRepos, getContributors } from '../services/getData'
 import map from 'lodash/map'
 import forEach from 'lodash/forEach'
+import sortBy from 'lodash/sortBy'
 
 
 class HomePage extends React.Component {
@@ -24,11 +25,9 @@ class HomePage extends React.Component {
   _downloadData() {
     getRepos()
       .then(reposCollection =>{
-
         this.setState({
           repos: reposCollection
         });
-
         this._getUniqueContributors();
       });
   }
@@ -39,7 +38,6 @@ class HomePage extends React.Component {
     map(this.state.repos, (repo) => {
       getContributors(repo.name)
         .then(contributorsCollection => {
-
             forEach(contributorsCollection, user => {
               if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
                 nonDuplicateContributors[user.login] = user;
@@ -47,17 +45,23 @@ class HomePage extends React.Component {
                 nonDuplicateContributors[user.login].contributions += user.contributions;
               }
             });
-
             this.setState({
               contributors: nonDuplicateContributors
             });
+            this._sortByContributions();
           }
         );
     });
   }
 
-  render() {
+  _sortByContributions() {
+    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse();
+    this.setState({
+      contributors: sortedContributors
+    })
+  }
 
+  render() {
     let { repos,  contributors } = this.state;
 
     return (
@@ -69,7 +73,7 @@ class HomePage extends React.Component {
           <li>contributors: {contributors.length}</li>
           <ol>
             {map(contributors, (contributor, index)=>{
-              return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions} followers:  {contributor.followers}
+              return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
               </li>
             })}
           </ol>
