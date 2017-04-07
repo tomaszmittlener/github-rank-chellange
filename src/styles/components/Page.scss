@@ -22,6 +22,8 @@
     width: span(10);
     @include container();
     overflow: hidden;
+    margin: ms(2) span(1) + gutter() ms(2) span(1) + gutter();
+
 
   }
 }

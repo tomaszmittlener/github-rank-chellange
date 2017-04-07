@@ -14,6 +14,9 @@ class HomePage extends React.Component {
     super();
     this.state = {
       repos: [],
+      reposOwner: '',
+      reposOwnerImage: '',
+      reposOwnerType: '',
       repoNames: [],
       contributorsNames: {},
       contributors: {}
@@ -28,7 +31,10 @@ class HomePage extends React.Component {
     getRepos()
       .then(reposCollection =>{
         this.setState({
-          repos: reposCollection
+          repos: reposCollection,
+          reposOwner: reposCollection[0].owner.login,
+          reposOwnerImage: reposCollection[0].owner.avatar_url,
+          reposOwnerType: reposCollection[0].owner.type
         });
         this._getUniqueContributors();
       });
@@ -64,15 +70,14 @@ class HomePage extends React.Component {
   }
 
   render() {
-    let { repos,  contributors } = this.state;
+    let { repos,  contributors, reposOwner, reposOwnerImage, reposOwnerType } = this.state;
+    console.log(`repos onwer: ${reposOwner} and owner's Image: ${reposOwnerImage} and type: ${reposOwnerType}`);
+
 
     return (
       <Page>
 
-        <LeftPanel>
-          <h1>
-            Left Panel
-          </h1>
+        <LeftPanel image={reposOwnerImage} title={reposOwner} type={reposOwnerType} >
         </LeftPanel>
 
         <RightPanel>

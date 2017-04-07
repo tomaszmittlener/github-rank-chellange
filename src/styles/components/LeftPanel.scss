@@ -1,4 +1,15 @@
 .leftPanel {
   @include span(3 first);
   height: auto;
+
+  &__image {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+  }
+
+  &__details {
+    text-align: center;
+  }
 }
