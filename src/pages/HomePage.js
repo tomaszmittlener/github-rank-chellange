@@ -1,60 +1,79 @@
 import React from 'react';
 import Page from '../components/Page'
 
-import { getUserInfo, getUserRepos } from '../services/getData'
+import { getRepos, getContributors } from '../services/getData'
 import map from 'lodash/map'
+import forEach from 'lodash/forEach'
+
 
 class HomePage extends React.Component {
   constructor() {
     super();
     this.state = {
-      userName: 'angular',
-      userInfo: {},
-      userRepositoriesAmount: '',
-      userRepos: []
+      repos: [],
+      repoNames: [],
+      contributorsNames: {},
+      contributors: {}
     }
   }
 
   componentDidMount() {
-    getUserInfo(this.state.userName).then(userInfo => {
-      this.setState({
-        userInfo: userInfo,
-        userRepositoriesAmount: userInfo.public_repos
-      });
-    });
-
-    this._getAllRepos(this.state.userName)
+    this._downloadData();
   }
 
-  _getAllRepos(userName, pagesNumber = 1){
+  _downloadData() {
+    getRepos()
+      .then(reposCollection =>{
 
-    if (this.state.userRepos.length !== this.state.userRepositoriesAmount)
-      getUserRepos(userName, pagesNumber).then(receivedRepos => {
         this.setState({
-          userRepos: this.state.userRepos.concat(...receivedRepos)
+          repos: reposCollection
         });
-        if (this.state.userRepos.length !== this.state.userRepositoriesAmount)
-          this._getAllRepos(userName, pagesNumber + 1)
-      })
 
+        this._getUniqueContributors();
+      });
+  }
+
+  _getUniqueContributors() {
+    const nonDuplicateContributors = this.state.contributors;
+
+    map(this.state.repos, (repo) => {
+      getContributors(repo.name)
+        .then(contributorsCollection => {
+
+            forEach(contributorsCollection, user => {
+              if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
+                nonDuplicateContributors[user.login] = user;
+              } else {
+                nonDuplicateContributors[user.login].contributions += user.contributions;
+              }
+            });
+
+            this.setState({
+              contributors: nonDuplicateContributors
+            });
+          }
+        );
+    });
   }
 
   render() {
-    let {userName, userRepos} = this.state ;
+
+    let { repos,  contributors } = this.state;
 
     return (
       <Page>
         <h1>Home Page</h1>
-        <h2>{userName}'s repositories ({this.state.userRepositoriesAmount}):</h2>
-        <ol>
-          {map(userRepos, (repo, index) =>
-            <li key={index}>
-              <strong>name: </strong>
-              {repo.name}
-              <strong> id: </strong>
-              {repo.id}
-            </li>)}
-        </ol>
+        <h2>Downloaded: </h2>
+        <ul>
+          <li>repos: {repos.length}</li>
+          <li>contributors: {contributors.length}</li>
+          <ol>
+            {map(contributors, (contributor, index)=>{
+              return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions} followers:  {contributor.followers}
+              </li>
+            })}
+          </ol>
+        </ul>
       </Page>
     );
   }

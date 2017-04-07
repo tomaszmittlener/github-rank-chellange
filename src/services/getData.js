@@ -5,6 +5,9 @@ import isUndefined from 'lodash/isUndefined'
 // Authentication credentials. For client id, client secret and api host refer to relevant config file in ../config directory
 
 const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
+const defaultName = 'angular';
+const pagesNumber = '&page=1&per_page=10';
+
 
 //Error handlers
 
@@ -30,18 +33,25 @@ const checkForErrors = (json) => {
 
 //Data requests
 
-function getUserInfo(userName) {
-  return fetch(`${config.apiHost}/users/${userName}${auth}`)
+function getUserInfo(userName = defaultName) {
+  return fetch(`${config.apiHost}users/${userName}${auth}`)
     .then(status)
     .then(json)
     .then(checkForErrors)
 }
 
-function getUserRepos(userName, pageNumber = 1) {
-  return fetch(`${config.apiHost}/users/${userName}/repos${auth}&page=${pageNumber}&per_page=100`)
+function getRepos(userName = defaultName) {
+  return fetch(`${config.apiHost}users/${userName}/repos${auth}${pagesNumber}`)
     .then(status)
     .then(json)
     .then(checkForErrors)
 }
 
-export { getUserInfo, getUserRepos };
+function getContributors(repoName, userName = defaultName) {
+  return fetch(`${config.apiHost}repos/${userName}/${repoName}/contributors${auth}${pagesNumber}`)
+    .then(status)
+    .then(json)
+    .then(checkForErrors)
+}
+
+export { getUserInfo, getRepos, getContributors };
