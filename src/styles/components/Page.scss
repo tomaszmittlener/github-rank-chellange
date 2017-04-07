@@ -1,0 +1,26 @@
+.page {
+  overflow: hidden;
+  @include container();
+
+  &__nav {
+    width: span(12);
+    height: auto;
+    background: black;
+
+    .nav-items {
+      width: span(2);
+      margin: auto;
+      padding: ms(1);
+      text-align: center;
+
+      .nav-item__logo {
+        width: ms(6);
+        height: auto;
+        fill: white;
+      }
+    }
+
+
+
+  }
+}

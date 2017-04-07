@@ -6,7 +6,7 @@ import isUndefined from 'lodash/isUndefined'
 
 const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
 const defaultName = 'angular';
-const pagesNumber = '&page=1&per_page=10';
+const pagesNumber = '&page=1&per_page=30';
 
 
 //Error handlers
@@ -41,7 +41,7 @@ function getUserInfo(userName = defaultName) {
 }
 
 function getRepos(userName = defaultName) {
-  return fetch(`${config.apiHost}users/${userName}/repos${auth}${pagesNumber}`)
+  return fetch(`${config.apiHost}orgs/${userName}/repos${auth}${pagesNumber}`)
     .then(status)
     .then(json)
     .then(checkForErrors)
