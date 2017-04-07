@@ -1,6 +1,7 @@
 .leftPanel {
-  @include span(3 first);
+  @include span(2 first);
   height: auto;
+  border-right: 1px solid #d1d5da;
 
   &__image {
     max-width: 100%;

@@ -1,1 +1,31 @@
+.list {
 
+  &__items {
+    background: blue;
+
+  }
+
+  .list-item {
+    @include gallery(2 of 10);
+    background: white;
+    padding: ms(0);
+    margin: ms(-8);
+
+    &__image {
+      max-width: 80%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      border-radius: 100%;
+    }
+
+
+    &__details {
+      text-align: center;
+      word-wrap: break-word;
+    }
+
+  }
+
+
+}

@@ -9,19 +9,31 @@ class TopContributorsList extends React.Component {
   }
 
   render() {
-    let {contributors} = this.props;
+    let { contributors } = this.props;
 
     return (
       <List className="list--topContributorsList">
 
-          <ol>
-            {map(contributors, (contributor, index)=>{
-              return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
-              </li>
-            })}
-          </ol>
+        <div className="list__items">
+          {map(contributors, (contributor, index)=>
+
+            <div className="list-item"
+                 key={index}>
+
+              <img className="list-item__image"
+                   src={contributor.avatar_url}/>
+
+              <div className="list-item__details">
+                <h4>{contributor.login}</h4>
+                <h5>{contributor.contributions}</h5>
+              </div>
+
+            </div>
+          )}
+        </div>
 
         {this.props.children}
+
       </List>
     );
   }
