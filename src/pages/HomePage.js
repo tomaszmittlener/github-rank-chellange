@@ -1,5 +1,7 @@
 import React from 'react';
 import Page from '../components/Page';
+import LeftPanel from '../components/LeftPanel'
+import RightPanel from '../components/RightPanel'
 
 import { getRepos, getContributors } from '../services/getData'
 import map from 'lodash/map'
@@ -66,22 +68,37 @@ class HomePage extends React.Component {
 
     return (
       <Page>
-        <h1>Home Page</h1>
-        <h2>Downloaded: </h2>
-        <ul>
-          <li>repos: {repos.length}</li>
-          <li>contributors: {contributors.length}</li>
-          <ol>
-            {map(contributors, (contributor, index)=>{
-              return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
-              </li>
-            })}
-          </ol>
-        </ul>
+
+        <LeftPanel>
+          <h1>
+            Left Panel
+          </h1>
+        </LeftPanel>
+
+        <RightPanel>
+
+          <h1>Home Page</h1>
+          <h2>Downloaded: </h2>
+          <ul>
+            <li>repos: {repos.length}</li>
+            <li>contributors: {contributors.length}</li>
+            <ol>
+              {map(contributors, (contributor, index)=>{
+                return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
+                </li>
+              })}
+            </ol>
+          </ul>
+
+        </RightPanel>
+
       </Page>
     );
   }
 }
+
+
+
 
 HomePage.defaultProps = {
 };

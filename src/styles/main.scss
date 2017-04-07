@@ -6,6 +6,9 @@
 
 //settings
 @import "/var/settings";
+@import "global";
 
 //components
 @import "/components/Page";
+@import "/components/LeftPanel";
+@import "/components/RightPanel";

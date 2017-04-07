@@ -16,10 +16,10 @@ class Page extends React.Component {
             </svg>
           </div>
         </nav>
-
-        <div>
+        <div className="page__container">
           {this.props.children}
         </div>
+
 
       </section>
     );

@@ -1,7 +1,4 @@
 .page {
-  overflow: hidden;
-  @include container();
-
   &__nav {
     width: span(12);
     height: auto;
@@ -19,8 +16,12 @@
         fill: white;
       }
     }
+  }
 
-
+  &__container {
+    width: span(10);
+    @include container();
+    overflow: hidden;
 
   }
 }
