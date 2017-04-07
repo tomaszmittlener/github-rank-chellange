@@ -1,5 +1,5 @@
 import config from 'config';
-import isUndefined from 'lodash/isUndefined'
+import isUndefined from 'lodash/isUndefined';
 
 
 // Authentication credentials. For client id, client secret and api host refer to relevant config file in ../config directory

@@ -1,13 +1,13 @@
 import React from 'react';
 import Page from '../components/Page';
-import LeftPanel from '../components/LeftPanel'
-import RightPanel from '../components/RightPanel'
-import List from '../components/List'
+import LeftPanel from '../components/LeftPanel';
+import RightPanel from '../components/RightPanel';
+import TopContributorsList from '../components/TopContributorsList';
 
-import { getRepos, getContributors } from '../services/getData'
-import map from 'lodash/map'
-import forEach from 'lodash/forEach'
-import sortBy from 'lodash/sortBy'
+import { getRepos, getContributors } from '../services/getData';
+import map from 'lodash/map';
+import forEach from 'lodash/forEach';
+import sortBy from 'lodash/sortBy';
 
 
 class HomePage extends React.Component {
@@ -19,7 +19,6 @@ class HomePage extends React.Component {
       reposOwnerImage: '',
       reposOwnerType: '',
       repoNames: [],
-      contributorsNames: {},
       contributors: {}
     }
   }
@@ -71,36 +70,17 @@ class HomePage extends React.Component {
   }
 
   render() {
-    let { repos,  contributors, reposOwner, reposOwnerImage, reposOwnerType } = this.state;
+    let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
 
     return (
       <Page>
-
-        <LeftPanel image={reposOwnerImage} title={reposOwner} type={reposOwnerType} />
-
+        <LeftPanel clasnnName="leftPanel--homePage"
+                   image={reposOwnerImage}
+                   title={reposOwner}
+                   type={reposOwnerType} />
         <RightPanel>
-
-          <List>
-
-            <h1>Home Page</h1>
-            <h2>Downloaded: </h2>
-            <ul>
-              <li>repos: {repos.length}</li>
-              <li>contributors: {contributors.length}</li>
-              <ol>
-                {map(contributors, (contributor, index)=>{
-                  return <li key={index}>name: {contributor.login} contributions:  {contributor.contributions}
-                  </li>
-                })}
-              </ol>
-            </ul>
-
-          </List>
-
-
-
+          <TopContributorsList contributors={contributors}/>
         </RightPanel>
-
       </Page>
     );
   }
