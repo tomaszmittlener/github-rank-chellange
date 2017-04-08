@@ -49,6 +49,7 @@ class HomePage extends React.Component {
             forEach(contributorsCollection, user => {
               if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
                 nonDuplicateContributors[user.login] = user;
+
               } else {
                 nonDuplicateContributors[user.login].contributions += user.contributions;
               }

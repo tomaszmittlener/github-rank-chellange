@@ -2,13 +2,14 @@
   overflow: hidden;
 
   &__items {
-
   }
 
   &-item {
     @include span(12 of 12);
     padding: ms(0);
     margin: ms(-8);
+    border-bottom: 1px solid #d1d5da;
+    border-radius: 3px;
 
     &__image {
       width: span(4 of 12 first);
@@ -31,7 +32,7 @@
 
     &-item {
       @include gallery(6 of 12);
-
+      border: 1px solid #d1d5da;
     }
   }
 }
@@ -42,7 +43,6 @@
 
     &-item {
       @include gallery(4 of 12);
-
     }
   }
 }

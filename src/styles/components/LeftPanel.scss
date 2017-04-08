@@ -3,6 +3,7 @@
   height: auto;
   border-bottom: 1px solid #d1d5da;
 
+
   &__image {
     max-width: 50%;
     height: auto;
@@ -18,18 +19,22 @@
 
 //breakpoints
 
+@include susy-breakpoint($tablet) {
+  .leftPanel {
+
+    border-bottom: none;
+  }
+}
+
 @include susy-breakpoint($small-destop) {
 
   .leftPanel {
     @include span(3 first);
     height: auto;
-    border-right: 1px solid #d1d5da;
-    border-bottom: none;
 
     &__image {
       max-width: 100%;
     }
-
   }
 }
 
