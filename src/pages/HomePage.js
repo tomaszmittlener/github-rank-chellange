@@ -7,8 +7,6 @@ import TopContributorsList from '../components/TopContributorsList';
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 import map from 'lodash/map';
 import forEach from 'lodash/forEach';
-import sortBy from 'lodash/sortBy';
-
 
 class HomePage extends React.Component {
   constructor() {
@@ -30,6 +28,7 @@ class HomePage extends React.Component {
   _downloadData() {
     getRepos()
       .then(reposCollection =>{
+
         this.setState({
           repos: reposCollection,
           reposOwner: reposCollection[0].owner.login,
@@ -37,6 +36,7 @@ class HomePage extends React.Component {
           reposOwnerType: reposCollection[0].owner.type
         });
         this._getUniqueContributors();
+
       });
   }
 
@@ -63,13 +63,6 @@ class HomePage extends React.Component {
     });
   }
 
-  _sortByContributions() {
-    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse();
-    this.setState({
-      contributors: sortedContributors
-    })
-  }
-
   _getUserDetailedInfo(name, collection) {
     getUserInfo(name)
       .then(userInfo => {
@@ -81,7 +74,6 @@ class HomePage extends React.Component {
         this.setState({
           contributors: collection
         });
-        this._sortByContributions()
       });
   }
 

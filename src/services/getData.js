@@ -41,7 +41,7 @@ function getUserInfo(userName = defaultName) {
 }
 
 function getRepos(userName = defaultName) {
-  return fetch(`${config.apiHost}orgs/${userName}/repos${auth}${pagesNumber}`)
+  return fetch(`${config.apiHost}users/${userName}/repos${auth}${pagesNumber}`)
     .then(status)
     .then(json)
     .then(checkForErrors)

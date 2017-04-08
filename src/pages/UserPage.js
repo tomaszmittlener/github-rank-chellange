@@ -3,14 +3,16 @@ import React from 'react';
 import Page from '../components/Page';
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
+import UserReposList from '../components/UserReposList';
 
-import { getUserInfo } from '../services/getData'
+import { getUserInfo, getRepos } from '../services/getData'
 
 class UserPage extends React.Component {
   constructor() {
     super();
     this.state = {
-      userInfo: {}
+      userInfo: {},
+      userRepos: []
     }
 
   }
@@ -21,11 +23,17 @@ class UserPage extends React.Component {
         this.setState({
           userInfo: userInfo
         })
+      });
+    getRepos(this.props.match.params.username)
+      .then(reposList => {
+        this.setState({
+          userRepos: reposList
+        })
       })
   }
 
   render() {
-    let { userInfo } =this.state;
+    let { userInfo, userRepos } =this.state;
 
     return (
       <Page className="page--userPage">
@@ -35,7 +43,8 @@ class UserPage extends React.Component {
                    type={userInfo.type}/>
         <RightPanel className="rightPanel--userPage">
 
-          <h1>User page</h1>
+          <UserReposList className="userReposList--userPage"
+                               repos={userRepos}/>
 
         </RightPanel>
       </Page>
