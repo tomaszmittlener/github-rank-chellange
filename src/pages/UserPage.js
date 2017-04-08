@@ -14,7 +14,6 @@ class UserPage extends React.Component {
       userInfo: {},
       userRepos: []
     }
-
   }
 
   componentDidMount () {

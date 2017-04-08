@@ -18,6 +18,7 @@ class UserReposList extends React.Component {
       <List className="list--UserReposList">
 
         <div className="list__items">
+
           {map(repos, (repo, index)=>
 
             <div className="list-item"
@@ -27,20 +28,22 @@ class UserReposList extends React.Component {
                    src={repo.owner.avatar_url}/>
 
               <div className="list-item__details">
+
                 <h4>
-                  <Link className="link" to={`/repo/${repo.name}`}>{repo.name}</Link>
+                  <Link className="link"
+                        to={`/repo/${repo.owner.login}/${repo.name}`}>{repo.name}</Link>
                 </h4>
 
                 <h5>{repo.language}</h5>
+
                 <h6>{repo.description}</h6>
 
               </div>
 
             </div>
           )}
+
         </div>
-
-
 
       </List>
     );

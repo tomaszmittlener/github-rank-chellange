@@ -54,4 +54,12 @@ function getContributors(repoName, userName = defaultName) {
     .then(checkForErrors)
 }
 
-export { getUserInfo, getRepos, getContributors };
+function getRepoInfo(repoName, userName) {
+  return fetch(`${config.apiHost}repos/${userName}/${repoName}`)
+    .then(status)
+    .then(json)
+    .then(checkForErrors)
+}
+
+
+export { getUserInfo, getRepos, getContributors, getRepoInfo };

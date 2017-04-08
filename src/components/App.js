@@ -6,6 +6,7 @@ import { Route } from 'react-router-dom';
 
 import HomePage from '../pages/HomePage';
 import UserPage from '../pages/UserPage';
+import RepoPage from '../pages/RepoPage';
 
 class App extends React.Component {
   render() {
@@ -15,6 +16,8 @@ class App extends React.Component {
                component={HomePage}/>
         <Route exact path="/user/:username"
                component={UserPage}/>
+        <Route exact path="/repo/:userName/:repoName"
+               component={RepoPage}/>
       </div>
     );
   }
