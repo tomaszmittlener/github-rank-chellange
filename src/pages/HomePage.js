@@ -4,10 +4,11 @@ import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
 import TopContributorsList from '../components/TopContributorsList';
 
-import { getRepos, getContributors } from '../services/getData';
+import { getRepos, getContributors, getUserInfo } from '../services/getData';
 import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 import sortBy from 'lodash/sortBy';
+import reduce from 'lodash/reduce';
 
 
 class HomePage extends React.Component {
@@ -18,9 +19,10 @@ class HomePage extends React.Component {
       reposOwner: '',
       reposOwnerImage: '',
       reposOwnerType: '',
-      repoNames: [],
-      contributors: {}
+      contributors: {},
+      usersInfo: []
     }
+
   }
 
   componentDidMount() {
@@ -49,6 +51,7 @@ class HomePage extends React.Component {
             forEach(contributorsCollection, user => {
               if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
                 nonDuplicateContributors[user.login] = user;
+                this._getUserDetailedInfo(user.login)
 
               } else {
                 nonDuplicateContributors[user.login].contributions += user.contributions;
@@ -70,9 +73,20 @@ class HomePage extends React.Component {
     })
   }
 
-  render() {
-    let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
+  _getUserDetailedInfo(name) {
+    getUserInfo(name)
+      .then(userInfo => {
+        this.setState({
+          usersInfo: [...this.state.usersInfo, userInfo]
+        })
+      })
+  }
 
+
+
+  render() {
+    let { reposOwner, reposOwnerImage, reposOwnerType, contributors, usersInfo } = this.state;
+    console.log(usersInfo);
     return (
       <Page>
         <LeftPanel clasnnName="leftPanel--homePage"
