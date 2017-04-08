@@ -1,31 +1,48 @@
 .list {
+  overflow: hidden;
 
   &__items {
-    background: blue;
 
   }
 
-  .list-item {
-    @include gallery(2 of 10);
-    background: white;
+  &-item {
+    @include span(12 of 12);
     padding: ms(0);
     margin: ms(-8);
 
     &__image {
-      max-width: 80%;
-      height: auto;
-      display: block;
-      margin: 0 auto;
+      width: span(4 of 12 first);
       border-radius: 100%;
     }
 
 
     &__details {
-      text-align: center;
-      word-wrap: break-word;
+      padding: 0 ms(2);
+      @include span(8 of 12 last);
     }
-
   }
+}
 
+//breakpoints
 
+@include susy-breakpoint($tablet) {
+
+  .list {
+
+    &-item {
+      @include gallery(6 of 12);
+
+    }
+  }
+}
+
+@include susy-breakpoint($hdpi-desktop) {
+
+  .list {
+
+    &-item {
+      @include gallery(4 of 12);
+
+    }
+  }
 }

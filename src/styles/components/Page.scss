@@ -1,19 +1,16 @@
 .page {
   &__nav {
+    height: span(1);
     width: span(12);
-    height: auto;
     background: black;
 
     .nav-items {
-      width: span(2);
-      margin: auto;
-      padding: ms(1);
-      text-align: center;
+      padding: ms(0);
 
       .nav-item__logo {
-        width: ms(6);
-        height: auto;
         fill: white;
+        height: ms(2);
+        display: block;
       }
     }
   }
@@ -21,9 +18,16 @@
   &__container {
     width: span(10);
     @include container();
-    overflow: hidden;
     margin: ms(2) span(1) + gutter() ms(2) span(1) + gutter();
+  }
+}
 
 
+
+@include susy-breakpoint($small-destop) {
+
+  .page__container {
+    width: span(11);
+    @include container();
   }
 }

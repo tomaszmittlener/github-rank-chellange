@@ -1,10 +1,10 @@
 .leftPanel {
-  @include span(2 first);
+  @include span(12);
   height: auto;
-  border-right: 1px solid #d1d5da;
+  border-bottom: 1px solid #d1d5da;
 
   &__image {
-    max-width: 100%;
+    max-width: 50%;
     height: auto;
     display: block;
     margin: 0 auto;
@@ -14,3 +14,27 @@
     text-align: center;
   }
 }
+
+
+//breakpoints
+
+@include susy-breakpoint($small-destop) {
+
+  .leftPanel {
+    @include span(3 first);
+    height: auto;
+    border-right: 1px solid #d1d5da;
+    border-bottom: none;
+
+    &__image {
+      max-width: 100%;
+    }
+
+  }
+}
+
+
+
+
+
+
