@@ -1,4 +1,6 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
+
 import List from './List';
 
 import map from 'lodash/map';
@@ -24,8 +26,13 @@ class TopContributorsList extends React.Component {
                    src={contributor.avatar_url}/>
 
               <div className="list-item__details">
-                <h4>{contributor.login}</h4>
+                <h4>
+                  <Link className="link" to={`/user/${contributor.login}`}>{contributor.login}</Link>
+                </h4>
+
                 <h5>{contributor.contributions}</h5>
+                <h6>{contributor.followers}</h6>
+
               </div>
 
             </div>

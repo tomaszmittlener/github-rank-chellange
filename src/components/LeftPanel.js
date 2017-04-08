@@ -12,7 +12,7 @@ class LeftPanel extends React.Component {
 
         <div className="leftPanel__details">
           <h2>{this.props.title}</h2>
-          <h3>({this.props.type})</h3>
+          <h3>{this.props.type}</h3>
         </div>
 
           {this.props.children}

@@ -8,7 +8,6 @@ import { getRepos, getContributors, getUserInfo } from '../services/getData';
 import map from 'lodash/map';
 import forEach from 'lodash/forEach';
 import sortBy from 'lodash/sortBy';
-import reduce from 'lodash/reduce';
 
 
 class HomePage extends React.Component {
@@ -47,14 +46,16 @@ class HomePage extends React.Component {
     map(this.state.repos, (repo) => {
       getContributors(repo.name)
         .then(contributorsCollection => {
+
           forEach(contributorsCollection, user => {
             if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
               nonDuplicateContributors[user.login] = user;
-              this._getUserDetailedInfo(user.login)
+              this._getUserDetailedInfo(user.login, nonDuplicateContributors)
             } else {
               nonDuplicateContributors[user.login].contributions += user.contributions;
             }
           });
+
           this.setState({
             contributors: nonDuplicateContributors
           });
@@ -63,41 +64,44 @@ class HomePage extends React.Component {
   }
 
   _sortByContributions() {
-    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse()
+    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse();
     this.setState({
       contributors: sortedContributors
     })
   }
 
-  _getUserDetailedInfo(name) {
+  _getUserDetailedInfo(name, collection) {
     getUserInfo(name)
       .then(userInfo => {
-        this.state.contributors[userInfo.login].followers = userInfo.followers;
-        this.state.contributors[userInfo.login].public_repos = userInfo.public_repos;
-        this.state.contributors[userInfo.login].public_gists = userInfo.public_gists;
+
+        collection[userInfo.login].followers = userInfo.followers;
+        collection[userInfo.login].public_repos = userInfo.public_repos;
+        collection[userInfo.login].public_gists = userInfo.public_gists;
+
+        this.setState({
+          contributors: collection
+        });
+        this._sortByContributions()
       });
   }
 
 
-
   render() {
     let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
-    console.log(contributors);
     return (
-      <Page>
-        <LeftPanel clasnnName="leftPanel--homePage"
+      <Page className="page--homePage">
+        <LeftPanel className="leftPanel--homePage"
                    image={reposOwnerImage}
                    title={reposOwner}
                    type={reposOwnerType} />
-        <RightPanel>
-          <TopContributorsList contributors={contributors}/>
+        <RightPanel className="rightPanel--homePage">
+          <TopContributorsList className="topContributorsList--homePage"
+                               contributors={contributors}/>
         </RightPanel>
       </Page>
     );
   }
 }
-
-
 
 
 HomePage.defaultProps = {
