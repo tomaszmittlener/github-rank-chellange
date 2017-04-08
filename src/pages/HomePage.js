@@ -22,7 +22,6 @@ class HomePage extends React.Component {
       contributors: {},
       usersInfo: []
     }
-
   }
 
   componentDidMount() {
@@ -48,26 +47,23 @@ class HomePage extends React.Component {
     map(this.state.repos, (repo) => {
       getContributors(repo.name)
         .then(contributorsCollection => {
-            forEach(contributorsCollection, user => {
-              if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
-                nonDuplicateContributors[user.login] = user;
-                this._getUserDetailedInfo(user.login)
-
-              } else {
-                nonDuplicateContributors[user.login].contributions += user.contributions;
-              }
-            });
-            this.setState({
-              contributors: nonDuplicateContributors
-            });
-            this._sortByContributions();
-          }
-        );
+          forEach(contributorsCollection, user => {
+            if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
+              nonDuplicateContributors[user.login] = user;
+              this._getUserDetailedInfo(user.login)
+            } else {
+              nonDuplicateContributors[user.login].contributions += user.contributions;
+            }
+          });
+          this.setState({
+            contributors: nonDuplicateContributors
+          });
+        });
     });
   }
 
   _sortByContributions() {
-    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse();
+    let sortedContributors = sortBy(this.state.contributors, 'contributions').reverse()
     this.setState({
       contributors: sortedContributors
     })
@@ -76,17 +72,17 @@ class HomePage extends React.Component {
   _getUserDetailedInfo(name) {
     getUserInfo(name)
       .then(userInfo => {
-        this.setState({
-          usersInfo: [...this.state.usersInfo, userInfo]
-        })
-      })
+        this.state.contributors[userInfo.login].followers = userInfo.followers;
+        this.state.contributors[userInfo.login].public_repos = userInfo.public_repos;
+        this.state.contributors[userInfo.login].public_gists = userInfo.public_gists;
+      });
   }
 
 
 
   render() {
-    let { reposOwner, reposOwnerImage, reposOwnerType, contributors, usersInfo } = this.state;
-    console.log(usersInfo);
+    let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
+    console.log(contributors);
     return (
       <Page>
         <LeftPanel clasnnName="leftPanel--homePage"
