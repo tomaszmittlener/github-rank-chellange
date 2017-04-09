@@ -4,9 +4,8 @@ import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
 import TopContributorsList from '../components/TopContributorsList';
 
-import { getRepos, getContributors, getUserInfo } from '../services/getData';
-import map from 'lodash/map';
-import forEach from 'lodash/forEach';
+import { getRepos, getContributors } from '../services/getData';
+
 import _ from 'lodash'
 
 class HomePage extends React.Component {
@@ -18,7 +17,6 @@ class HomePage extends React.Component {
       reposOwnerImage: '',
       reposOwnerType: '',
       contributors: [],
-      contributorsDuplicates: [],
       usersInfo: []
     }
   }
@@ -29,35 +27,47 @@ class HomePage extends React.Component {
   }
 
   _downloadData() {
-    //reposcollection do getunique contributors i z tego korzystać
+
     getRepos()
-      .then(collectionReposAll =>{
+      .then(allRepos =>{
         this.setState({
-          // repos: reposCollection,
-          reposOwner: collectionReposAll[0].owner.login,
-          reposOwnerImage: collectionReposAll[0].owner.avatar_url,
-          reposOwnerType: collectionReposAll[0].owner.type
+          reposOwner: allRepos[0].owner.login,
+          reposOwnerImage: allRepos[0].owner.avatar_url,
+          reposOwnerType: allRepos[0].owner.type
         });
-        this._getUniqueContributors(collectionReposAll);
+        this._getUniqueContributors(allRepos);
 
       });
   }
 
-  _getUniqueContributors(collectionReposAll) {
+  _getUniqueContributors(allRepos) {
 
-    _.forEach(collectionReposAll, (repo) => {
+    _.forEach(allRepos, (repo) => {
 
+      // get contributors for repo
       getContributors(repo.name)
-        .then(collectionContributorsRepo => {
+        .then(contributorsRepo => {
 
           //get unique and duplicate contributors
-          const collectionContributorsUniques = _.differenceBy(collectionContributorsRepo, this.state.contributors, 'login');
-          const collectionContributorsDuplicates = _.intersectionBy(collectionContributorsRepo, this.state.contributors, 'login');
+          const _contributorsUniques = _.differenceBy(contributorsRepo, this.state.contributors, 'login');
+          const _contributorsDuplicates = _.intersectionBy(contributorsRepo, this.state.contributors, 'login');
 
+          //add contributions
+          const _contributorsAddContributions = _.map(this.state.contributors, contributor => {
+            const _duplicate = _.find(_contributorsDuplicates, duplicate => {
+              return duplicate.login === contributor.login;
+            });
 
+            if(_duplicate) {
+              return {...contributor, contributions: contributor.contributions + _duplicate.contributions}
+            }else{
+              return contributor
+            }
+          });
+
+          //set state
           this.setState({
-            contributors: [ ...this.state.contributors, ...collectionContributorsUniques ],
-            contributorsDuplicates: [...this.state.contributors, ...collectionContributorsDuplicates]
+            contributors: [ ..._contributorsUniques, ..._contributorsAddContributions ]
           });
         })
     });
@@ -80,7 +90,6 @@ class HomePage extends React.Component {
     );
   }
 }
-
 
 HomePage.defaultProps = {
 };
