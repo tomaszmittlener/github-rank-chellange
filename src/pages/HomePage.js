@@ -7,6 +7,7 @@ import TopContributorsList from '../components/TopContributorsList';
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 import map from 'lodash/map';
 import forEach from 'lodash/forEach';
+import _ from 'lodash'
 
 class HomePage extends React.Component {
   constructor() {
@@ -16,70 +17,55 @@ class HomePage extends React.Component {
       reposOwner: '',
       reposOwnerImage: '',
       reposOwnerType: '',
-      contributors: {},
+      contributors: [],
+      contributorsDuplicates: [],
       usersInfo: []
     }
   }
+
 
   componentDidMount() {
     this._downloadData();
   }
 
   _downloadData() {
+    //reposcollection do getunique contributors i z tego korzystać
     getRepos()
-      .then(reposCollection =>{
-
+      .then(collectionReposAll =>{
         this.setState({
-          repos: reposCollection,
-          reposOwner: reposCollection[0].owner.login,
-          reposOwnerImage: reposCollection[0].owner.avatar_url,
-          reposOwnerType: reposCollection[0].owner.type
+          // repos: reposCollection,
+          reposOwner: collectionReposAll[0].owner.login,
+          reposOwnerImage: collectionReposAll[0].owner.avatar_url,
+          reposOwnerType: collectionReposAll[0].owner.type
         });
-        this._getUniqueContributors();
+        this._getUniqueContributors(collectionReposAll);
 
       });
   }
 
-  _getUniqueContributors() {
-    const nonDuplicateContributors = this.state.contributors;
+  _getUniqueContributors(collectionReposAll) {
 
-    map(this.state.repos, (repo) => {
+    _.forEach(collectionReposAll, (repo) => {
+
       getContributors(repo.name)
-        .then(contributorsCollection => {
+        .then(collectionContributorsRepo => {
 
-          forEach(contributorsCollection, user => {
-            if (!nonDuplicateContributors.hasOwnProperty(user.login)) {
-              nonDuplicateContributors[user.login] = user;
-              this._getUserDetailedInfo(user.login, nonDuplicateContributors)
-            } else {
-              nonDuplicateContributors[user.login].contributions += user.contributions;
-            }
-          });
+          //get unique and duplicate contributors
+          const collectionContributorsUniques = _.differenceBy(collectionContributorsRepo, this.state.contributors, 'login');
+          const collectionContributorsDuplicates = _.intersectionBy(collectionContributorsRepo, this.state.contributors, 'login');
+
 
           this.setState({
-            contributors: nonDuplicateContributors
+            contributors: [ ...this.state.contributors, ...collectionContributorsUniques ],
+            contributorsDuplicates: [...this.state.contributors, ...collectionContributorsDuplicates]
           });
-        });
+        })
     });
   }
 
-  _getUserDetailedInfo(name, collection) {
-    getUserInfo(name)
-      .then(userInfo => {
-
-        collection[userInfo.login].followers = userInfo.followers;
-        collection[userInfo.login].public_repos = userInfo.public_repos;
-        collection[userInfo.login].public_gists = userInfo.public_gists;
-
-        this.setState({
-          contributors: collection
-        });
-      });
-  }
-
-
   render() {
     let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
+
     return (
       <Page className="page--homePage">
         <LeftPanel className="leftPanel--homePage"
