@@ -6,7 +6,14 @@ import TopContributorsList from '../components/TopContributorsList';
 
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 
-import _ from 'lodash'
+import _differenceBy from 'lodash/differenceBy';
+import _filter from 'lodash/filter';
+import _find from 'lodash/find';
+import _forEach from 'lodash/forEach';
+import _intersectionBy from 'lodash/intersectionBy';
+import _map from 'lodash/map';
+import _sortBy from 'lodash/sortBy';
+
 
 class HomePage extends React.Component {
   constructor() {
@@ -20,6 +27,7 @@ class HomePage extends React.Component {
       usersInfo: []
     }
   }
+
 
   componentDidMount() {
     this._downloadData();
@@ -44,24 +52,23 @@ class HomePage extends React.Component {
           .then(() => {
             this._getContributorsInfo(this.state.contributors)
           })
-
       });
   }
 
   _getUniqueContributors(allRepos) {
-    return _.map(allRepos, (repo) => {
+    return _map(allRepos, (repo) => {
 
       // get contributors for repo
       return getContributors(repo.name)
         .then(contributorsRepo => {
 
           //get unique and duplicate contributors
-          const _contributorsUniques = _.differenceBy(contributorsRepo, this.state.contributors, 'login');
-          const _contributorsDuplicates = _.intersectionBy(contributorsRepo, this.state.contributors, 'login');
+          const _contributorsUniques = _differenceBy(contributorsRepo, this.state.contributors, 'login');
+          const _contributorsDuplicates = _intersectionBy(contributorsRepo, this.state.contributors, 'login');
 
           //add contributions
-          const _contributorsAddContributions = _.map(this.state.contributors, contributor => {
-            const _duplicate = _.find(_contributorsDuplicates, duplicate => {
+          const _contributorsAddContributions = _map(this.state.contributors, contributor => {
+            const _duplicate = _find(_contributorsDuplicates, duplicate => {
               return duplicate.login === contributor.login;
             });
 
@@ -73,22 +80,25 @@ class HomePage extends React.Component {
 
           //set state
           return this.setState({
-            contributors: [ ..._contributorsUniques, ..._contributorsAddContributions ]
+            contributors: _sortBy([ ..._contributorsUniques,
+              ..._contributorsAddContributions ], 'contributions').reverse()
           })
         });
     })
   }
 
   _getContributorsInfo(contributorsCollection) {
-
-    _.forEach(contributorsCollection, (contributor) => {
+    _forEach(contributorsCollection, (contributor) => {
       getUserInfo(contributor.login)
         .then(contributorInfo => {
 
           const contributorWithAdditionalInfo =  {...contributor, ...contributorInfo};
 
           this.setState({
-            contributors: [..._.filter(this.state.contributors, contributorToRemove => contributorToRemove.login !== contributor.login), contributorWithAdditionalInfo]
+            contributors: _sortBy([..._filter(this.state.contributors,
+              contributorToRemove => contributorToRemove.login !== contributor.login),
+                contributorWithAdditionalInfo],
+              'contributions').reverse()
           })
         });
     })
