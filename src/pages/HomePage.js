@@ -4,7 +4,7 @@ import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
 import TopContributorsList from '../components/TopContributorsList';
 
-import { getRepos, getContributors } from '../services/getData';
+import { getRepos, getContributors, getUserInfo } from '../services/getData';
 
 import _ from 'lodash'
 
@@ -21,31 +21,38 @@ class HomePage extends React.Component {
     }
   }
 
-
   componentDidMount() {
     this._downloadData();
   }
 
   _downloadData() {
 
+    //get all repositories
     getRepos()
-      .then(allRepos =>{
+      .then(allRepos => {
         this.setState({
           reposOwner: allRepos[0].owner.login,
           reposOwnerImage: allRepos[0].owner.avatar_url,
           reposOwnerType: allRepos[0].owner.type
         });
-        this._getUniqueContributors(allRepos);
+
+        //get unique contributors
+        const promises = this._getUniqueContributors(allRepos);
+
+        //THEN get info for unique contributors
+        Promise.all(promises)
+          .then(() => {
+            this._getContributorsInfo(this.state.contributors)
+          })
 
       });
   }
 
   _getUniqueContributors(allRepos) {
-
-    _.forEach(allRepos, (repo) => {
+    return _.map(allRepos, (repo) => {
 
       // get contributors for repo
-      getContributors(repo.name)
+      return getContributors(repo.name)
         .then(contributorsRepo => {
 
           //get unique and duplicate contributors
@@ -58,20 +65,35 @@ class HomePage extends React.Component {
               return duplicate.login === contributor.login;
             });
 
-            if(_duplicate) {
-              return {...contributor, contributions: contributor.contributions + _duplicate.contributions}
-            }else{
-              return contributor
-            }
+            return _duplicate ?
+              {...contributor, contributions: contributor.contributions + _duplicate.contributions} :
+              contributor
+
           });
 
           //set state
-          this.setState({
+          return this.setState({
             contributors: [ ..._contributorsUniques, ..._contributorsAddContributions ]
-          });
-        })
-    });
+          })
+        });
+    })
   }
+
+  _getContributorsInfo(contributorsCollection) {
+
+    _.forEach(contributorsCollection, (contributor) => {
+      getUserInfo(contributor.login)
+        .then(contributorInfo => {
+
+          const contributorWithAdditionalInfo =  {...contributor, ...contributorInfo};
+
+          this.setState({
+            contributors: [..._.filter(this.state.contributors, contributorToRemove => contributorToRemove.login !== contributor.login), contributorWithAdditionalInfo]
+          })
+        });
+    })
+  }
+
 
   render() {
     let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
