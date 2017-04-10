@@ -9,9 +9,9 @@ import { getRepos, getContributors, getUserInfo } from '../services/getData';
 import _differenceBy from 'lodash/differenceBy';
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
-import _forEach from 'lodash/forEach';
 import _intersectionBy from 'lodash/intersectionBy';
 import _map from 'lodash/map';
+import _max from 'lodash/max';
 import _sortBy from 'lodash/sortBy';
 
 
@@ -24,14 +24,22 @@ class HomePage extends React.Component {
       reposOwnerImage: '',
       reposOwnerType: '',
       contributors: [],
-      usersInfo: []
+      usersInfo: [],
+      filterContributionsMax: {},
+      filterFollowersMax: {},
+      filterReposMax: {},
+      filterGistsMax: {}
     }
   }
 
 
   componentDidMount() {
+
+    //this will initiate series of promises.
+    // The order is important: get repos-> get contributors -> get additional info -> retrieve max values for filters
     this._downloadData();
   }
+
 
   _downloadData() {
 
@@ -39,24 +47,19 @@ class HomePage extends React.Component {
     getRepos()
       .then(allRepos => {
         this.setState({
+          allRepos: allRepos,
           reposOwner: allRepos[0].owner.login,
           reposOwnerImage: allRepos[0].owner.avatar_url,
           reposOwnerType: allRepos[0].owner.type
         });
 
-        //get unique contributors
-        const promises = this._getUniqueContributors(allRepos);
-
-        //THEN get info for unique contributors
-        Promise.all(promises)
-          .then(() => {
-            this._getContributorsInfo(this.state.contributors)
-          })
+        //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
+        this._getUniqueContributors(this.state.allRepos);
       });
   }
 
   _getUniqueContributors(allRepos) {
-    return _map(allRepos, (repo) => {
+    const promiseUniqueContributors = _map(allRepos, (repo) => {
 
       // get contributors for repo
       return getContributors(repo.name)
@@ -71,25 +74,30 @@ class HomePage extends React.Component {
             const _duplicate = _find(_contributorsDuplicates, duplicate => {
               return duplicate.login === contributor.login;
             });
-
             return _duplicate ?
               {...contributor, contributions: contributor.contributions + _duplicate.contributions} :
               contributor
-
           });
 
           //set state
-          return this.setState({
+          this.setState({
             contributors: _sortBy([ ..._contributorsUniques,
               ..._contributorsAddContributions ], 'contributions').reverse()
-          })
+          });
+
         });
-    })
+    });
+
+    //when done, get additional info about every contributor
+
+    Promise.all(promiseUniqueContributors)
+      .then(()=>{this._getContributorsInfo(this.state.contributors)})
+
   }
 
   _getContributorsInfo(contributorsCollection) {
-    _forEach(contributorsCollection, (contributor) => {
-      getUserInfo(contributor.login)
+    const promiseAllInfo = _map(contributorsCollection, (contributor) => {
+      return getUserInfo(contributor.login)
         .then(contributorInfo => {
 
           const contributorWithAdditionalInfo =  {...contributor, ...contributorInfo};
@@ -99,14 +107,55 @@ class HomePage extends React.Component {
               contributorToRemove => contributorToRemove.login !== contributor.login),
                 contributorWithAdditionalInfo],
               'contributions').reverse()
-          })
-        });
-    })
+          });
+        })
+    });
+
+    //when done, retrieve highest number of contributions, followers, repos and gists for filters
+
+    Promise.all(promiseAllInfo)
+      .then(()=>{this._getMaxValues()})
+
   }
 
+  _getMaxValues(){
+
+    this.setState({
+
+      filterContributionsMax:
+        _max(this.state.contributors, contributor => {
+          return contributor.contributions
+        }),
+
+      filterFollowersMax:
+        _max(this.state.contributors, contributor => {
+          return contributor.followers
+        }),
+
+      filterReposMax:
+        _max(this.state.contributors, contributor => {
+          return contributor.public_repos
+
+        }),
+
+      filterGistsMax:
+        _max(this.state.contributors, contributor => {
+          return contributor.public_gists
+        })
+    });
+  }
 
   render() {
-    let { reposOwner, reposOwnerImage, reposOwnerType, contributors } = this.state;
+    let {
+      reposOwner,
+      reposOwnerImage,
+      reposOwnerType,
+      contributors,
+      filterContributionsMax,
+      filterFollowersMax,
+      filterReposMax,
+      filterGistsMax
+    } = this.state;
 
     return (
       <Page className="page--homePage">
@@ -116,7 +165,11 @@ class HomePage extends React.Component {
                    type={reposOwnerType} />
         <RightPanel className="rightPanel--homePage">
           <TopContributorsList className="topContributorsList--homePage"
-                               contributors={contributors}/>
+                               contributors={contributors}
+                               filterContributionsMax={filterContributionsMax}
+                               filterFollowersMax={filterFollowersMax}
+                               filterReposMax={filterReposMax}
+                               filterGistsMax={filterGistsMax}/>
         </RightPanel>
       </Page>
     );
