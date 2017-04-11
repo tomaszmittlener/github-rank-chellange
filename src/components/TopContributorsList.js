@@ -8,9 +8,8 @@ import GoGist from 'react-icons/lib/go/gist';
 import GoRepo from 'react-icons/lib/go/repo';
 import GoGitPullRequest from 'react-icons/lib/go/git-pull-request';
 
-
 import List from './List';
-
+import { roundMaxNumber, getSteps } from '../services/utils';
 
 import filter from 'lodash/filter'
 import map from 'lodash/map';
@@ -39,19 +38,19 @@ class TopContributorsList extends React.Component {
       filterContributionsValue:
         typeof nextProps.filterContributionsMax.contributions !== 'number' ?
           'Loading...':
-          nextProps.filterContributionsMax.contributions +1,
+          roundMaxNumber(nextProps.filterContributionsMax.contributions),
       filterFollowersValue:
         typeof nextProps.filterFollowersMax.followers !== 'number' ?
           'Loading...':
-          nextProps.filterFollowersMax.followers + 1,
+          roundMaxNumber(nextProps.filterFollowersMax.followers),
       filterReposValue:
         typeof nextProps.filterReposMax.public_repos !== 'number' ?
           'Loading...':
-          nextProps.filterReposMax.public_repos + 1,
+          roundMaxNumber(nextProps.filterReposMax.public_repos),
       filterGistsValue:
         typeof nextProps.filterGistsMax.public_gists !== 'number' ?
           'Loading...':
-          nextProps.filterGistsMax.public_gists + 1
+          roundMaxNumber(nextProps.filterGistsMax.public_gists)
     })
   }
 
@@ -107,8 +106,8 @@ class TopContributorsList extends React.Component {
                    className="filters-contributions"
                    type="range"
                    min="0"
-                   step="100"
-                   max={filterContributionsMax.contributions + 1}
+                   step={getSteps(filterContributionsMax.contributions)}
+                   max={roundMaxNumber(filterContributionsMax.contributions)}
                    onChange={e => this.setState({filterContributionsValue: e.target.value})}
                    default={filterContributionsMax}/>
             <output name="filterContributionsOutput">{filterContributionsValue}</output>
@@ -121,8 +120,8 @@ class TopContributorsList extends React.Component {
                    className="filters-followers"
                    type="range"
                    min="0"
-                   step="50"
-                   max={filterFollowersMax.followers + 1}
+                   step={getSteps(filterFollowersMax.followers)}
+                   max={roundMaxNumber(filterFollowersMax.followers)}
                    onChange={e => this.setState({filterFollowersValue: e.target.value})}
                    default={filterFollowersMax}/>
             <output name="filterContributionsOutput">{filterFollowersValue}</output>
@@ -136,8 +135,8 @@ class TopContributorsList extends React.Component {
                    className="filters-repos"
                    type="range"
                    min="0"
-                   step="10"
-                   max={filterReposMax.public_repos + 1}
+                   step={getSteps(filterReposMax.public_repos)}
+                   max={roundMaxNumber(filterReposMax.public_repos)}
                    onChange={e => this.setState({filterReposValue: e.target.value})}
                    default={filterReposMax}/>
             <output name="filterContributionsOutput">{filterReposValue}</output>
@@ -150,7 +149,8 @@ class TopContributorsList extends React.Component {
                    className="filters-gists"
                    type="range"
                    min="0"
-                   max={filterGistsMax.public_gists + 1}
+                   step={getSteps(filterGistsMax.public_gists)}
+                   max={roundMaxNumber(filterGistsMax.public_gists)}
                    onChange={e => this.setState({filterGistsValue: e.target.value})}
                    default={filterGistsMax}/>
             <output name="filterContributionsOutput">{filterGistsValue}</output>
