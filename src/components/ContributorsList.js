@@ -17,165 +17,104 @@ import map from 'lodash/map';
 class TopContributorsList extends React.Component {
   constructor() {
     super();
+    this.FILTERS ={
+      contributions:{
+        icon: <GoGitPullRequest className="icon"/>,
+        title: 'Contributions',
+        name: 'filterContributions',
+        outputId: 'filterContributionsOutput',
+        maxValue: ''
+      },
+      followers:{
+        icon: <GoOrganization className="icon"/>,
+        title: 'Followers',
+        name: 'filterFollowers',
+        outputId: 'filterFollowersOutput',
+        maxValue: ''
+      },
+      repos: {
+        icon: <GoRepo className="icon"/>,
+        title: 'Repos',
+        name: 'filterRepos',
+        outputId: 'filterReposOutput',
+        maxValue: ''
+      },
+      gists: {
+        icon: <GoGist className="icon"/>,
+        title: 'Gists',
+        name: 'filterGists',
+        outputId: 'filterGistsOutput',
+        maxValue: ''
+      }
+    };
 
     this.state = {
-      contributors: [],
-      filterContributionsMax: {},
-      filterFollowersMax: {},
-      filterReposMax: {},
-      filterGistsMax: {},
-      filterContributionsValue: '',
-      filterFollowersValue: '',
-      filterReposValue: '',
-      filterGistsValue: ''
+      contributors: []
     }
   }
 
   //receive contributors and if filters required - max values for filters.
-  // Use roundMaxNumber to set rounded max value for filters
   componentWillReceiveProps(nextProps){
-
     this.setState({
       contributors: nextProps.contributors
     });
 
-    nextProps.requireFilters ?
-      this.setState({
-        contributors: nextProps.contributors,
-        filterContributionsValue:
-          typeof nextProps.filterContributionsMax.contributions !== 'number' ?
-            'Loading...':
-            roundMaxNumber(nextProps.filterContributionsMax.contributions),
-        filterFollowersValue:
-          typeof nextProps.filterFollowersMax.followers !== 'number' ?
-            'Loading...':
-            roundMaxNumber(nextProps.filterFollowersMax.followers),
-        filterReposValue:
-          typeof nextProps.filterReposMax.public_repos !== 'number' ?
-            'Loading...':
-            roundMaxNumber(nextProps.filterReposMax.public_repos),
-        filterGistsValue:
-          typeof nextProps.filterGistsMax.public_gists !== 'number' ?
-            'Loading...':
-            roundMaxNumber(nextProps.filterGistsMax.public_gists)
-      }):
-      null
+    if (nextProps.requireFilters === true) {
+      this.FILTERS.contributions.maxValue = nextProps.filterContributionsMax.contributions;
+      this.FILTERS.followers.maxValue = nextProps.filterFollowersMax.followers;
+      this.FILTERS.repos.maxValue = nextProps.filterReposMax.public_repos;
+      this.FILTERS.gists.maxValue = nextProps.filterGistsMax.public_gists;
+    }
   }
 
   //On submit the list will be filtered in accordance with chosen criteria.
-  //Values could be also retrieved directly from the form e.target.inputName.value
-  _filter() {
+  _filter(e) {
+    e.preventDefault();
     this.setState({
       contributors:
         filter(this.props.contributors, contributor => {
-          return contributor.contributions < this.state.filterContributionsValue &&
-            contributor.followers < this.state.filterFollowersValue &&
-            contributor.public_repos < this.state.filterReposValue &&
-            contributor.public_gists < this.state.filterGistsValue
+          return contributor.contributions < e.target.filterContributions.value &&
+            contributor.followers < e.target.filterFollowers.value &&
+            contributor.public_repos < e.target.filterRepos.value &&
+            contributor.public_gists < e.target.filterGists.value
         })
     });
   }
 
-  _submit(e){
-    e.preventDefault();
-    this._filter();
-  }
-
   render() {
-    let {
-      contributors,
-      filterContributionsValue,
-      filterFollowersValue,
-      filterReposValue,
-      filterGistsValue
-    } = this.state;
-
-    let {
-      filterContributionsMax,
-      filterFollowersMax,
-      filterReposMax,
-      filterGistsMax,
-      requireDetails,
-      requireFilters
-    } = this.props;
-
+    let { contributors } = this.state;
+    let { requireDetails, requireFilters } = this.props;
 
     return (
       <List className="list--topContributorsList">
 
         {/*display filters if required in props*/}
-
         {requireFilters?
+          <form className="list__filters" onSubmit={this._filter.bind(this)}>
+            <div className="filters">
 
-          <form className="list__filters" onSubmit={this._submit.bind(this)}>
-            <div className="filters-sliders">
-
-                {/*slider 1 - contributions*/}
-
-                <h4 className="filters-title">
-                  <GoGitPullRequest className="icon"/>
-                  Contributions:
-                  <output name="filterContributionsOutput">{filterContributionsValue}</output>
-                </h4>
-
-                <input name="filterContributions"
-                       className="filters-contributions"
-                       type="range"
-                       min="0"
-                       step={getSteps(filterContributionsValue)}
-                       max={roundMaxNumber(filterContributionsMax.contributions)}
-                       onChange={e => this.setState({filterContributionsValue: e.target.value})}
-                       default={filterContributionsMax}/>
-
-                {/*slider 2 - followers*/}
-
-                <h4 className="filters-title">
-                  <GoOrganization className="icon"/>
-                  Followers:
-                  <output name="filterFollowersOutput">{filterFollowersValue}</output>
-                </h4>
-                <input name="filterFollowers"
-                       className="filters-followers"
-                       type="range"
-                       min="0"
-                       step={getSteps(filterFollowersValue)}
-                       max={roundMaxNumber(filterFollowersMax.followers)}
-                       onChange={e => this.setState({filterFollowersValue: e.target.value})}
-                       default={filterFollowersMax}/>
-
-                {/*slider 3 - repos*/}
-
-                <h4  className="filters-title">
-                  <GoRepo className="icon"/>
-                  Repos:
-                  <output name="filterReposOutput">{filterReposValue}</output>
-                </h4>
-                <input name="filterRepos"
-                       className="filters-repos"
-                       type="range"
-                       min="0"
-                       step={getSteps(filterReposValue)}
-                       max={roundMaxNumber(filterReposMax.public_repos)}
-                       onChange={e => this.setState({filterReposValue: e.target.value})}
-                       default={filterReposMax}/>
-
-
-                {/*slider 4 - gists*/}
-
-                <h4 className="filters-title">
-                  <GoGist className="icon"/>
-                  Gists:
-                  <output name="filterGistsOutput">{filterGistsValue}</output>
-                </h4>
-                <input name="filterGists"
-                       className="filters-gists"
-                       type="range"
-                       min="0"
-                       step={getSteps(filterGistsValue)}
-                       max={roundMaxNumber(filterGistsMax.public_gists)}
-                       onChange={e => this.setState({filterGistsValue: e.target.value})}
-                       default={filterGistsMax}/>
-              </div>
+              {/*map thought FILTERS object*/}
+              {map(this.FILTERS, (filter, index) =>
+                <div className="filters-slider"
+                     key={index}>
+                  <h4 className="filters-title">
+                    {filter.icon}
+                    {filter.title}:
+                    <output id={filter.outputId}>
+                      {typeof filter.maxValue === 'number' ?
+                        roundMaxNumber(filter.maxValue) :
+                        'Loading...'}
+                    </output>
+                  </h4>
+                  <input name={filter.name}
+                         type="range"
+                         min="0"
+                         step={getSteps(filter.maxValue)}
+                         max={roundMaxNumber(filter.maxValue)}
+                         onChange={e => document.getElementById(filter.outputId).value = e.target.value }
+                         default={roundMaxNumber(filter.maxValue)}/>
+                </div>
+              )}
 
               {/*button*/}
               <div className="filters-button">
@@ -183,20 +122,19 @@ class TopContributorsList extends React.Component {
                   <MdFilterList className="button-icon"/>
                 </button>
               </div>
-
+            </div>
           </form> :
-          null}
-
+          null
+        }
 
         {/*display items*/}
-
         <div className="list__items">
 
+          {/*map through all contributors*/}
           {map(contributors, (contributor, index)=>
             <div className="list-item"
                  key={index}>
               <MdAccountCircle className="list-item__image"/>
-
               <div className="list-item__details">
                 <h3>
                   <Link className="link"
@@ -204,16 +142,13 @@ class TopContributorsList extends React.Component {
                     {contributor.login}
                   </Link>
                 </h3>
-
                 <h4>
                   <GoGitPullRequest className="icon"/>
                   {contributor.contributions}
                 </h4>
 
                 {/*display followers, repos and gists if required in props.*/}
-
                 {requireDetails?
-
                   <div>
                     <h5>
                       <GoOrganization className="icon"/>
@@ -221,14 +156,12 @@ class TopContributorsList extends React.Component {
                         contributor.followers:
                         'loading...'}
                     </h5>
-
                     <h5>
                       <GoRepo className="icon"/>
                       {typeof contributor.public_repos === 'number' ?
                         contributor.public_repos:
                         'loading...'}
                     </h5>
-
                     <h5>
                       <GoGist className="icon"/>
                       {typeof contributor.public_gists === 'number' ?
@@ -236,9 +169,7 @@ class TopContributorsList extends React.Component {
                         'loading...'}
                     </h5>
                   </div> :
-
                   null}
-
               </div>
             </div>
           )}
@@ -251,6 +182,8 @@ class TopContributorsList extends React.Component {
 
 TopContributorsList.PropTypes = {
   contributors: React.PropTypes.array,
+  requireFilters: React.PropTypes.bool.isRequired,
+  requireDetails: React.PropTypes.bool.isRequired,
   filterContributionsMax: React.PropTypes.object,
   filterFollowersMax: React.PropTypes.object,
   filterReposMax: React.PropTypes.object,

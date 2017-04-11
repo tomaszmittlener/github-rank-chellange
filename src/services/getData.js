@@ -6,7 +6,7 @@ import isUndefined from 'lodash/isUndefined';
 
 const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
 const defaultName = 'angular';
-const pagesNumber = '&page=1&per_page=30';
+const pagesNumber = '&page=1&per_page=3';
 
 
 //Error handlers
