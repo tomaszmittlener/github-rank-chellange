@@ -7,16 +7,17 @@ html {
 
 body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  color: black;
+  color: $basicColor;
 }
 
 .button {
-  background-color: white;
+  background-color: $neutralColor;
   border: none;
-  color: #3071a9;
+  color: $accentActiveColor;
   text-decoration: none;
   font-size: 16px;
   cursor: pointer;
+  outline: none;
 
   &-icon{
     display: block;
@@ -27,7 +28,7 @@ body {
 
 .link {
   text-decoration: none;
-  color: black;
+  color: $basicColor;
 
   &:hover {
     text-decoration: underline;
@@ -35,6 +36,5 @@ body {
 }
 
 .icon {
-margin: 0 ms(-6) 0 0;
-
+  margin: 0 ms(-6) 0 0;
 }

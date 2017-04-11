@@ -16,12 +16,15 @@
       margin: auto;
     }
   }
+
+  .filters-title {
+    margin: 0 0 ms(1) 0;
+  }
 }
 
-
+//slider settings
 
 //remove browser default settings//
-
 
 input[type=range] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
@@ -55,62 +58,65 @@ input[type=range]::-ms-track {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: 1px solid #000000;
-  height: 18px;
-  width: 8px;
-  background: #ffffff;
+  height: ms(0);
+  width: ms(0);
+  border-radius: 100%;
+  background: $neutralColor;
   cursor: pointer;
-  margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  margin-top: - ms(-4); /* Margin needs to be specified in Chrome, but in Firefox and IE it is automatic */
 }
 
 /* All the same stuff for Firefox */
 input[type=range]::-moz-range-thumb {
   border: 1px solid #000000;
-  height: 18px;
-  width: 8px;
-  background: #ffffff;
+  height: ms(0);
+  width: ms(0);
+  border-radius: span(12);
+  background: $neutralColor;
   cursor: pointer;
 }
 
 /* All the same stuff for IE */
 input[type=range]::-ms-thumb {
   border: 1px solid #000000;
-  height: 18px;
-  width: 8px;
-  background: #ffffff;
+  height: ms(0);
+  width: ms(0);
+  border-radius: span(12);
+  background: $neutralColor;
   cursor: pointer;
 }
 
 
 
-// track//
+// track settings//
 
 input[type=range]::-webkit-slider-runnable-track {
   width: span(12);
-  height: 4.2px;
+  height: ms(-5);
   cursor: pointer;
-  background: #3071a9;
+  background: $accentActiveColor;
   border: none;
 }
 
-
 input[type=range]::-moz-range-track {
   width: span(12);
-  height: 4.2px;
+  height: ms(-5);
   cursor: pointer;
-  background: #3071a9;
+  background: $accentActiveColor;
   border: none;
 }
 
 input[type=range]::-ms-track {
   width: span(12);
-  height: 4.2px;
+  height: ms(-5);
   cursor: pointer;
   background: transparent;
   border-color: transparent;
   border-width: 16px 0;
   color: transparent;
 }
+
 input[type=range]::-ms-fill-lower {
-  background: #2a6495;
+  background: $accentActiveColor;
   border: none;
 }

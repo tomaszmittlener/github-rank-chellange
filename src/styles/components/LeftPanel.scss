@@ -1,7 +1,7 @@
 .leftPanel {
   @include span(12);
   height: auto;
-  border-bottom: 1px solid #d1d5da;
+  border-bottom: 1px solid $accentPassiveColor;
 
 
   &__image {

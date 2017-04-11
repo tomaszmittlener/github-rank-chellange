@@ -23,6 +23,7 @@ class TopContributorsList extends React.Component {
         title: 'Contributions',
         name: 'filterContributions',
         outputId: 'filterContributionsOutput',
+        inputId: 'filterContributionsInput',
         maxValue: ''
       },
       followers:{
@@ -30,6 +31,7 @@ class TopContributorsList extends React.Component {
         title: 'Followers',
         name: 'filterFollowers',
         outputId: 'filterFollowersOutput',
+        inputId: 'filterFollowersInput',
         maxValue: ''
       },
       repos: {
@@ -37,6 +39,7 @@ class TopContributorsList extends React.Component {
         title: 'Repos',
         name: 'filterRepos',
         outputId: 'filterReposOutput',
+        inputId: 'filterReposInput',
         maxValue: ''
       },
       gists: {
@@ -44,6 +47,7 @@ class TopContributorsList extends React.Component {
         title: 'Gists',
         name: 'filterGists',
         outputId: 'filterGistsOutput',
+        inputId: 'filterGistsInput',
         maxValue: ''
       }
     };
@@ -64,12 +68,14 @@ class TopContributorsList extends React.Component {
       this.FILTERS.followers.maxValue = nextProps.filterFollowersMax.followers;
       this.FILTERS.repos.maxValue = nextProps.filterReposMax.public_repos;
       this.FILTERS.gists.maxValue = nextProps.filterGistsMax.public_gists;
+
     }
   }
 
   //On submit the list will be filtered in accordance with chosen criteria.
   _filter(e) {
     e.preventDefault();
+
     this.setState({
       contributors:
         filter(this.props.contributors, contributor => {
@@ -97,6 +103,15 @@ class TopContributorsList extends React.Component {
               {map(this.FILTERS, (filter, index) =>
                 <div className="filters-slider"
                      key={index}>
+
+                  <input name={filter.name}
+                         id={filter.inputId}
+                         type="range"
+                         min="0"
+                         step={getSteps(filter.maxValue)}
+                         max={roundMaxNumber(filter.maxValue)}
+                         onChange={e => document.getElementById(filter.outputId).value = e.target.value}
+                         defaultValue={roundMaxNumber(filter.maxValue)}/>
                   <h4 className="filters-title">
                     {filter.icon}
                     {filter.title}:
@@ -106,15 +121,9 @@ class TopContributorsList extends React.Component {
                         'Loading...'}
                     </output>
                   </h4>
-                  <input name={filter.name}
-                         type="range"
-                         min="0"
-                         step={getSteps(filter.maxValue)}
-                         max={roundMaxNumber(filter.maxValue)}
-                         onChange={e => document.getElementById(filter.outputId).value = e.target.value }
-                         default={roundMaxNumber(filter.maxValue)}/>
                 </div>
               )}
+
 
               {/*button*/}
               <div className="filters-button">

@@ -2,13 +2,13 @@
   &__nav {
     height: span(1);
     width: span(12);
-    background: black;
+    background: $basicColor;
 
     .nav-items {
       padding: ms(0);
 
       .nav-item__logo {
-        fill: white;
+        fill: $neutralColor;
         width: ms(2);
         height: ms(2);
       }
