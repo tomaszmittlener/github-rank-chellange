@@ -43,7 +43,7 @@ class UserPage extends React.Component {
         <RightPanel className="rightPanel--userPage">
 
           <UserReposList className="userReposList--userPage"
-                               repos={userRepos}/>
+                         repos={userRepos}/>
 
         </RightPanel>
       </Page>

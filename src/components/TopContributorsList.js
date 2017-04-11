@@ -1,6 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import MdAccountCircle from 'react-icons/lib/md/account-circle';
+import MdFilterList from 'react-icons/lib/md/filter-list';
+import GoOrganization from 'react-icons/lib/go/organization';
+import GoGist from 'react-icons/lib/go/gist';
+import GoRepo from 'react-icons/lib/go/repo';
+import GoGitPullRequest from 'react-icons/lib/go/git-pull-request';
+
+
 import List from './List';
 
 
@@ -24,7 +32,7 @@ class TopContributorsList extends React.Component {
     }
   }
 
-  //receive contribuotrs and max values for filters. +1 added, as filters display numbers < than selected
+  //receive contributrs and max values for filters. +1 added, as filters display numbers < than selected
   componentWillReceiveProps(nextProps){
     this.setState({
       contributors: nextProps.contributors,
@@ -84,9 +92,13 @@ class TopContributorsList extends React.Component {
 
     return (
       <List className="list--topContributorsList">
-        <form className="list__filters"  onSubmit={this._submit.bind(this)}>
+        <form className="list__filters"
+              onSubmit={this._submit.bind(this)}>
 
-          <h4>Contributions (less than)</h4>
+          <h4>
+            <GoGitPullRequest/>
+            Contributions
+          </h4>
           <input name="filterContributions"
                  className="filters-contributions"
                  type="range"
@@ -96,7 +108,10 @@ class TopContributorsList extends React.Component {
                  default={filterContributionsMax}/>
           <output name="filterContributionsOutput">{filterContributionsValue}</output>
 
-          <h4>Followers</h4>
+          <h4>
+            <GoOrganization/>
+            Followers
+          </h4>
           <input name="filterFollowers"
                  className="filters-followers"
                  type="range"
@@ -107,7 +122,10 @@ class TopContributorsList extends React.Component {
           <output name="filterContributionsOutput">{filterFollowersValue}</output>
 
 
-          <h4>Repos</h4>
+          <h4>
+            <GoRepo/>
+            Repos
+          </h4>
           <input name="filterRepos"
                  className="filters-repos"
                  type="range"
@@ -118,7 +136,10 @@ class TopContributorsList extends React.Component {
           <output name="filterContributionsOutput">{filterReposValue}</output>
 
 
-          <h4>Gists</h4>
+          <h4>
+            <GoGist/>
+            Gists
+          </h4>
           <input name="filterGists"
                  className="filters-gists"
                  type="range"
@@ -128,7 +149,10 @@ class TopContributorsList extends React.Component {
                  default={filterGistsMax}/>
           <output name="filterContributionsOutput">{filterGistsValue}</output>
 
-          <button>filter</button>
+
+          <button>
+            <MdFilterList/>
+          </button>
 
         </form>
 
@@ -137,17 +161,39 @@ class TopContributorsList extends React.Component {
 
             <div className="list-item"
                  key={index}>
+              <MdAccountCircle className="list-item__image"/>
 
-              <img className="list-item__image"
-                   src={contributor.avatar_url}/>
+              {/*<img className="list-item__image"*/}
+              {/*src={contributor.avatar_url}/>*/}
+
 
               <div className="list-item__details">
                 <h4>
-                  <Link className="link" to={`/user/${contributor.login}`}>{contributor.login}</Link>
+                  <Link className="link"
+                        to={`/user/${contributor.login}`}>
+                    {contributor.login}
+                  </Link>
                 </h4>
 
-                <h5>{contributor.contributions}</h5>
-                <h6>{contributor.followers}</h6>
+                <h5>
+                  <GoGitPullRequest className="details-icon"/>
+                  {contributor.contributions}
+                </h5>
+
+                <h6>
+                  <GoOrganization className="details-icon"/>
+                  {contributor.followers}
+                </h6>
+
+                <h6>
+                  <GoRepo className="details-icon"/>
+                  {contributor.public_repos}
+                </h6>
+
+                <h6>
+                  <GoGist className="details-icon"/>
+                  {contributor.public_gists}
+                </h6>
 
               </div>
 

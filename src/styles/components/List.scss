@@ -11,9 +11,13 @@
     border-bottom: 1px solid #d1d5da;
     border-radius: 3px;
 
+
     &__image {
-      width: span(4 of 12 first);
-      border-radius: 100%;
+      //width: span(4 of 12 first);
+      //border-radius: 100%;
+      width: ms(7);
+      height: ms(7);
+      fill: gray;
     }
 
 

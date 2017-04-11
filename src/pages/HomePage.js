@@ -143,6 +143,10 @@ class HomePage extends React.Component {
           return contributor.public_gists
         })
     });
+
+    //last task allerter
+    console.warn('DONE!')
+
   }
 
   render() {
