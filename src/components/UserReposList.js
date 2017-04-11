@@ -37,19 +37,19 @@ class UserReposList extends React.Component {
 
               <div className="list-item__details">
 
-                <h4>
+                <h3>
                   <Link className="link"
                         to={`/repo/${repo.owner.login}/${repo.name}`}>
                     {repo.name}
                   </Link>
-                </h4>
+                </h3>
 
-                <h5>
+                <h4>
                   {repo.language?
                     <GoCode className="details-icon"/>:
                     null}
                   {repo.language}
-                </h5>
+                </h4>
 
                 <h6>
                   {repo.description?
@@ -70,7 +70,7 @@ class UserReposList extends React.Component {
   }
 }
 
-UserReposList.defaultProps = {
+UserReposList.PropTypes = {
 };
 
 export default UserReposList;

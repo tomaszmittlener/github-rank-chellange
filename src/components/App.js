@@ -14,7 +14,7 @@ class App extends React.Component {
       <div className="index">
         <Route exact path="/"
                component={HomePage}/>
-        <Route exact path="/user/:username"
+        <Route exact path="/user/:userName"
                component={UserPage}/>
         <Route exact path="/repo/:userName/:repoName"
                component={RepoPage}/>
@@ -23,7 +23,7 @@ class App extends React.Component {
   }
 }
 
-App.defaultProps = {
+App.PropTypes = {
 };
 
 export default App;

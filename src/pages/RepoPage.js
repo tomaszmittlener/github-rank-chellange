@@ -51,7 +51,9 @@ class RepoPage extends React.Component {
         <RightPanel className="rightPanel--RepoPage">
 
           <TopContributorsList className="userReposList--RepoPage"
-                         contributors={repoContributors}/>
+                               contributors={repoContributors}
+                               requireFilters={false}
+                               requireDetails={false}/>
 
         </RightPanel>
 
@@ -60,7 +62,9 @@ class RepoPage extends React.Component {
   }
 }
 
-RepoPage.defaultProps = {
+RepoPage.propTypes = {
+  repoName: React.PropTypes.string,
+  userName: React.PropTypes.string
 };
 
 export default RepoPage;

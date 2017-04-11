@@ -27,7 +27,7 @@ class Page extends React.Component {
   }
 }
 
-Page.defaultProps = {
+Page.PropTypes = {
 };
 
 export default Page;

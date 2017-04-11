@@ -17,13 +17,13 @@ class UserPage extends React.Component {
   }
 
   componentDidMount () {
-    getUserInfo(this.props.match.params.username)
+    getUserInfo(this.props.match.params.userName)
       .then(userInfo => {
         this.setState({
           userInfo: userInfo
         })
       });
-    getRepos(this.props.match.params.username)
+    getRepos(this.props.match.params.userName)
       .then(reposList => {
         this.setState({
           userRepos: reposList
@@ -32,7 +32,7 @@ class UserPage extends React.Component {
   }
 
   render() {
-    let { userInfo, userRepos } =this.state;
+    let { userInfo, userRepos } = this.state;
 
     return (
       <Page className="page--userPage">
@@ -51,7 +51,7 @@ class UserPage extends React.Component {
   }
 }
 
-UserPage.defaultProps = {
+UserPage.PropTypes = {
 };
 
 export default UserPage;

@@ -87,116 +87,122 @@ class TopContributorsList extends React.Component {
       filterContributionsMax,
       filterFollowersMax,
       filterReposMax,
-      filterGistsMax
+      filterGistsMax,
+      requireDetails,
+      requireFilters
     } = this.props;
 
     return (
       <List className="list--topContributorsList">
-        <form className="list__filters"
-              onSubmit={this._submit.bind(this)}>
 
-          <h4>
-            <GoGitPullRequest/>
-            Contributions
-          </h4>
-          <input name="filterContributions"
-                 className="filters-contributions"
-                 type="range"
-                 min="0"
-                 max={filterContributionsMax.contributions + 1}
-                 onChange={e => this.setState({filterContributionsValue: e.target.value})}
-                 default={filterContributionsMax}/>
-          <output name="filterContributionsOutput">{filterContributionsValue}</output>
+        {requireFilters?
+          <form className="list__filters"
+                onSubmit={this._submit.bind(this)}>
 
-          <h4>
-            <GoOrganization/>
-            Followers
-          </h4>
-          <input name="filterFollowers"
-                 className="filters-followers"
-                 type="range"
-                 min="0"
-                 max={filterFollowersMax.followers + 1}
-                 onChange={e => this.setState({filterFollowersValue: e.target.value})}
-                 default={filterFollowersMax}/>
-          <output name="filterContributionsOutput">{filterFollowersValue}</output>
+            <h4>
+              <GoGitPullRequest/>
+              Contributions
+            </h4>
+            <input name="filterContributions"
+                   className="filters-contributions"
+                   type="range"
+                   min="0"
+                   max={filterContributionsMax.contributions + 1}
+                   onChange={e => this.setState({filterContributionsValue: e.target.value})}
+                   default={filterContributionsMax}/>
+            <output name="filterContributionsOutput">{filterContributionsValue}</output>
 
-
-          <h4>
-            <GoRepo/>
-            Repos
-          </h4>
-          <input name="filterRepos"
-                 className="filters-repos"
-                 type="range"
-                 min="0"
-                 max={filterReposMax.public_repos + 1}
-                 onChange={e => this.setState({filterReposValue: e.target.value})}
-                 default={filterReposMax}/>
-          <output name="filterContributionsOutput">{filterReposValue}</output>
+            <h4>
+              <GoOrganization/>
+              Followers
+            </h4>
+            <input name="filterFollowers"
+                   className="filters-followers"
+                   type="range"
+                   min="0"
+                   max={filterFollowersMax.followers + 1}
+                   onChange={e => this.setState({filterFollowersValue: e.target.value})}
+                   default={filterFollowersMax}/>
+            <output name="filterContributionsOutput">{filterFollowersValue}</output>
 
 
-          <h4>
-            <GoGist/>
-            Gists
-          </h4>
-          <input name="filterGists"
-                 className="filters-gists"
-                 type="range"
-                 min="0"
-                 max={filterGistsMax.public_gists + 1}
-                 onChange={e => this.setState({filterGistsValue: e.target.value})}
-                 default={filterGistsMax}/>
-          <output name="filterContributionsOutput">{filterGistsValue}</output>
+            <h4>
+              <GoRepo/>
+              Repos
+            </h4>
+            <input name="filterRepos"
+                   className="filters-repos"
+                   type="range"
+                   min="0"
+                   max={filterReposMax.public_repos + 1}
+                   onChange={e => this.setState({filterReposValue: e.target.value})}
+                   default={filterReposMax}/>
+            <output name="filterContributionsOutput">{filterReposValue}</output>
+
+            <h4>
+              <GoGist/>
+              Gists
+            </h4>
+            <input name="filterGists"
+                   className="filters-gists"
+                   type="range"
+                   min="0"
+                   max={filterGistsMax.public_gists + 1}
+                   onChange={e => this.setState({filterGistsValue: e.target.value})}
+                   default={filterGistsMax}/>
+            <output name="filterContributionsOutput">{filterGistsValue}</output>
 
 
-          <button>
-            <MdFilterList/>
-          </button>
+            <button>
+              <MdFilterList/>
+            </button>
 
-        </form>
+          </form> :
+          null}
+
 
         <div className="list__items">
-          {map(contributors, (contributor, index)=>
 
+          {map(contributors, (contributor, index)=>
             <div className="list-item"
                  key={index}>
               <MdAccountCircle className="list-item__image"/>
 
-              {/*<img className="list-item__image"*/}
-              {/*src={contributor.avatar_url}/>*/}
-
-
               <div className="list-item__details">
-                <h4>
+                <h3>
                   <Link className="link"
                         to={`/user/${contributor.login}`}>
                     {contributor.login}
                   </Link>
-                </h4>
+                </h3>
 
-                <h5>
+                <h4>
                   <GoGitPullRequest className="details-icon"/>
                   {contributor.contributions}
-                </h5>
+                </h4>
 
-                <h6>
-                  <GoOrganization className="details-icon"/>
-                  {contributor.followers}
-                </h6>
+                {requireDetails?
 
-                <h6>
-                  <GoRepo className="details-icon"/>
-                  {contributor.public_repos}
-                </h6>
+                  <div>
+                    <h5>
+                      <GoOrganization className="details-icon"/>
+                      {contributor.followers}
+                    </h5>
 
-                <h6>
-                  <GoGist className="details-icon"/>
-                  {contributor.public_gists}
-                </h6>
+                    <h5>
+                      <GoRepo className="details-icon"/>
+                      {contributor.public_repos}
+                    </h5>
+
+                    <h5>
+                      <GoGist className="details-icon"/>
+                      {contributor.public_gists}
+                    </h5>
+                  </div> :
+
+                  null}
 
               </div>
-
             </div>
           )}
         </div>
@@ -208,12 +214,12 @@ class TopContributorsList extends React.Component {
   }
 }
 
-TopContributorsList.defaultProps = {
-  contributors: React.PropTypes.array.isRequired,
-  filterContributionsMax: React.PropTypes.object.isRequired,
-  filterFollowersMax: React.PropTypes.object.isRequired,
-  filterReposMax: React.PropTypes.object.isRequired,
-  filterGistsMax: React.PropTypes.object.isRequired
+TopContributorsList.PropTypes = {
+  contributors: React.PropTypes.array,
+  filterContributionsMax: React.PropTypes.object,
+  filterFollowersMax: React.PropTypes.object,
+  filterReposMax: React.PropTypes.object,
+  filterGistsMax: React.PropTypes.object
 };
 
 export default TopContributorsList;

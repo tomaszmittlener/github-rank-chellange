@@ -14,7 +14,7 @@ class RightPanel extends React.Component {
   }
 }
 
-RightPanel.defaultProps = {
+RightPanel.PropTypes = {
 };
 
 export default RightPanel;

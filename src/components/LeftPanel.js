@@ -22,7 +22,7 @@ class LeftPanel extends React.Component {
   }
 }
 
-LeftPanel.defaultProps = {
+LeftPanel.PropTypes = {
 };
 
 export default LeftPanel;

@@ -14,7 +14,7 @@ class List extends React.Component {
   }
 }
 
-List.defaultProps = {
+List.PropTypes = {
 };
 
 export default List;

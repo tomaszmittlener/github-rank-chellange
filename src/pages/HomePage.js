@@ -173,14 +173,16 @@ class HomePage extends React.Component {
                                filterContributionsMax={filterContributionsMax}
                                filterFollowersMax={filterFollowersMax}
                                filterReposMax={filterReposMax}
-                               filterGistsMax={filterGistsMax}/>
+                               filterGistsMax={filterGistsMax}
+                               requireFilters={true}
+                               requireDetails={true}/>
         </RightPanel>
       </Page>
     );
   }
 }
 
-HomePage.defaultProps = {
+HomePage.PropTypes = {
 };
 
 export default HomePage;
