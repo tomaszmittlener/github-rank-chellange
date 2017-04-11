@@ -3,7 +3,7 @@ import React from 'react';
 import Page from '../components/Page';
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
-import UserReposList from '../components/UserReposList';
+import ReposList from '../components/ReposList';
 
 import { getUserInfo, getRepos } from '../services/getData'
 
@@ -42,7 +42,7 @@ class UserPage extends React.Component {
                    type={userInfo.type}/>
         <RightPanel className="rightPanel--userPage">
 
-          <UserReposList className="userReposList--userPage"
+          <ReposList className="userReposList--userPage"
                          repos={userRepos}/>
 
         </RightPanel>

@@ -1,13 +1,22 @@
 .list {
+
   &__filters {
-    
-    &filters-button {
+    @include span(12);
+  }
+
+  .filters-sliders {
+    @include span(12);
+  }
+
+  .filters-button {
+    @include span(12);
+
+    button {
       display: block;
+      margin: auto;
     }
-    
   }
 }
-
 
 
 
@@ -16,7 +25,7 @@
 
 input[type=range] {
   -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
-  width: 100%; /* Specific width is required for Firefox. */
+  width: span(12); /* Specific width is required for Firefox. */
   background: transparent; /* Otherwise white in Chrome */
 }
 
@@ -29,7 +38,7 @@ input[type=range]:focus {
 }
 
 input[type=range]::-ms-track {
-  width: 100%;
+  width: span(12);
   cursor: pointer;
 
   /* Hides the slider so custom styles can be added */
@@ -76,24 +85,24 @@ input[type=range]::-ms-thumb {
 // track//
 
 input[type=range]::-webkit-slider-runnable-track {
-  width: 100%;
+  width: span(12);
   height: 4.2px;
   cursor: pointer;
   background: #3071a9;
-  border: 0.2px solid #010101;
+  border: none;
 }
 
 
 input[type=range]::-moz-range-track {
-  width: 100%;
+  width: span(12);
   height: 4.2px;
   cursor: pointer;
   background: #3071a9;
-  border: 0.2px solid #010101;
+  border: none;
 }
 
 input[type=range]::-ms-track {
-  width: 100%;
+  width: span(12);
   height: 4.2px;
   cursor: pointer;
   background: transparent;
@@ -103,5 +112,5 @@ input[type=range]::-ms-track {
 }
 input[type=range]::-ms-fill-lower {
   background: #2a6495;
-  border: 0.2px solid #010101;
+  border: none;
 }

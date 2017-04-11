@@ -2,7 +2,7 @@ import React from 'react';
 import Page from '../components/Page';
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
-import TopContributorsList from '../components/TopContributorsList';
+import TopContributorsList from '../components/ContributorsList';
 
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 

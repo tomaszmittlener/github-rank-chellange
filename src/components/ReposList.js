@@ -6,9 +6,6 @@ import GoRepo from 'react-icons/lib/go/repo';
 import GoCode from 'react-icons/lib/go/code';
 import GoQuestion from 'react-icons/lib/go/question';
 
-
-
-
 import map from 'lodash/map';
 
 class UserReposList extends React.Component {
@@ -46,14 +43,14 @@ class UserReposList extends React.Component {
 
                 <h4>
                   {repo.language?
-                    <GoCode className="details-icon"/>:
+                    <GoCode className="icon"/>:
                     null}
                   {repo.language}
                 </h4>
 
                 <h6>
                   {repo.description?
-                    <GoQuestion className="details-icon"/>:
+                    <GoQuestion className="icon"/>:
                     null}
                   {repo.description}
                 </h6>
