@@ -106,7 +106,7 @@ class TopContributorsList extends React.Component {
                    className="filters-contributions"
                    type="range"
                    min="0"
-                   step={getSteps(filterContributionsMax.contributions)}
+                   step={getSteps(filterContributionsValue)}
                    max={roundMaxNumber(filterContributionsMax.contributions)}
                    onChange={e => this.setState({filterContributionsValue: e.target.value})}
                    default={filterContributionsMax}/>
@@ -120,7 +120,7 @@ class TopContributorsList extends React.Component {
                    className="filters-followers"
                    type="range"
                    min="0"
-                   step={getSteps(filterFollowersMax.followers)}
+                   step={getSteps(filterFollowersValue)}
                    max={roundMaxNumber(filterFollowersMax.followers)}
                    onChange={e => this.setState({filterFollowersValue: e.target.value})}
                    default={filterFollowersMax}/>
@@ -135,7 +135,7 @@ class TopContributorsList extends React.Component {
                    className="filters-repos"
                    type="range"
                    min="0"
-                   step={getSteps(filterReposMax.public_repos)}
+                   step={getSteps(filterReposValue)}
                    max={roundMaxNumber(filterReposMax.public_repos)}
                    onChange={e => this.setState({filterReposValue: e.target.value})}
                    default={filterReposMax}/>
@@ -149,7 +149,7 @@ class TopContributorsList extends React.Component {
                    className="filters-gists"
                    type="range"
                    min="0"
-                   step={getSteps(filterGistsMax.public_gists)}
+                   step={getSteps(filterGistsValue)}
                    max={roundMaxNumber(filterGistsMax.public_gists)}
                    onChange={e => this.setState({filterGistsValue: e.target.value})}
                    default={filterGistsMax}/>
