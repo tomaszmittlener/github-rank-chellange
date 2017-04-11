@@ -92,7 +92,6 @@ class TopContributorsList extends React.Component {
       requireFilters
     } = this.props;
 
-
     return (
       <List className="list--topContributorsList">
 
@@ -108,6 +107,7 @@ class TopContributorsList extends React.Component {
                    className="filters-contributions"
                    type="range"
                    min="0"
+                   step="100"
                    max={filterContributionsMax.contributions + 1}
                    onChange={e => this.setState({filterContributionsValue: e.target.value})}
                    default={filterContributionsMax}/>
@@ -121,6 +121,7 @@ class TopContributorsList extends React.Component {
                    className="filters-followers"
                    type="range"
                    min="0"
+                   step="50"
                    max={filterFollowersMax.followers + 1}
                    onChange={e => this.setState({filterFollowersValue: e.target.value})}
                    default={filterFollowersMax}/>
@@ -135,6 +136,7 @@ class TopContributorsList extends React.Component {
                    className="filters-repos"
                    type="range"
                    min="0"
+                   step="10"
                    max={filterReposMax.public_repos + 1}
                    onChange={e => this.setState({filterReposValue: e.target.value})}
                    default={filterReposMax}/>
