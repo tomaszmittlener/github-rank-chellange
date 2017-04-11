@@ -31,8 +31,15 @@ class TopContributorsList extends React.Component {
     }
   }
 
-  //receive contributrs and max values for filters. +1 added, as filters display numbers < than selected
+  //receive contributors and if filters required - max values for filters.
+  // Use roundMaxNumber to set rounded max value for filters
   componentWillReceiveProps(nextProps){
+
+    this.setState({
+      contributors: nextProps.contributors
+    });
+
+    nextProps.requireFilters ?
     this.setState({
       contributors: nextProps.contributors,
       filterContributionsValue:
@@ -51,11 +58,12 @@ class TopContributorsList extends React.Component {
         typeof nextProps.filterGistsMax.public_gists !== 'number' ?
           'Loading...':
           roundMaxNumber(nextProps.filterGistsMax.public_gists)
-    })
+    }):
+      null
   }
 
-  //on submit the list will be filtered in accordance with chosen criteria.
-  //this data could be also retrieved directly from the form e.target.inputName.value
+  //On submit the list will be filtered in accordance with chosen criteria.
+  //Values could be also retrieved directly from the form e.target.inputName.value
   _filter() {
     this.setState({
       contributors:
@@ -91,17 +99,24 @@ class TopContributorsList extends React.Component {
       requireFilters
     } = this.props;
 
+
     return (
       <List className="list--topContributorsList">
+
+        {/*display filters if required in props*/}
 
         {requireFilters?
           <form className="list__filters"
                 onSubmit={this._submit.bind(this)}>
 
-            <h4>
-              <GoGitPullRequest/>
-              Contributions
+            {/*slider 1 - contributions*/}
+
+            <h4 className="filters-title">
+              <GoGitPullRequest className="icon"/>
+              Contributions:
+              <output name="filterContributionsOutput">{filterContributionsValue}</output>
             </h4>
+
             <input name="filterContributions"
                    className="filters-contributions"
                    type="range"
@@ -110,11 +125,13 @@ class TopContributorsList extends React.Component {
                    max={roundMaxNumber(filterContributionsMax.contributions)}
                    onChange={e => this.setState({filterContributionsValue: e.target.value})}
                    default={filterContributionsMax}/>
-            <output name="filterContributionsOutput">{filterContributionsValue}</output>
 
-            <h4>
-              <GoOrganization/>
-              Followers
+            {/*slider 2 - followers*/}
+
+            <h4 className="filters-title">
+              <GoOrganization className="icon"/>
+              Followers:
+              <output name="filterFollowersOutput">{filterFollowersValue}</output>
             </h4>
             <input name="filterFollowers"
                    className="filters-followers"
@@ -124,12 +141,13 @@ class TopContributorsList extends React.Component {
                    max={roundMaxNumber(filterFollowersMax.followers)}
                    onChange={e => this.setState({filterFollowersValue: e.target.value})}
                    default={filterFollowersMax}/>
-            <output name="filterContributionsOutput">{filterFollowersValue}</output>
 
+            {/*slider 3 - repos*/}
 
-            <h4>
+            <h4  className="filters-title">
               <GoRepo/>
-              Repos
+              Repos:
+              <output name="filterReposOutput">{filterReposValue}</output>
             </h4>
             <input name="filterRepos"
                    className="filters-repos"
@@ -139,11 +157,14 @@ class TopContributorsList extends React.Component {
                    max={roundMaxNumber(filterReposMax.public_repos)}
                    onChange={e => this.setState({filterReposValue: e.target.value})}
                    default={filterReposMax}/>
-            <output name="filterContributionsOutput">{filterReposValue}</output>
 
-            <h4>
-              <GoGist/>
-              Gists
+
+            {/*slider 4 - gists*/}
+
+            <h4 className="filters-title">
+              <GoGist className="icon"/>
+              Gists:
+              <output name="filterGistsOutput">{filterGistsValue}</output>
             </h4>
             <input name="filterGists"
                    className="filters-gists"
@@ -153,16 +174,18 @@ class TopContributorsList extends React.Component {
                    max={roundMaxNumber(filterGistsMax.public_gists)}
                    onChange={e => this.setState({filterGistsValue: e.target.value})}
                    default={filterGistsMax}/>
-            <output name="filterContributionsOutput">{filterGistsValue}</output>
 
+            {/*button*/}
 
-            <button>
-              <MdFilterList/>
+            <button className="filters-button">
+              <MdFilterList className="icon"/>
             </button>
 
           </form> :
           null}
 
+
+        {/*display items*/}
 
         <div className="list__items">
 
@@ -183,6 +206,8 @@ class TopContributorsList extends React.Component {
                   <GoGitPullRequest className="details-icon"/>
                   {contributor.contributions}
                 </h4>
+
+                {/*display followers, repos and gists if required in props.*/}
 
                 {requireDetails?
 
@@ -215,9 +240,7 @@ class TopContributorsList extends React.Component {
             </div>
           )}
         </div>
-
         {this.props.children}
-
       </List>
     );
   }

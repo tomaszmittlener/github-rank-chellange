@@ -8,8 +8,9 @@
 @import "../styles/var/_breakpoints";
 
 //settings
-@import "/var/settings";
+@import "settings";
 @import "global";
+@import "typography";
 
 //components
 @import "/components/Page";
