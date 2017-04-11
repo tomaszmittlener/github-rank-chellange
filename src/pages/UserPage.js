@@ -3,7 +3,7 @@ import React from 'react';
 import Page from '../components/Page';
 import LeftPanel from '../components/LeftPanel';
 import RightPanel from '../components/RightPanel';
-import UserReposList from '../components/UserReposList';
+import UserReposList from '../components/ReposList';
 
 import { getUserInfo, getRepos } from '../services/getData'
 

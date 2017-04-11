@@ -145,7 +145,7 @@ class TopContributorsList extends React.Component {
             {/*slider 3 - repos*/}
 
             <h4  className="filters-title">
-              <GoRepo/>
+              <GoRepo className="icon"/>
               Repos:
               <output name="filterReposOutput">{filterReposValue}</output>
             </h4>
@@ -203,7 +203,7 @@ class TopContributorsList extends React.Component {
                 </h3>
 
                 <h4>
-                  <GoGitPullRequest className="details-icon"/>
+                  <GoGitPullRequest className="icon"/>
                   {contributor.contributions}
                 </h4>
 
@@ -213,21 +213,21 @@ class TopContributorsList extends React.Component {
 
                   <div>
                     <h5>
-                      <GoOrganization className="details-icon"/>
+                      <GoOrganization className="icon"/>
                       {typeof contributor.followers === 'number' ?
                         contributor.followers:
                         'loading...'}
                     </h5>
 
                     <h5>
-                      <GoRepo className="details-icon"/>
+                      <GoRepo className="icon"/>
                       {typeof contributor.public_repos === 'number' ?
                         contributor.public_repos:
                         'loading...'}
                     </h5>
 
                     <h5>
-                      <GoGist className="details-icon"/>
+                      <GoGist className="icon"/>
                       {typeof contributor.public_gists === 'number' ?
                         contributor.public_gists :
                         'loading...'}

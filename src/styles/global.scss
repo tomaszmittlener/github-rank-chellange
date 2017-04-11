@@ -9,3 +9,17 @@ body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
   color: black;
 }
+
+.link {
+  text-decoration: none;
+  color: black;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.icon {
+margin: 0 ms(-6) 0 0;
+
+}
