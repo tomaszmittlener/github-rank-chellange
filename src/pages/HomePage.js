@@ -84,7 +84,6 @@ class HomePage extends React.Component {
             contributors: _sortBy([ ..._contributorsUniques,
               ..._contributorsAddContributions ], 'contributions').reverse()
           });
-
         });
     });
 
@@ -95,8 +94,12 @@ class HomePage extends React.Component {
 
   }
 
+
+
+
   _getContributorsInfo(contributorsCollection) {
     const promiseAllInfo = _map(contributorsCollection, (contributor) => {
+
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
 

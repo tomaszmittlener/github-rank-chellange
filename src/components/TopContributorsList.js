@@ -92,6 +92,7 @@ class TopContributorsList extends React.Component {
       requireFilters
     } = this.props;
 
+
     return (
       <List className="list--topContributorsList">
 
@@ -186,17 +187,23 @@ class TopContributorsList extends React.Component {
                   <div>
                     <h5>
                       <GoOrganization className="details-icon"/>
-                      {contributor.followers}
+                      {typeof contributor.followers === 'number' ?
+                        contributor.followers:
+                        'loading...'}
                     </h5>
 
                     <h5>
                       <GoRepo className="details-icon"/>
-                      {contributor.public_repos}
+                      {typeof contributor.public_repos === 'number' ?
+                        contributor.public_repos:
+                        'loading...'}
                     </h5>
 
                     <h5>
                       <GoGist className="details-icon"/>
-                      {contributor.public_gists}
+                      {typeof contributor.public_gists === 'number' ?
+                        contributor.public_gists :
+                        'loading...'}
                     </h5>
                   </div> :
 
