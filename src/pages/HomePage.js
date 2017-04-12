@@ -49,7 +49,7 @@ class HomePage extends React.Component {
   _downloadData() {
     //get repos Owners' info
     getUserInfo()
-      .then( ownerInfo=>{
+      .then(ownerInfo=> {
           this.setState({
             reposOwner: ownerInfo
           })
@@ -85,7 +85,8 @@ class HomePage extends React.Component {
             });
 
             return _duplicate ?
-              {...contributor, contributions: contributor.contributions + _duplicate.contributions} :
+              { ...contributor, contributions: contributor.contributions + _duplicate.contributions}
+              :
               contributor
           });
 
@@ -98,7 +99,7 @@ class HomePage extends React.Component {
     });
     //when done, get additional info about every contributor
     Promise.all(promiseUniqueContributors)
-      .then(()=> {
+      .then(() => {
         this.setState({
           pageStatus: this.allerts.stageTwo
         });
@@ -110,12 +111,12 @@ class HomePage extends React.Component {
     const promiseAllInfo = _map(contributorsCollection, (contributor) => {
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
-          const contributorWithAdditionalInfo =  {...contributor, ...contributorInfo};
+          const contributorWithAdditionalInfo =  { ...contributor, ...contributorInfo };
 
           this.setState({
-            contributors: _sortBy([..._filter(this.state.contributors,
+            contributors: _sortBy([ ..._filter(this.state.contributors,
               contributorToRemove => contributorToRemove.login !== contributor.login),
-                contributorWithAdditionalInfo],
+                contributorWithAdditionalInfo ],
               'contributions')
               .reverse()
           });

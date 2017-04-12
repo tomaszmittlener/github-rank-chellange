@@ -15,7 +15,7 @@ class UserReposList extends React.Component {
   render() {
     let { repos } = this.props;
 
-    const ListItems = ()=> {
+    const ListItems = () => {
       return (
         <div className="list__items">
           {map(repos, (repo, index)=>

@@ -10,6 +10,8 @@ body {
   color: $basicColor;
 }
 
+
+//global button
 .button {
   background-color: $neutralColor;
   border: none;
@@ -31,6 +33,7 @@ body {
   }
 }
 
+//global link
 .link {
   text-decoration: none;
   color: $basicColor;
@@ -40,9 +43,45 @@ body {
   }
 }
 
+//global icon
 .icon {
   margin: 0 ms(-6) 0 0;
   height: ms(0);
   width: ms(0);
+}
+
+//global description list
+
+
+dl {
+  margin: 0;
+}
+
+
+dd {
+  display: inline;
+  margin: 0;
+
+  font-size: $unit-5;
+  font-weight: lighter;
+  font-style: italic;
+
+}
+
+dl dd:after{
+  display: block;
+  content: '';
+}
+
+dl dt {
+  display: inline-block;
+}
+
+dt {
+  font-size: $unit-5;
+  font-weight: bold;
+  margin: 0;
+  padding: $unit-1 0;
+
 }
 

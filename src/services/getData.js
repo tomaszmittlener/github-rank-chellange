@@ -6,7 +6,7 @@ import isUndefined from 'lodash/isUndefined';
 // Authentication credentials. For client id, client secret and api host refer to relevant config file in ../config directory
 const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
 const defaultName = 'angular';
-const pagesNumber = '&page=1&per_page=30';
+const pagesNumber = '&page=1&per_page=3';
 
 //Error handlers
 function status(response) {
@@ -30,7 +30,6 @@ const checkForErrors = (json) => {
 };
 
 //Data requests
-
 function getUserInfo(userName = defaultName) {
   return fetch(`${config.apiHost}users/${userName}${auth}`)
     .then(status)

@@ -110,7 +110,7 @@ class TopContributorsList extends React.Component {
     let { requireDetails, requireFilters, pageStatus } = this.props;
     let { contributors } = this.state;
 
-    const Filters = ()=> {
+    const Filters = () => {
       return (
         <form className="list__filters" onSubmit={this._filter.bind(this)}>
           <div className="filters">
@@ -161,7 +161,7 @@ class TopContributorsList extends React.Component {
       );
     };
 
-    const ListItems = ()=> {
+    const ListItems = () => {
 
       return (
         <div className="list__items">
