@@ -3,7 +3,7 @@ import React from 'react';
 //icons
 import MdAccountBalance from 'react-icons/lib/md/account-balance';
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
-import GoRepo from 'react-icons/lib/go/repo';
+import MdFolder from 'react-icons/lib/md/folder';
 
 class InfoPanel extends React.Component {
   constructor(){
@@ -16,7 +16,7 @@ class InfoPanel extends React.Component {
       return (
         <div className="infoPanel__container">
           <div className="infoPanel-basics">
-            <GoRepo className="infoPanel-basics__picture"/>
+            <MdFolder className="infoPanel-basics__picture"/>
             <h2 className="infoPanel-basics__login">/{repo.name}</h2>
           </div>
           <div className="infoPanel-details">

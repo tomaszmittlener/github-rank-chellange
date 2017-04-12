@@ -3,7 +3,7 @@ import List from './List';
 import { Link } from 'react-router-dom';
 
 //icons
-import GoRepo from 'react-icons/lib/go/repo';
+import MdFolder from 'react-icons/lib/md/folder';
 import GoCode from 'react-icons/lib/go/code';
 import GoQuestion from 'react-icons/lib/go/question';
 
@@ -23,7 +23,7 @@ class UserReposList extends React.Component {
                  key={index}>
               <Link className="link"
                     to={`/repo/${repo.owner.login}/${repo.name}`}>
-                <GoRepo className="list-item__image"/>
+                <MdFolder className="list-item__image"/>
               </Link>
 
               <div className="list-item__title">

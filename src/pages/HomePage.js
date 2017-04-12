@@ -10,13 +10,13 @@ import TopContributorsList from '../components/ContributorsList';
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 
 //lodash
-import _differenceBy from 'lodash/differenceBy';
-import _filter from 'lodash/filter';
-import _find from 'lodash/find';
-import _intersectionBy from 'lodash/intersectionBy';
-import _map from 'lodash/map';
-import _maxBy from 'lodash/maxBy';
-import _sortBy from 'lodash/sortBy';
+import differenceBy from 'lodash/differenceBy';
+import filter from 'lodash/filter';
+import find from 'lodash/find';
+import intersectionBy from 'lodash/intersectionBy';
+import map from 'lodash/map';
+import maxBy from 'lodash/maxBy';
+import sortBy from 'lodash/sortBy';
 
 class HomePage extends React.Component {
   constructor() {
@@ -70,17 +70,17 @@ class HomePage extends React.Component {
   }
 
   _getUniqueContributors(allRepos) {
-    const promiseUniqueContributors = _map(allRepos, (repo) => {
+    const promiseUniqueContributors = map(allRepos, (repo) => {
       // get contributors for repo
       return getContributors(repo.name)
         .then(contributorsRepo => {
           //get unique and duplicate contributors
-          const _contributorsUniques = _differenceBy(contributorsRepo, this.state.contributors, 'login');
-          const _contributorsDuplicates = _intersectionBy(contributorsRepo, this.state.contributors, 'login');
+          const _contributorsUniques = differenceBy(contributorsRepo, this.state.contributors, 'login');
+          const _contributorsDuplicates = intersectionBy(contributorsRepo, this.state.contributors, 'login');
 
           //add contributions
-          const _contributorsAddContributions = _map(this.state.contributors, contributor => {
-            const _duplicate = _find(_contributorsDuplicates, duplicate => {
+          const _contributorsAddContributions = map(this.state.contributors, contributor => {
+            const _duplicate = find(_contributorsDuplicates, duplicate => {
               return duplicate.login === contributor.login;
             });
 
@@ -92,7 +92,7 @@ class HomePage extends React.Component {
 
           //set state
           this.setState({
-            contributors: _sortBy([ ..._contributorsUniques,
+            contributors: sortBy([ ..._contributorsUniques,
               ..._contributorsAddContributions ], 'contributions').reverse()
           });
         });
@@ -108,13 +108,13 @@ class HomePage extends React.Component {
   }
 
   _getContributorsInfo(contributorsCollection) {
-    const promiseAllInfo = _map(contributorsCollection, (contributor) => {
+    const promiseAllInfo = map(contributorsCollection, (contributor) => {
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
           const contributorWithAdditionalInfo =  { ...contributor, ...contributorInfo };
 
           this.setState({
-            contributors: _sortBy([ ..._filter(this.state.contributors,
+            contributors: sortBy([ ...filter(this.state.contributors,
               contributorToRemove => contributorToRemove.login !== contributor.login),
                 contributorWithAdditionalInfo ],
               'contributions')
@@ -131,23 +131,23 @@ class HomePage extends React.Component {
   _getMaxValues(){
     this.setState({
       filterContributionsMax:
-        _maxBy(this.state.contributors, contributor => {
+        maxBy(this.state.contributors, contributor => {
           return contributor.contributions
         }),
 
       filterFollowersMax:
-        _maxBy(this.state.contributors, contributor => {
+        maxBy(this.state.contributors, contributor => {
           return contributor.followers
         }),
 
       filterReposMax:
-        _maxBy(this.state.contributors, contributor => {
+        maxBy(this.state.contributors, contributor => {
           return contributor.public_repos
 
         }),
 
       filterGistsMax:
-        _maxBy(this.state.contributors, contributor => {
+        maxBy(this.state.contributors, contributor => {
           return contributor.public_gists
         }),
 

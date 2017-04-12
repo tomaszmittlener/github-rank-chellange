@@ -6,7 +6,7 @@ import MdAccountCircle from 'react-icons/lib/md/account-circle';
 import MdContentCut from 'react-icons/lib/md/content-cut';
 import GoOrganization from 'react-icons/lib/go/organization';
 import GoGist from 'react-icons/lib/go/gist';
-import GoRepo from 'react-icons/lib/go/repo';
+import MdFolder from 'react-icons/lib/md/folder';
 import GoGitPullRequest from 'react-icons/lib/go/git-pull-request';
 
 //components
@@ -49,7 +49,7 @@ class TopContributorsList extends React.Component {
 
       },
       repos: {
-        icon: <GoRepo className="icon"/>,
+        icon: <MdFolder className="icon"/>,
         title: 'repos',
         name: 'filterRepos',
         outputId: 'filterReposOutput',
@@ -201,7 +201,7 @@ class TopContributorsList extends React.Component {
 
                 {requireDetails? (
                   <h5 className="list-item-detail--person">
-                    <GoRepo className="icon"/>
+                    <MdFolder className="icon"/>
                     {typeof contributor.public_repos === 'number' ?
                       contributor.public_repos:
                       'loading...'}
