@@ -1,10 +1,12 @@
 import React from 'react';
 
+//components
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
 import TopContributorsList from '../components/ContributorsList';
 
+//tools
 import { getContributors, getRepoInfo } from '../services/getData'
 
 class RepoPage extends React.Component {
@@ -42,7 +44,9 @@ class RepoPage extends React.Component {
 
     return (
       <Page className="page--RepoPage"
-            pageTitle={`${this.props.match.params.userName}/${this.props.match.params.repoName}`}>
+            pageTitle={
+              `.../repos/${this.props.match.params.userName}/${this.props.match.params.repoName}`
+            }>
         <InfoPanel className="infoPanel--RepoPage"
                    repo={repoInfo}/>
         <MainPanel className="mainPanel--RepoPage">

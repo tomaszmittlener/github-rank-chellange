@@ -1,11 +1,15 @@
 import React from 'react';
+
+//components
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
 import TopContributorsList from '../components/ContributorsList';
 
+//tools
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 
+//lodash
 import _differenceBy from 'lodash/differenceBy';
 import _filter from 'lodash/filter';
 import _find from 'lodash/find';
@@ -13,7 +17,6 @@ import _intersectionBy from 'lodash/intersectionBy';
 import _map from 'lodash/map';
 import _maxBy from 'lodash/maxBy';
 import _sortBy from 'lodash/sortBy';
-
 
 class HomePage extends React.Component {
   constructor() {
@@ -27,21 +30,17 @@ class HomePage extends React.Component {
       filterFollowersMax: {},
       filterReposMax: {},
       filterGistsMax: {},
-      pageStatus: false
+      pageStatus: 'fetching contributors...'
     }
   }
 
-
   componentDidMount() {
-
     //this will initiate series of promises.
     // The order is important: get repos-> get contributors -> get additional info -> retrieve max values for filters
     this._downloadData();
   }
 
-
   _downloadData() {
-
     //get repos Owners' info
     getUserInfo()
       .then( ownerInfo=>{
@@ -93,43 +92,42 @@ class HomePage extends React.Component {
     });
 
     //when done, get additional info about every contributor
-
     Promise.all(promiseUniqueContributors)
-      .then(()=>{console.log('Downloaded all contributors');
-        this._getContributorsInfo(this.state.contributors)})
+      .then(()=>{
+        console.log('Downloaded all contributors');
+
+        this.setState({
+          pageStatus: 'fetching contributors info...'
+        });
+
+        this._getContributorsInfo(this.state.contributors)
+      })
   }
-
-
-
 
   _getContributorsInfo(contributorsCollection) {
     const promiseAllInfo = _map(contributorsCollection, (contributor) => {
-
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
-
           const contributorWithAdditionalInfo =  {...contributor, ...contributorInfo};
 
           this.setState({
             contributors: _sortBy([..._filter(this.state.contributors,
               contributorToRemove => contributorToRemove.login !== contributor.login),
-                contributorWithAdditionalInfo],
-              'contributions').reverse()
+              contributorWithAdditionalInfo],
+              'contributions')
+              .reverse()
           });
         })
     });
 
     //when done, retrieve highest number of contributions, followers, repos and gists for filters
-
     Promise.all(promiseAllInfo)
       .then(()=>{console.log('Downloaded contributors info');
         this._getMaxValues()})
   }
 
   _getMaxValues(){
-
     this.setState({
-
       filterContributionsMax:
         _maxBy(this.state.contributors, contributor => {
           return contributor.contributions
@@ -151,11 +149,9 @@ class HomePage extends React.Component {
           return contributor.public_gists
         }),
 
-      pageStatus: true
-
+      pageStatus: 'done'
     });
-
-    //last task allerter
+    //last task console allert
     console.warn('DONE!')
   }
 
@@ -172,12 +168,17 @@ class HomePage extends React.Component {
 
     return (
       <Page className="page--homePage"
-            pageTitle={typeof filterGistsMax.public_gists === 'number'?
-              `${reposOwner.login}/contributors_lis` :
-              'fetching data....'}
+            pageTitle={
+              pageStatus === 'done' ?
+                `.../${reposOwner.login}/contributors_list`
+                :
+                'please wait: ' + pageStatus
+            }
             pageStatus={pageStatus}>
+
         <InfoPanel className="infoPanel--homePage"
                    person={reposOwner}/>
+
         <MainPanel className="mainPanel--homePage">
           <TopContributorsList className="topContributorsList--homePage"
                                contributors={contributors}
@@ -193,8 +194,5 @@ class HomePage extends React.Component {
     );
   }
 }
-
-HomePage.PropTypes = {
-};
 
 export default HomePage;

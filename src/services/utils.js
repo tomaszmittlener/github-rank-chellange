@@ -1,9 +1,7 @@
 function roundMaxNumber(numberToRound){
-
   //add 1 to every 10th except 10
   if(numberToRound % 10 === 0 && numberToRound !==10){
     numberToRound += 1}
-
   //round the number
   if(numberToRound < 20) {
     return numberToRound +1

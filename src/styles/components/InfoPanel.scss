@@ -1,58 +1,55 @@
 .infoPanel {
   @include span(12);
   height: auto;
-  margin: 0 0 ms(2) 0;
+  margin: 0 0 $unit-7 0;
 
   &__container {
   }
 
   &-basics {
-    @include span(5 first);
+    @include span(12);
     text-align: center;
-    border-right: 1px solid $accentPassiveColor;
-    margin: 0;
-    padding:  0 ms(1) 0 0 ;
 
 
     &__picture {
       max-width: span(12);
-      height: auto;
       width: ms(12);
-      margin: 0 auto;
+      height: auto;
       border: 1px solid $accentPassiveColor;
       border-radius: 100%;
+      margin: 0 0 $unit-1 0;
     }
 
     &__login {
       word-wrap: break-word;
-      margin: 0 0 ms(-4) 0;
     }
 
     &__icon {
-      height: ms(2);
-      width: ms(2);
+      height: $unit-7;
+      width: $unit-7;
+      margin: 0 0 $unit-1 0;
     }
   }
 
   &-details {
-    @include span(7 last);
+    @include span(12);
     text-align: center;
   }
 }
 
 //breakpoints
-
 @include susy-breakpoint($tablet) {
   .infoPanel {
 
     &-basics {
+      @include span(6 first);
       border: none;
       padding: 0 ;
-
     }
 
     &-details {
-      padding: ms(4) 0 0 0;
+      @include span(6 last);
+      padding: $unit-7 0 0 0;
       text-align: left;
     }
   }

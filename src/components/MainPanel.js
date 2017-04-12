@@ -1,9 +1,6 @@
 import React from 'react';
 
 class RightPanel extends React.Component {
-  constructor() {
-    super();
-  }
 
   render() {
     return (
@@ -13,8 +10,5 @@ class RightPanel extends React.Component {
     );
   }
 }
-
-RightPanel.PropTypes = {
-};
 
 export default RightPanel;

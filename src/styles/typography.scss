@@ -3,7 +3,7 @@ html {
 }
 
 h6 {
-  font-size: ms(-1);
+  font-size: $unit-4;
   font-weight: lighter;
   font-style: italic;
   padding: 0;
@@ -11,7 +11,7 @@ h6 {
 }
 
 h5 {
-  font-size: ms(0);
+  font-size: $unit-5;
   font-weight: lighter;
   font-style: italic;
   padding: 0;
@@ -19,34 +19,33 @@ h5 {
 }
 
 h4 {
-  font-size: ms(0);
+  font-size: $unit-5;
   padding: 0;
-  margin: 0;
-
+  margin: 0 0 $unit-1 0;
 }
 
 h3 {
-  font-size: ms(1);
+  font-size: $unit-6;
   padding: 0;
-  margin: 0 0 ms(-4) 0;
+  margin: 0 0 $unit-1 0;
 }
 
 h2 {
-  font-size: ms(2);
+  font-size: $unit-7;
   padding: 0;
-  margin: 0;
+  margin: 0 0 $unit-1 0;
 
 }
 
 h1 {
-  font-size: ms(3);
+  font-size: $unit-8;
   padding: 0;
   margin: 0;
 
 }
 
 small {
-  font-size: ms(-2);
+  font-size: $unit-3;
   padding: 0;
   margin: 0;
 

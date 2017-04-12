@@ -1,9 +1,6 @@
 import React from 'react';
 
 class List extends React.Component {
-  constructor() {
-    super();
-  }
 
   render() {
     return (
@@ -13,8 +10,5 @@ class List extends React.Component {
     );
   }
 }
-
-List.PropTypes = {
-};
 
 export default List;

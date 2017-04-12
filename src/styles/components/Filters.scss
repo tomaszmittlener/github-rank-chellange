@@ -2,11 +2,14 @@
 
   &__filters {
     @include span(12);
+    margin: 0 0 $unit-7 0;
+
   }
 
   .filters-sliders {
     @include span(12);
   }
+
 
   .filters-button {
     @include span(12);
@@ -18,7 +21,7 @@
   }
 
   .filters-title {
-    margin: 0 0 ms(-4) 0;
+    margin: $unit-1 0;
   }
 }
 
@@ -56,32 +59,33 @@ input[type=range]::-ms-track {
 input[type=range]::-webkit-slider-thumb {
   -webkit-appearance: none;
   border: 1px solid #000000;
-  height: ms(0);
-  width: ms(0);
+  height: $unit-5;
+  width: $unit-5;
   border-radius: 100%;
-  background: $neutralColor;
+  //thumb color
+  background: $basicColor;
   cursor: pointer;
-  margin-top: - ms(-4); /* Margin needs to be specified in Chrome, but in Firefox and IE it is automatic */
+  margin-top: - 6px; /* Margin needs to be specified in Chrome, but in Firefox and IE it is automatic */
 }
 
 
 /* All the same stuff for Firefox */
 input[type=range]::-moz-range-thumb {
   border: 1px solid #000000;
-  height: ms(0);
-  width: ms(0);
+  height: $unit-5;
+  width: $unit-5;
   border-radius: span(12);
-  background: $neutralColor;
+  background: $basicColor;
   cursor: pointer;
 }
 
 /* All the same stuff for IE */
 input[type=range]::-ms-thumb {
   border: 1px solid #000000;
-  height: ms(0);
-  width: ms(0);
+  height: $unit-5;
+  width: $unit-5;
   border-radius: span(12);
-  background: $neutralColor;
+  background: $basicColor;
   cursor: pointer;
 }
 
@@ -91,15 +95,16 @@ input[type=range]::-ms-thumb {
 
 input[type=range]::-webkit-slider-runnable-track {
   width: span(12);
-  height: ms(-5);
+  height: 2px;
   cursor: pointer;
+  //slider color
   background: $accentPassiveColor;
   border: none;
 }
 
 input[type=range]::-moz-range-track {
   width: span(12);
-  height: ms(-5);
+  height: 2px;
   cursor: pointer;
   background: $basicColor;
   border: none;
@@ -107,7 +112,7 @@ input[type=range]::-moz-range-track {
 
 input[type=range]::-ms-track {
   width: span(12);
-  height: ms(-5);
+  height: 2px;
   cursor: pointer;
   background: transparent;
   border-color: transparent;
