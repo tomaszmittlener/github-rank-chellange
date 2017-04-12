@@ -36,7 +36,7 @@ class UserPage extends React.Component {
 
     return (
       <Page className="page--userPage"
-            status={`/${this.props.match.params.userName}`}>
+            pageTitle={`${this.props.match.params.userName}`}>
         <InfoPanel className="infoPanel--userPage"
                    person={userInfo}/>
 

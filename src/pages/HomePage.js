@@ -26,7 +26,8 @@ class HomePage extends React.Component {
       filterContributionsMax: {},
       filterFollowersMax: {},
       filterReposMax: {},
-      filterGistsMax: {}
+      filterGistsMax: {},
+      pageStatus: false
     }
   }
 
@@ -148,7 +149,10 @@ class HomePage extends React.Component {
       filterGistsMax:
         _maxBy(this.state.contributors, contributor => {
           return contributor.public_gists
-        })
+        }),
+
+      pageStatus: true
+
     });
 
     //last task allerter
@@ -162,14 +166,16 @@ class HomePage extends React.Component {
       filterContributionsMax,
       filterFollowersMax,
       filterReposMax,
-      filterGistsMax
+      filterGistsMax,
+      pageStatus
     } = this.state;
 
     return (
       <Page className="page--homePage"
-            status={typeof filterGistsMax.public_gists === 'number'?
-              `/${reposOwner.login}/contributors_lis` :
-              'fetching data....'}>
+            pageTitle={typeof filterGistsMax.public_gists === 'number'?
+              `${reposOwner.login}/contributors_lis` :
+              'fetching data....'}
+            pageStatus={pageStatus}>
         <InfoPanel className="infoPanel--homePage"
                    person={reposOwner}/>
         <MainPanel className="mainPanel--homePage">
@@ -179,6 +185,7 @@ class HomePage extends React.Component {
                                filterFollowersMax={filterFollowersMax}
                                filterReposMax={filterReposMax}
                                filterGistsMax={filterGistsMax}
+                               pageStatus={pageStatus}
                                requireFilters={true}
                                requireDetails={true}/>
         </MainPanel>

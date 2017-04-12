@@ -42,7 +42,7 @@ class RepoPage extends React.Component {
 
     return (
       <Page className="page--RepoPage"
-            status={`/${this.props.match.params.username}/${this.props.match.params.repoName}`}>
+            pageTitle={`${this.props.match.params.userName}/${this.props.match.params.repoName}`}>
         <InfoPanel className="infoPanel--RepoPage"
                    repo={repoInfo}/>
         <MainPanel className="mainPanel--RepoPage">

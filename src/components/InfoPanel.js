@@ -57,10 +57,7 @@ class InfoPanel extends React.Component {
               <h5>description: {repo.description ? repo.description : 'none'}</h5>
             </div>
           </div>}
-
-
         {this.props.children}
-
       </section>
     );
   }

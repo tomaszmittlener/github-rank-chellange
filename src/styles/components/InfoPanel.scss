@@ -7,8 +7,12 @@
   }
 
   &-basics {
-    @include span(4 first);
+    @include span(5 first);
     text-align: center;
+    border-right: 1px solid $accentPassiveColor;
+    margin: 0;
+    padding:  0 ms(1) 0 0 ;
+
 
     &__picture {
       max-width: span(12);
@@ -20,6 +24,7 @@
     }
 
     &__login {
+      word-wrap: break-word;
       margin: 0 0 ms(-4) 0;
     }
 
@@ -31,20 +36,23 @@
 
   &-details {
     @include span(7 last);
-    border-left: 1px solid $accentPassiveColor;
     text-align: center;
   }
 }
-
 
 //breakpoints
 
 @include susy-breakpoint($tablet) {
   .infoPanel {
 
+    &-basics {
+      border: none;
+      padding: 0 ;
+
+    }
+
     &-details {
       padding: ms(4) 0 0 0;
-      border: none;
       text-align: left;
     }
   }

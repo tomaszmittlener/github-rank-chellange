@@ -5,7 +5,7 @@
   }
 
   &-item {
-    @include span(12 of 12);
+    @include container;
     padding: ms(0);
     margin: ms(-8);
     border-bottom: 1px solid $accentPassiveColor;
@@ -13,10 +13,11 @@
 
 
     &__image {
-      //width: span(4 of 12 first);
-      //border-radius: 100%;
+      @include span(2 of 12 first);
+      max-width: span(12);
+      height: auto;
+      margin: 0 auto;
       width: ms(7);
-      height: ms(7);
       fill: $accentPassiveColor;
       transition: fill .3s;
 

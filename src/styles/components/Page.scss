@@ -5,22 +5,37 @@
     background: $basicColor;
     box-shadow: 0 0 4px 1px $basicColor;
     padding: ms(0);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+
 
   }
 
   .nav-logo {
-    @include span(1 of 12 first);
-    fill: $neutralColor;
-    width: ms(2);
-    height: ms(2);
+    width: span(1 of 12 first);
+    display: inline-block;
+
+    &__icon {
+      fill: $neutralColor;
+      width: ms(2);
+      height: ms(2);
+    }
   }
 
-  .nav-status{
-    @include span(11 of 12 last);
+  .nav-title{
+    width: span(11 of 12 last);
     color: $accentPassiveColor;
     text-align: center;
-  }
+    display: inline-block;
 
+    &--pending {
+      animation: blinker 1.7s cubic-bezier(.5, 0, 1, 1) infinite alternate
+    }
+
+    @keyframes blinker {
+      to { opacity: 0; }
+    }
+  }
 
   &__container {
     width: span(10);
