@@ -1,8 +1,8 @@
 import React from 'react';
 
 import Page from '../components/Page';
-import LeftPanel from '../components/LeftPanel';
-import RightPanel from '../components/RightPanel';
+import InfoPanel from '../components/InfoPanel';
+import MainPanel from '../components/MainPanel';
 import TopContributorsList from '../components/ContributorsList';
 
 import { getContributors, getRepoInfo } from '../services/getData'
@@ -38,25 +38,19 @@ class RepoPage extends React.Component {
 
 
   render() {
-    let { repoContributors, repoInfo, userAvatar } = this.state;
+    let { repoContributors, repoInfo } = this.state;
 
     return (
-      <Page className="page--RepoPage">
-
-        <LeftPanel className="leftPanel--RepoPage"
-                   image={userAvatar}
-                   title={repoInfo.name}
-                   type={repoInfo.language}/>
-
-        <RightPanel className="rightPanel--RepoPage">
-
+      <Page className="page--RepoPage"
+            status={`/${this.props.match.params.username}/${this.props.match.params.repoName}`}>
+        <InfoPanel className="infoPanel--RepoPage"
+                   repo={repoInfo}/>
+        <MainPanel className="mainPanel--RepoPage">
           <TopContributorsList className="userReposList--RepoPage"
                                contributors={repoContributors}
                                requireFilters={false}
                                requireDetails={false}/>
-
-        </RightPanel>
-
+        </MainPanel>
       </Page>
     );
   }

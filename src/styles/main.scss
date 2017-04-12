@@ -6,6 +6,7 @@
 
 //variables
 @import "../styles/var/_breakpoints";
+@import "../styles/var/_colors";
 
 //settings
 @import "settings";
@@ -14,7 +15,7 @@
 
 //components
 @import "/components/Page";
-@import "/components/LeftPanel";
-@import "/components/RightPanel";
+@import "/components/InfoPanel";
+@import "/components/MainPanel";
 @import "/components/List";
 @import "/components/Filters";
