@@ -4,6 +4,7 @@ import React from 'react';
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
+import PageTitle from '../components/PageTilte';
 import ReposList from '../components/ReposList';
 
 //tools
@@ -46,6 +47,7 @@ class UserPage extends React.Component {
                    person={userInfo}/>
 
         <MainPanel className="mainPanel--userPage">
+          <PageTitle>/repos:</PageTitle>
 
           <ReposList className="userReposList--userPage"
                          repos={userRepos}/>

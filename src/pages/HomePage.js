@@ -4,6 +4,7 @@ import React from 'react';
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
+import PageTitle from '../components/PageTilte';
 import TopContributorsList from '../components/ContributorsList';
 
 //tools
@@ -23,7 +24,7 @@ class HomePage extends React.Component {
     super();
     this.allerts = {
       initialInfo: 'please wait',
-      stageOne: 'downloading contributors...',
+      stageOne: 'downloading contributors',
       stageTwo: 'downloading contributors info',
       success: 'done'
     };
@@ -172,13 +173,22 @@ class HomePage extends React.Component {
               pageStatus === 'done' ?
                 `.../${reposOwner.login}/contributors_list`
                 :
-                'please wait: ' + pageStatus
+                `${pageStatus}...`
             }
             pageStatus={pageStatus}>
         <InfoPanel className="infoPanel--homePage"
                    person={reposOwner}/>
 
         <MainPanel className="mainPanel--homePage">
+          <PageTitle>
+            {
+            pageStatus === 'done' ?
+              '/top contributors'
+              :
+              'loading...'
+          }
+          </PageTitle>
+
           <TopContributorsList className="topContributorsList--homePage"
                                contributors={contributors}
                                filterContributionsMax={filterContributionsMax}

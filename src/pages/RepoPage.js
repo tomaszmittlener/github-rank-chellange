@@ -4,6 +4,7 @@ import React from 'react';
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
+import PageTitle from '../components/PageTilte';
 import TopContributorsList from '../components/ContributorsList';
 
 //tools
@@ -49,6 +50,8 @@ class RepoPage extends React.Component {
         <InfoPanel className="infoPanel--RepoPage"
                    repo={repoInfo}/>
         <MainPanel className="mainPanel--RepoPage">
+          <PageTitle>/contributors:</PageTitle>
+
           <TopContributorsList className="userReposList--RepoPage"
                                contributors={repoContributors}
                                requireFilters={false}
