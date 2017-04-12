@@ -1,7 +1,7 @@
 import React from 'react';
 import Page from '../components/Page';
-import LeftPanel from '../components/LeftPanel';
-import RightPanel from '../components/RightPanel';
+import InfoPanel from '../components/InfoPanel';
+import MainPanel from '../components/MainPanel';
 import TopContributorsList from '../components/ContributorsList';
 
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
@@ -20,9 +20,7 @@ class HomePage extends React.Component {
     super();
     this.state = {
       repos: [],
-      reposOwner: '',
-      reposOwnerImage: '',
-      reposOwnerType: '',
+      reposOwner: {},
       contributors: [],
       usersInfo: [],
       filterContributionsMax: {},
@@ -43,14 +41,20 @@ class HomePage extends React.Component {
 
   _downloadData() {
 
+    //get repos Owners' info
+    getUserInfo()
+      .then( ownerInfo=>{
+          this.setState({
+            reposOwner: ownerInfo
+          })
+        }
+      );
+
     //get all repositories
     getRepos()
       .then(allRepos => {
         this.setState({
-          allRepos: allRepos,
-          reposOwner: allRepos[0].owner.login,
-          reposOwnerImage: allRepos[0].owner.avatar_url,
-          reposOwnerType: allRepos[0].owner.type
+          allRepos: allRepos
         });
 
         //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
@@ -118,7 +122,7 @@ class HomePage extends React.Component {
 
     Promise.all(promiseAllInfo)
       .then(()=>{console.log('Downloaded contributors info');
-      this._getMaxValues()})
+        this._getMaxValues()})
   }
 
   _getMaxValues(){
@@ -154,8 +158,6 @@ class HomePage extends React.Component {
   render() {
     let {
       reposOwner,
-      reposOwnerImage,
-      reposOwnerType,
       contributors,
       filterContributionsMax,
       filterFollowersMax,
@@ -164,12 +166,13 @@ class HomePage extends React.Component {
     } = this.state;
 
     return (
-      <Page className="page--homePage">
-        <LeftPanel className="leftPanel--homePage"
-                   image={reposOwnerImage}
-                   title={reposOwner}
-                   type={reposOwnerType} />
-        <RightPanel className="rightPanel--homePage">
+      <Page className="page--homePage"
+            status={typeof filterGistsMax.public_gists === 'number'?
+              `/${reposOwner.login}/contributors_lis` :
+              'fetching data....'}>
+        <InfoPanel className="infoPanel--homePage"
+                   person={reposOwner}/>
+        <MainPanel className="mainPanel--homePage">
           <TopContributorsList className="topContributorsList--homePage"
                                contributors={contributors}
                                filterContributionsMax={filterContributionsMax}
@@ -178,7 +181,7 @@ class HomePage extends React.Component {
                                filterGistsMax={filterGistsMax}
                                requireFilters={true}
                                requireDetails={true}/>
-        </RightPanel>
+        </MainPanel>
       </Page>
     );
   }

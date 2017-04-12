@@ -20,7 +20,7 @@ class TopContributorsList extends React.Component {
     this.FILTERS ={
       contributions:{
         icon: <GoGitPullRequest className="icon"/>,
-        title: 'Contributions',
+        title: 'contributions',
         name: 'filterContributions',
         outputId: 'filterContributionsOutput',
         inputId: 'filterContributionsInput',
@@ -28,7 +28,7 @@ class TopContributorsList extends React.Component {
       },
       followers:{
         icon: <GoOrganization className="icon"/>,
-        title: 'Followers',
+        title: 'followers',
         name: 'filterFollowers',
         outputId: 'filterFollowersOutput',
         inputId: 'filterFollowersInput',
@@ -36,7 +36,7 @@ class TopContributorsList extends React.Component {
       },
       repos: {
         icon: <GoRepo className="icon"/>,
-        title: 'Repos',
+        title: 'repos',
         name: 'filterRepos',
         outputId: 'filterReposOutput',
         inputId: 'filterReposInput',
@@ -44,7 +44,7 @@ class TopContributorsList extends React.Component {
       },
       gists: {
         icon: <GoGist className="icon"/>,
-        title: 'Gists',
+        title: 'gists',
         name: 'filterGists',
         outputId: 'filterGistsOutput',
         inputId: 'filterGistsInput',
@@ -114,11 +114,10 @@ class TopContributorsList extends React.Component {
                          defaultValue={roundMaxNumber(filter.maxValue)}/>
                   <h4 className="filters-title">
                     {filter.icon}
-                    {filter.title}:
-                    <output id={filter.outputId}>
+                    {filter.title}: <output id={filter.outputId}>
                       {typeof filter.maxValue === 'number' ?
                         roundMaxNumber(filter.maxValue) :
-                        'Loading...'}
+                        'loading...'}
                     </output>
                   </h4>
                 </div>
@@ -143,7 +142,10 @@ class TopContributorsList extends React.Component {
           {map(contributors, (contributor, index)=>
             <div className="list-item"
                  key={index}>
+              <Link className="link"
+                    to={`/user/${contributor.login}`}>
               <MdAccountCircle className="list-item__image"/>
+              </Link>
               <div className="list-item__details">
                 <h3>
                   <Link className="link"

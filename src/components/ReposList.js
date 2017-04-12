@@ -19,49 +19,37 @@ class UserReposList extends React.Component {
 
     return (
       <List className="list--UserReposList">
-
         <div className="list__items">
-
           {map(repos, (repo, index)=>
-
             <div className="list-item"
                  key={index}>
-
-              {/*<img className="list-item__image"*/}
-              {/*src={repo.owner.avatar_url}/>*/}
-
-              <GoRepo className="list-item__image"/>
-
+              <Link className="link"
+                    to={`/repo/${repo.owner.login}/${repo.name}`}>
+                <GoRepo className="list-item__image"/>
+              </Link>
               <div className="list-item__details">
-
                 <h3>
                   <Link className="link"
                         to={`/repo/${repo.owner.login}/${repo.name}`}>
                     {repo.name}
                   </Link>
                 </h3>
-
                 <h4>
                   {repo.language?
                     <GoCode className="icon"/>:
                     null}
                   {repo.language}
                 </h4>
-
                 <h6>
                   {repo.description?
                     <GoQuestion className="icon"/>:
                     null}
                   {repo.description}
                 </h6>
-
               </div>
-
             </div>
           )}
-
         </div>
-
       </List>
     );
   }

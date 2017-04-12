@@ -18,7 +18,7 @@
   }
 
   .filters-title {
-    margin: 0 0 ms(1) 0;
+    margin: 0 0 ms(-4) 0;
   }
 }
 
@@ -50,8 +50,6 @@ input[type=range]::-ms-track {
   color: transparent;
 }
 
-
-
 //thumb settings//
 
 /* Special styling for WebKit/Blink */
@@ -65,6 +63,7 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
   margin-top: - ms(-4); /* Margin needs to be specified in Chrome, but in Firefox and IE it is automatic */
 }
+
 
 /* All the same stuff for Firefox */
 input[type=range]::-moz-range-thumb {
@@ -94,7 +93,7 @@ input[type=range]::-webkit-slider-runnable-track {
   width: span(12);
   height: ms(-5);
   cursor: pointer;
-  background: $accentActiveColor;
+  background: $accentPassiveColor;
   border: none;
 }
 
@@ -102,7 +101,7 @@ input[type=range]::-moz-range-track {
   width: span(12);
   height: ms(-5);
   cursor: pointer;
-  background: $accentActiveColor;
+  background: $basicColor;
   border: none;
 }
 
@@ -117,6 +116,6 @@ input[type=range]::-ms-track {
 }
 
 input[type=range]::-ms-fill-lower {
-  background: $accentActiveColor;
+  background: $basicColor;
   border: none;
 }
