@@ -21,6 +21,12 @@ import _sortBy from 'lodash/sortBy';
 class HomePage extends React.Component {
   constructor() {
     super();
+    this.allerts = {
+      initialInfo: 'please wait',
+      stageOne: 'downloading contributors...',
+      stageTwo: 'downloading contributors info',
+      success: 'done'
+    };
     this.state = {
       repos: [],
       reposOwner: {},
@@ -30,7 +36,7 @@ class HomePage extends React.Component {
       filterFollowersMax: {},
       filterReposMax: {},
       filterGistsMax: {},
-      pageStatus: 'fetching contributors...'
+      pageStatus: this.allerts.initialInfo
     }
   }
 
@@ -54,7 +60,8 @@ class HomePage extends React.Component {
     getRepos()
       .then(allRepos => {
         this.setState({
-          allRepos: allRepos
+          allRepos: allRepos,
+          pageStatus: this.allerts.stageOne
         });
 
         //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
@@ -64,11 +71,9 @@ class HomePage extends React.Component {
 
   _getUniqueContributors(allRepos) {
     const promiseUniqueContributors = _map(allRepos, (repo) => {
-
       // get contributors for repo
       return getContributors(repo.name)
         .then(contributorsRepo => {
-
           //get unique and duplicate contributors
           const _contributorsUniques = _differenceBy(contributorsRepo, this.state.contributors, 'login');
           const _contributorsDuplicates = _intersectionBy(contributorsRepo, this.state.contributors, 'login');
@@ -78,6 +83,7 @@ class HomePage extends React.Component {
             const _duplicate = _find(_contributorsDuplicates, duplicate => {
               return duplicate.login === contributor.login;
             });
+
             return _duplicate ?
               {...contributor, contributions: contributor.contributions + _duplicate.contributions} :
               contributor
@@ -90,16 +96,12 @@ class HomePage extends React.Component {
           });
         });
     });
-
     //when done, get additional info about every contributor
     Promise.all(promiseUniqueContributors)
-      .then(()=>{
-        console.log('Downloaded all contributors');
-
+      .then(()=> {
         this.setState({
-          pageStatus: 'fetching contributors info...'
+          pageStatus: this.allerts.stageTwo
         });
-
         this._getContributorsInfo(this.state.contributors)
       })
   }
@@ -113,7 +115,7 @@ class HomePage extends React.Component {
           this.setState({
             contributors: _sortBy([..._filter(this.state.contributors,
               contributorToRemove => contributorToRemove.login !== contributor.login),
-              contributorWithAdditionalInfo],
+                contributorWithAdditionalInfo],
               'contributions')
               .reverse()
           });
@@ -122,8 +124,7 @@ class HomePage extends React.Component {
 
     //when done, retrieve highest number of contributions, followers, repos and gists for filters
     Promise.all(promiseAllInfo)
-      .then(()=>{console.log('Downloaded contributors info');
-        this._getMaxValues()})
+      .then(()=> { this._getMaxValues() })
   }
 
   _getMaxValues(){
@@ -149,10 +150,8 @@ class HomePage extends React.Component {
           return contributor.public_gists
         }),
 
-      pageStatus: 'done'
+      pageStatus: this.allerts.success
     });
-    //last task console allert
-    console.warn('DONE!')
   }
 
   render() {
@@ -175,7 +174,6 @@ class HomePage extends React.Component {
                 'please wait: ' + pageStatus
             }
             pageStatus={pageStatus}>
-
         <InfoPanel className="infoPanel--homePage"
                    person={reposOwner}/>
 

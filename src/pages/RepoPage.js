@@ -38,7 +38,6 @@ class RepoPage extends React.Component {
       });
   }
 
-
   render() {
     let { repoContributors, repoInfo } = this.state;
 

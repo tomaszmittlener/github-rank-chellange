@@ -221,8 +221,6 @@ class TopContributorsList extends React.Component {
       );
     };
 
-
-
     return (
       <List className="list--topContributorsList">
         {/*display filters if required in props*/}
