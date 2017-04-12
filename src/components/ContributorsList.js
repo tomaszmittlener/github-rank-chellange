@@ -22,14 +22,24 @@ import map from 'lodash/map';
 class TopContributorsList extends React.Component {
   constructor() {
     super();
-    this.FILTERS ={
+    this.state = {
+      contributors: [],
+      filterResults: {
+        contributions: '',
+        followers: '',
+        repos: '',
+        gists: ''
+      }
+    };
+    this.FILTERS = {
       contributions:{
         icon: <GoGitPullRequest className="icon"/>,
         title: 'contributions',
         name: 'filterContributions',
         outputId: 'filterContributionsOutput',
         inputId: 'filterContributionsInput',
-        maxValue: ''
+        maxValue: '',
+        filerResults: ''
       },
       followers:{
         icon: <GoOrganization className="icon"/>,
@@ -37,7 +47,9 @@ class TopContributorsList extends React.Component {
         name: 'filterFollowers',
         outputId: 'filterFollowersOutput',
         inputId: 'filterFollowersInput',
-        maxValue: ''
+        maxValue: '',
+        filerResults: ''
+
       },
       repos: {
         icon: <GoRepo className="icon"/>,
@@ -45,7 +57,9 @@ class TopContributorsList extends React.Component {
         name: 'filterRepos',
         outputId: 'filterReposOutput',
         inputId: 'filterReposInput',
-        maxValue: ''
+        maxValue: '',
+        filerResults: ''
+
       },
       gists: {
         icon: <GoGist className="icon"/>,
@@ -53,14 +67,13 @@ class TopContributorsList extends React.Component {
         name: 'filterGists',
         outputId: 'filterGistsOutput',
         inputId: 'filterGistsInput',
-        maxValue: ''
+        maxValue: '',
+        filerResults: ''
+
       }
     };
-
-    this.state = {
-      contributors: []
-    }
   }
+
 
   //get contributors and if filters required - get max values for filters.
   componentWillReceiveProps(nextProps){
@@ -80,6 +93,7 @@ class TopContributorsList extends React.Component {
   _filter(e) {
     e.preventDefault();
     this.setState({
+      //apply filter
       contributors:
         filter(this.props.contributors, contributor => {
           return contributor.contributions < e.target.filterContributions.value &&
@@ -88,10 +102,14 @@ class TopContributorsList extends React.Component {
             contributor.public_gists < e.target.filterGists.value
         })
     });
+    //gather data to display current settings
+    this.FILTERS.contributions.lastResults = e.target.filterContributions.value;
+    this.FILTERS.followers.lastResults = e.target.filterFollowers.value;
+    this.FILTERS.repos.lastResults = e.target.filterRepos.value;
+    this.FILTERS.gists.lastResults = e.target.filterGists.value;
   }
 
   render() {
-
     let { requireDetails, requireFilters, pageStatus } = this.props;
     let { contributors } = this.state;
 
@@ -107,21 +125,27 @@ class TopContributorsList extends React.Component {
                        id={filter.inputId}
                        type="range"
                        min="0"
-                       step={getSteps(filter.maxValue)}
-                       max={roundMaxNumber(filter.maxValue)}
+                       step="1"
+                       max={filter.maxValue + 1}
                        onChange={e => document.getElementById(filter.outputId).value = e.target.value}
-                       defaultValue={roundMaxNumber(filter.maxValue)}/>
-                <h4 className="filters-title">
-                  {filter.icon}
-                  {filter.title}:{' '}
+                       defaultValue={filter.maxValue + 1}/>
+                <div className="filters-title">
 
-                  <output id={filter.outputId}>
+                  <span className="filters-title__description">
+                    {filter.icon}{`${filter.title} < ${filter.lastResults}`}
+                  </span>
+
+                  <span className="filters-title__settings">
                     {pageStatus === 'done' ?
-                      '0/' + roundMaxNumber(filter.maxValue)
+                      <span>
+                        <output className="filters-title__current" id={filter.outputId}/>
+                        <span className="filters-title__max"> / {filter.maxValue + 1} </span>
+                      </span>
                       :
                       'loading...'}
-                  </output>
-                </h4>
+                  </span>
+
+                </div>
               </div>
             )}
 
@@ -136,6 +160,7 @@ class TopContributorsList extends React.Component {
     };
 
     const ListItems = ()=> {
+
       return (
         <div className="list__items">
           {map(contributors, (contributor, index)=>
@@ -163,14 +188,15 @@ class TopContributorsList extends React.Component {
                 </h4>
 
                 {/*display followers, repos and gists if required in props.*/}
-                {requireDetails? (
+                {requireDetails?
                   <h5 className="list-item-detail--person">
                     <GoOrganization className="icon"/>
                     {typeof contributor.followers === 'number' ?
                       contributor.followers:
                       'loading...'}
                   </h5>
-                ) : (null)}
+                  :
+                  null}
 
                 {requireDetails? (
                   <h5 className="list-item-detail--person">
@@ -179,7 +205,7 @@ class TopContributorsList extends React.Component {
                       contributor.public_repos:
                       'loading...'}
                   </h5>
-                ) : (null)}
+                ) :(null)                  }
 
                 {requireDetails? (
                   <h5 className="list-item-detail--person">
@@ -188,7 +214,8 @@ class TopContributorsList extends React.Component {
                       contributor.public_gists :
                       'loading...'}
                   </h5>
-                ) : (null)}
+                ) : (
+                  null)}
 
               </div>
             </div>
@@ -196,6 +223,8 @@ class TopContributorsList extends React.Component {
         </div>
       );
     };
+
+
 
     return (
       <List className="list--topContributorsList">
