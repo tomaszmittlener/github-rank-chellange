@@ -17,8 +17,6 @@ class Page extends React.Component {
             <div className="nav-status">
               <h3>{this.props.status}</h3>
             </div>
-
-
         </nav>
         <div className="page__container">
           {this.props.children}
