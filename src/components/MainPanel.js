@@ -7,7 +7,7 @@ class RightPanel extends React.Component {
 
   render() {
     return (
-      <section className="rightPanel">
+      <section className="mainPanel">
           {this.props.children}
       </section>
     );

@@ -7,12 +7,34 @@ html {
 
 body {
   font-family: "Open Sans", Helvetica, Arial, sans-serif;
-  color: black;
+  color: $basicColor;
+}
+
+.button {
+  background-color: $neutralColor;
+  border: none;
+  color: $accentPassiveColor;
+  text-decoration: none;
+  font-size: 16px;
+  cursor: pointer;
+  outline: none;
+
+  &-icon{
+    display: block;
+    height: ms(4);
+    width: ms(4);
+    transition: color .3s;
+
+  }
+
+  &:hover {
+    color: $basicColor;
+  }
 }
 
 .link {
   text-decoration: none;
-  color: black;
+  color: $basicColor;
 
   &:hover {
     text-decoration: underline;
@@ -20,6 +42,8 @@ body {
 }
 
 .icon {
-margin: 0 ms(-6) 0 0;
-
+  margin: 0 ms(-6) 0 0;
+  height: ms(0);
+  width: ms(0);
 }
+

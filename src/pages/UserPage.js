@@ -1,9 +1,9 @@
 import React from 'react';
 
 import Page from '../components/Page';
-import LeftPanel from '../components/LeftPanel';
-import RightPanel from '../components/RightPanel';
-import UserReposList from '../components/ReposList';
+import InfoPanel from '../components/InfoPanel';
+import MainPanel from '../components/MainPanel';
+import ReposList from '../components/ReposList';
 
 import { getUserInfo, getRepos } from '../services/getData'
 
@@ -35,17 +35,17 @@ class UserPage extends React.Component {
     let { userInfo, userRepos } = this.state;
 
     return (
-      <Page className="page--userPage">
-        <LeftPanel className="leftPanel--userPage"
-                   image={userInfo.avatar_url}
-                   title={userInfo.login}
-                   type={userInfo.type}/>
-        <RightPanel className="rightPanel--userPage">
+      <Page className="page--userPage"
+            status={`/${this.props.match.params.userName}`}>
+        <InfoPanel className="infoPanel--userPage"
+                   person={userInfo}/>
 
-          <UserReposList className="userReposList--userPage"
+        <MainPanel className="mainPanel--userPage">
+
+          <ReposList className="userReposList--userPage"
                          repos={userRepos}/>
 
-        </RightPanel>
+        </MainPanel>
       </Page>
     );
   }
