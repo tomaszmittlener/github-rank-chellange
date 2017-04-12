@@ -5,45 +5,57 @@
   }
 
   &-item {
-    @include span(12 of 12);
-    padding: ms(0);
-    margin: ms(-8);
+    @include span(12);
+    padding: gutter()*2;
     border-bottom: 1px solid $accentPassiveColor;
     border-radius: 3px;
 
-
     &__image {
-      //width: span(4 of 12 first);
-      //border-radius: 100%;
+      @include span(2 of 12 first);
+      max-width: span(12);
+      height: auto;
+      margin: 0 auto;
       width: ms(7);
-      height: ms(7);
       fill: $accentPassiveColor;
       transition: fill .3s;
 
-
       &:hover {
         fill: $basicColor;
-
       }
     }
 
+    &__title {
+      @include span(8 of 12 last);
+      word-wrap: break-word;
+    }
 
     &__details {
-      padding: 0 ms(2);
       @include span(8 of 12 last);
+      word-wrap: break-word;
+
+    }
+
+    &-detail--person {
+      @include gallery(4 of 8);
+    }
+
+    &-detail--repo {
+      @include span(12 of 12);
     }
   }
 }
 
 //breakpoints
-
 @include susy-breakpoint($tablet) {
-
   .list {
+
+    &__items {
+    }
 
     &-item {
       @include gallery(6 of 12);
       border: 1px solid $accentPassiveColor;
+      margin: 0 0 gutter() 0;
     }
   }
 }

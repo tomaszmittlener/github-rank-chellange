@@ -1,10 +1,12 @@
 import React from 'react';
 
+//components
 import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
 import ReposList from '../components/ReposList';
 
+//tools
 import { getUserInfo, getRepos } from '../services/getData'
 
 class UserPage extends React.Component {
@@ -23,6 +25,7 @@ class UserPage extends React.Component {
           userInfo: userInfo
         })
       });
+
     getRepos(this.props.match.params.userName)
       .then(reposList => {
         this.setState({
@@ -36,7 +39,9 @@ class UserPage extends React.Component {
 
     return (
       <Page className="page--userPage"
-            status={`/${this.props.match.params.userName}`}>
+            pageTitle={
+              `.../users/${this.props.match.params.userName}`
+            }>
         <InfoPanel className="infoPanel--userPage"
                    person={userInfo}/>
 
@@ -44,7 +49,6 @@ class UserPage extends React.Component {
 
           <ReposList className="userReposList--userPage"
                          repos={userRepos}/>
-
         </MainPanel>
       </Page>
     );

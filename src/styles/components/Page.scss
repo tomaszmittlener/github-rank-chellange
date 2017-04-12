@@ -1,31 +1,48 @@
 .page {
+
   &__nav {
-    height: span(1);
     @include container;
     background: $basicColor;
     box-shadow: 0 0 4px 1px $basicColor;
-    padding: ms(0);
-
+    padding: $unit-5;
+    white-space: nowrap;
   }
 
   .nav-logo {
-    @include span(1 of 12 first);
-    fill: $neutralColor;
-    width: ms(2);
-    height: ms(2);
+    width: span(2 of 12 first);
+    //gives right padding for logo
+    min-width: $unit-8;
+    display: inline-block;
+
+    &__icon {
+      fill: $neutralColor;
+      width: $unit-7;
+      height: $unit-7;
+    }
   }
 
-  .nav-status{
-    @include span(11 of 12 last);
+  .nav-title{
+    width: span(10 of 12 last);
     color: $accentPassiveColor;
-    text-align: center;
-  }
+    text-align: right;
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: auto;
 
+    &--pending {
+      animation: blinker 1.7s cubic-bezier(.5, 0, 1, 1) infinite alternate
+    }
+
+    @keyframes blinker {
+      to { opacity: 0; }
+    }
+  }
 
   &__container {
     width: span(10);
     @include container();
-    margin: ms(2) span(1) + gutter();
+    margin: $unit-7 span(1) + gutter();
   }
 }
 
