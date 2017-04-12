@@ -91,53 +91,52 @@ class TopContributorsList extends React.Component {
   }
 
   render() {
-    let { contributors } = this.state;
+
     let { requireDetails, requireFilters, pageStatus } = this.props;
+    let { contributors } = this.state;
 
-    return (
-      <List className="list--topContributorsList">
+    const Filters = ()=> {
+      return (
+        <form className="list__filters" onSubmit={this._filter.bind(this)}>
+          <div className="filters">
+            {map(this.FILTERS, (filter, index) =>
+              <div className="filters-slider"
+                   key={index}>
 
-        {/*display filters if required in props*/}
-        {requireFilters?
-          <form className="list__filters" onSubmit={this._filter.bind(this)}>
-            <div className="filters">
-              {map(this.FILTERS, (filter, index) =>
-                <div className="filters-slider"
-                     key={index}>
+                <input name={filter.name}
+                       id={filter.inputId}
+                       type="range"
+                       min="0"
+                       step={getSteps(filter.maxValue)}
+                       max={roundMaxNumber(filter.maxValue)}
+                       onChange={e => document.getElementById(filter.outputId).value = e.target.value}
+                       defaultValue={roundMaxNumber(filter.maxValue)}/>
+                <h4 className="filters-title">
+                  {filter.icon}
+                  {filter.title}:{' '}
 
-                  <input name={filter.name}
-                         id={filter.inputId}
-                         type="range"
-                         min="0"
-                         step={getSteps(filter.maxValue)}
-                         max={roundMaxNumber(filter.maxValue)}
-                         onChange={e => document.getElementById(filter.outputId).value = e.target.value}
-                         defaultValue={roundMaxNumber(filter.maxValue)}/>
-                  <h4 className="filters-title">
-                    {filter.icon}
-                    {filter.title}:{' '}
-
-                    <output id={filter.outputId}>
-                      {pageStatus === 'done' ?
-                        '0/' + roundMaxNumber(filter.maxValue)
-                        :
-                        'loading...'}
-                    </output>
-                  </h4>
-                </div>
-              )}
-
-              <div className="filters-button">
-                <button className="button">
-                  <MdFilterList className="button-icon"/>
-                </button>
+                  <output id={filter.outputId}>
+                    {pageStatus === 'done' ?
+                      '0/' + roundMaxNumber(filter.maxValue)
+                      :
+                      'loading...'}
+                  </output>
+                </h4>
               </div>
-            </div>
-          </form>
-          :
-          null}
+            )}
 
-        {/*display items*/}
+            <div className="filters-button">
+              <button className="button">
+                <MdFilterList className="button-icon"/>
+              </button>
+            </div>
+          </div>
+        </form>
+      );
+    };
+
+    const ListItems = ()=> {
+      return (
         <div className="list__items">
           {map(contributors, (contributor, index)=>
             <div className="list-item"
@@ -157,7 +156,6 @@ class TopContributorsList extends React.Component {
                 </Link>
               </div>
 
-
               <div className="list-item__details">
                 <h4 className="list-item-detail--person">
                   <GoGitPullRequest className="icon"/>
@@ -165,41 +163,46 @@ class TopContributorsList extends React.Component {
                 </h4>
 
                 {/*display followers, repos and gists if required in props.*/}
-                {requireDetails?
+                {requireDetails? (
                   <h5 className="list-item-detail--person">
                     <GoOrganization className="icon"/>
                     {typeof contributor.followers === 'number' ?
                       contributor.followers:
                       'loading...'}
                   </h5>
-                  :
-                  null}
+                ) : (null)}
 
-                {requireDetails?
+                {requireDetails? (
                   <h5 className="list-item-detail--person">
                     <GoRepo className="icon"/>
                     {typeof contributor.public_repos === 'number' ?
                       contributor.public_repos:
                       'loading...'}
                   </h5>
-                  :
-                  null}
+                ) : (null)}
 
-                {requireDetails?
+                {requireDetails? (
                   <h5 className="list-item-detail--person">
                     <GoGist className="icon"/>
                     {typeof contributor.public_gists === 'number' ?
                       contributor.public_gists :
                       'loading...'}
                   </h5>
-                  :
-                  null}
+                ) : (null)}
 
               </div>
             </div>
           )}
         </div>
-        {this.props.children}
+      );
+    };
+
+    return (
+      <List className="list--topContributorsList">
+        {/*display filters if required in props*/}
+        {requireFilters? <Filters/> : null}
+        {/*display items*/}
+        <ListItems/>
       </List>
     );
   }

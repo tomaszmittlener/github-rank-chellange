@@ -10,6 +10,7 @@ class InfoPanel extends React.Component {
     super();
   }
 
+
   render() {
     const RepoDetails = ()=> {
       let { repo } = this.props;
