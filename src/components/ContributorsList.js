@@ -129,7 +129,12 @@ class TopContributorsList extends React.Component {
                 <div className="filters-title">
 
                   <span className="filters-title__state">
-                    {filter.icon}{`${filter.title} < ${filter.lastResults}`}
+                    {filter.icon}{`${filter.title} < `}
+                    {typeof filter.lastResults === typeof undefined &&
+                     typeof filter.maxValue === 'number'  ?
+                      filter.maxValue + 1
+                      :
+                      filter.lastResults}
                   </span>
 
                   <span className="filters-title__values">
