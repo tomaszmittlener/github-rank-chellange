@@ -12,9 +12,6 @@ import GoGitPullRequest from 'react-icons/lib/go/git-pull-request';
 //components
 import List from './List';
 
-//tools
-import { roundMaxNumber, getSteps } from '../services/utils';
-
 //lodash
 import filter from 'lodash/filter'
 import map from 'lodash/map';

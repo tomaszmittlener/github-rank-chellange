@@ -13,18 +13,14 @@ import map from 'lodash/map';
 class UserReposList extends React.Component {
 
   render() {
-
     let { repos } = this.props;
 
-    return (
-      <List className="list--UserReposList">
+    const ListItems = ()=> {
+      return (
         <div className="list__items">
-
           {map(repos, (repo, index)=>
-
             <div className="list-item"
                  key={index}>
-
               <Link className="link"
                     to={`/repo/${repo.owner.login}/${repo.name}`}>
                 <GoRepo className="list-item__image"/>
@@ -46,6 +42,7 @@ class UserReposList extends React.Component {
                     null}
                   {repo.language}
                 </h4>
+
                 <h6 className="list-item-detail--repo">
                   {repo.description?
                     <GoQuestion className="icon"/>
@@ -54,10 +51,14 @@ class UserReposList extends React.Component {
                   {repo.description}
                 </h6>
               </div>
-
             </div>
           )}
         </div>
+      )};
+
+     return (
+      <List className="list--UserReposList">
+        <ListItems/>
       </List>
     );
   }

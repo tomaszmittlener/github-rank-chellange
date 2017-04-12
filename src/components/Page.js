@@ -29,4 +29,8 @@ class Page extends React.Component {
   }
 }
 
+Page.PropTypes = {
+  pageTitle: React.PropTypes.string
+};
+
 export default Page;
