@@ -50,13 +50,11 @@ body {
   width: ms(0);
 }
 
-//global description list
-
+//global definition list
 
 dl {
   margin: 0;
 }
-
 
 dd {
   display: inline;
@@ -65,7 +63,6 @@ dd {
   font-size: $unit-5;
   font-weight: lighter;
   font-style: italic;
-
 }
 
 dl dd:after{
@@ -82,6 +79,5 @@ dt {
   font-weight: bold;
   margin: 0;
   padding: $unit-1 0;
-
 }
 

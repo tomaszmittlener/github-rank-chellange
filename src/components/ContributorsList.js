@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 //icons
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
-import MdFilterList from 'react-icons/lib/md/filter-list';
+import MdContentCut from 'react-icons/lib/md/content-cut';
 import GoOrganization from 'react-icons/lib/go/organization';
 import GoGist from 'react-icons/lib/go/gist';
 import GoRepo from 'react-icons/lib/go/repo';
@@ -66,7 +66,6 @@ class TopContributorsList extends React.Component {
         inputId: 'filterGistsInput',
         maxValue: '',
         filerResults: ''
-
       }
     };
   }
@@ -153,7 +152,7 @@ class TopContributorsList extends React.Component {
 
             <div className="filters-button">
               <button className="button">
-                <MdFilterList className="button-icon"/>
+                <MdContentCut className="button-icon"/>
               </button>
             </div>
           </div>
