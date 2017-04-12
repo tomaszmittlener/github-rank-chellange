@@ -29,19 +29,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
     margin: auto;
-
-    &--pending {
-      animation: blinker 1.7s cubic-bezier(.5, 0, 1, 1) infinite alternate
-    }
-
-    @keyframes blinker {
-      to { opacity: 0; }
-    }
   }
 
   &__container {
-    width: span(10);
     @include container();
+    width: span(10);
     margin: $unit-7 span(1) + gutter();
   }
 }

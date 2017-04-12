@@ -3,7 +3,6 @@
   &__filters {
     @include span(12);
     margin: 0 0 $unit-7 0;
-
   }
 
   .filters-sliders {
@@ -14,7 +13,7 @@
   .filters-button {
     @include span(12);
 
-    button {
+    .button {
       display: block;
       margin: auto;
     }
@@ -24,24 +23,22 @@
     @include span(12);
     margin: $unit-1 0;
 
-    &__description {
+    &__state {
       @include span(8 first);
       text-align: left;
+      font-weight: bold;
     }
 
-    &__settings {
+    &__values {
       @include span(4 last);
       text-align: right;
     }
 
     &__current {
-
     }
 
     &__max {
-
     }
-
   }
 }
 

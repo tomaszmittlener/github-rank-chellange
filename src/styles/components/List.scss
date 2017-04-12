@@ -32,7 +32,6 @@
     &__details {
       @include span(8 of 12 last);
       word-wrap: break-word;
-
     }
 
     &-detail--person {
@@ -61,7 +60,6 @@
 }
 
 @include susy-breakpoint($hdpi-desktop) {
-
   .list {
 
     &-item {

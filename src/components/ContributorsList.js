@@ -128,11 +128,11 @@ class TopContributorsList extends React.Component {
                        defaultValue={filter.maxValue + 1}/>
                 <div className="filters-title">
 
-                  <span className="filters-title__description">
+                  <span className="filters-title__state">
                     {filter.icon}{`${filter.title} < ${filter.lastResults}`}
                   </span>
 
-                  <span className="filters-title__settings">
+                  <span className="filters-title__values">
                     {pageStatus === 'done' ?
                       <span>
                         <output className="filters-title__current" id={filter.outputId}/>
