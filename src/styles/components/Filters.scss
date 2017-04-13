@@ -9,7 +9,6 @@
     @include span(12);
   }
 
-
   .filters-button {
     @include span(12);
 
@@ -83,6 +82,7 @@ input[type=range]::-webkit-slider-thumb {
   background: $basicColor;
   cursor: pointer;
   margin-top: - 6px; /* Margin needs to be specified in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: $lightActiveShadows;
 }
 
 
@@ -94,6 +94,7 @@ input[type=range]::-moz-range-thumb {
   border-radius: span(12);
   background: $basicColor;
   cursor: pointer;
+  box-shadow: $lightActiveShadows;
 }
 
 /* All the same stuff for IE */
@@ -104,6 +105,7 @@ input[type=range]::-ms-thumb {
   border-radius: span(12);
   background: $basicColor;
   cursor: pointer;
+  box-shadow: $lightActiveShadows;
 }
 
 // track settings//
@@ -115,27 +117,31 @@ input[type=range]::-webkit-slider-runnable-track {
   //slider color
   background: $accentPassiveColor;
   border: none;
+  box-shadow: $lightPassiveShadows;
 }
 
 input[type=range]::-moz-range-track {
   width: span(12);
-  height: 2px;
+  height: 6px;
   cursor: pointer;
-  background: $basicColor;
+  background: $accentPassiveColor;
   border: none;
+  box-shadow: $lightPassiveShadows;
 }
 
 input[type=range]::-ms-track {
   width: span(12);
-  height: 2px;
+  height: 6px;
   cursor: pointer;
-  background: transparent;
+  background: $accentPassiveColor;
   border-color: transparent;
   border-width: 16px 0;
   color: transparent;
+  box-shadow: $lightPassiveShadows;
 }
 
 input[type=range]::-ms-fill-lower {
-  background: $basicColor;
+  background: $accentPassiveColor;
   border: none;
+  box-shadow: $lightPassiveShadows;
 }

@@ -3,7 +3,7 @@
   &__nav {
     @include container;
     background: $basicColor;
-    box-shadow: 0 0 4px 1px $basicColor;
+    box-shadow: $activeShadows;
     padding: $unit-5;
     white-space: nowrap;
   }

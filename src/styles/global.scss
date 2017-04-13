@@ -81,3 +81,12 @@ dt {
   padding: $unit-1 $unit-1 0 0;
 }
 
+// box-shadows
+$passiveShadows: 0 0 10px 0px $accentPassiveColor;
+$lightPassiveShadows: 0 0 3px 0px $accentPassiveColor;
+
+$activeShadows: 0 0 4px 1px $basicColor;
+$lightActiveShadows: 0 0 3px 0px $basicColor;
+
+
+

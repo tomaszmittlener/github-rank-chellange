@@ -10,13 +10,13 @@
     @include span(12);
     text-align: center;
 
-
     &__picture {
       max-width: span(12);
       width: ms(12);
       height: auto;
       border: 1px solid $accentPassiveColor;
       border-radius: 100%;
+      box-shadow: $passiveShadows;
       margin: 0 0 $unit-1 0;
     }
 
