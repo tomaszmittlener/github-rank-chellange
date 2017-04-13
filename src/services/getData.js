@@ -52,7 +52,7 @@ function getContributors(repoName, userName = defaultName) {
 }
 
 function getRepoInfo(repoName, userName) {
-  return fetch(`${config.apiHost}repos/${userName}/${repoName}`)
+  return fetch(`${config.apiHost}repos/${userName}/${repoName}${auth}`)
     .then(status)
     .then(json)
     .then(checkForErrors)
