@@ -4,9 +4,10 @@ import config from 'config';
 import isUndefined from 'lodash/isUndefined';
 
 // Authentication credentials. For client id, client secret and api host refer to relevant config file in ../config directory
+const pagesAmount = '30';
 const auth = `?&client_id=${config.id}&client_secret=${config.secret}`;
 const defaultName = 'angular';
-const pagesNumber = '&page=1&per_page=10';
+const pagesNumber = `&page=1&per_page=${pagesAmount}`;
 
 //Error handlers
 function status(response) {

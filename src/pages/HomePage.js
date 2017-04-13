@@ -5,7 +5,7 @@ import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
 import PageTitle from '../components/PageTilte';
-import TopContributorsList from '../components/ContributorsList';
+import ContributorsList from '../components/ContributorsList';
 
 //tools
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
@@ -189,7 +189,7 @@ class HomePage extends React.Component {
           }
           </PageTitle>
 
-          <TopContributorsList className="topContributorsList--homePage"
+          <ContributorsList className="topContributorsList--homePage"
                                contributors={contributors}
                                filterContributionsMax={filterContributionsMax}
                                filterFollowersMax={filterFollowersMax}
