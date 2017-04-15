@@ -206,7 +206,7 @@ class TopContributorsList extends React.Component {
                       contributor.public_repos:
                       'loading...'}
                   </h5>
-                ) :(null)                  }
+                ) :(null)}
 
                 {requireDetails? (
                   <h5 className="list-item-detail--person">

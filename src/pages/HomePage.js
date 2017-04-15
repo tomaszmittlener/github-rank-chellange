@@ -5,7 +5,7 @@ import Page from '../components/Page';
 import InfoPanel from '../components/InfoPanel';
 import MainPanel from '../components/MainPanel';
 import PageTitle from '../components/PageTilte';
-import TopContributorsList from '../components/ContributorsList';
+import ContributorsList from '../components/ContributorsList';
 
 //tools
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
@@ -90,7 +90,6 @@ class HomePage extends React.Component {
               :
               contributor
           });
-
           //set state
           this.setState({
             contributors: sortBy([ ..._contributorsUniques,
@@ -112,6 +111,7 @@ class HomePage extends React.Component {
     const promiseAllInfo = map(contributorsCollection, (contributor) => {
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
+
           const contributorWithAdditionalInfo =  { ...contributor, ...contributorInfo };
 
           this.setState({
@@ -154,6 +154,7 @@ class HomePage extends React.Component {
 
       pageStatus: this.allerts.success
     });
+
   }
 
   render() {
@@ -182,22 +183,22 @@ class HomePage extends React.Component {
         <MainPanel className="mainPanel--homePage">
           <PageTitle>
             {
-            pageStatus === 'done' ?
-              '/top contributors'
-              :
-              'loading...'
-          }
+              pageStatus === 'done' ?
+                '/top contributors'
+                :
+                'loading...'
+            }
           </PageTitle>
 
-          <TopContributorsList className="topContributorsList--homePage"
-                               contributors={contributors}
-                               filterContributionsMax={filterContributionsMax}
-                               filterFollowersMax={filterFollowersMax}
-                               filterReposMax={filterReposMax}
-                               filterGistsMax={filterGistsMax}
-                               pageStatus={pageStatus}
-                               requireFilters={true}
-                               requireDetails={true}/>
+          <ContributorsList className="topContributorsList--homePage"
+                            contributors={contributors}
+                            filterContributionsMax={filterContributionsMax}
+                            filterFollowersMax={filterFollowersMax}
+                            filterReposMax={filterReposMax}
+                            filterGistsMax={filterGistsMax}
+                            pageStatus={pageStatus}
+                            requireFilters={true}
+                            requireDetails={true}/>
         </MainPanel>
       </Page>
     );
