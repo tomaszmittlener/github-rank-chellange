@@ -1,6 +1,6 @@
 #### action: changeCurrentOwner
-Adds to the store information about organisation/user (Owner) for whom the ranking is being prepared.
-By now, the default organisation is set to Angular, however this option might be useful in the case of future app development
+Adds information about organisation/user (Owner) for whom the ranking list is being prepared.
+By now, the default organisation is set to Angular, however this option might be useful in the case of future app development.
 #### action: addRepos
 Adds all Owner's repositories to store.
 #### action: changePageStatus
@@ -18,5 +18,5 @@ Both lists are added to the store.
 Adds detailed info for each contributor. This information is used in filters and UserPage.
 #### action: addFilterMaxValues
 This action does not receive any value.
-Searches for contributors with the highest amount of contributions, followers, repos and gists.
-The numbers are added to the store and increased by one, as filters display contributors with < amount of selected attribute.
+It searches for contributors with the highest amount of contributions, followers, repos and gists.
+The numbers are added to the store and increased by one, as filters display contributors with < amount of filtered feature.
