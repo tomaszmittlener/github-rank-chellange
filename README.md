@@ -16,7 +16,7 @@ To start the application use the following code:
  
 ``` 
 git clone https://github.com/tomaszmittlener/github-rank-chellange.git
-cd github-rank-app-tomasz-mittlener
+cd github-rank-chellange
 npm install 
 npm run serve 
 ``` 
