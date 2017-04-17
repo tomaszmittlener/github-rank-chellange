@@ -1,6 +1,6 @@
 #Github-rank-app <br> <small>by Tomasz Mitlener</small> 
 
-###descrition
+###Descrition
 
 <p>
 The application creates a filterable list of Angular's contributors and sorts them by amount of contributions in descending order. 
