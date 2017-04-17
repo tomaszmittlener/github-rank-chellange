@@ -2,7 +2,6 @@
 import React from 'react';
 
 class List extends React.Component {
-
   render() {
     return (
       <section className="list">
@@ -11,5 +10,6 @@ class List extends React.Component {
     );
   }
 }
+
 
 export default List;

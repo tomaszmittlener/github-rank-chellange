@@ -42,7 +42,7 @@ class HomePage extends React.Component {
   }
 
   componentDidMount() {
-    //this will initiate series of promises.
+    //This will initiate series of promises.
     //The order is important: get repos-> get contributors -> get additional info -> retrieve max values for filters
     if(!this.props.root.contributors.length > 0) {
       this._downloadData();
@@ -50,32 +50,32 @@ class HomePage extends React.Component {
   }
 
   _downloadData() {
-    //get Owners' info
+    //Get Owner's (in this case Angulars) info
     getUserInfo()
       .then(ownerInfo=> {
         changeCurrentOwner(ownerInfo);
       });
-    //get all repositories and change status
+    //Get all repositories and change status
     getRepos()
       .then(allRepos => {
         addRepos(allRepos);
         changePageStatus(this.ALERTS.STAGE_ONE);
         return allRepos;
       })
-      //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
+      //Get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
       .then(allRepos => {this._getUniqueContributors(allRepos)});
   }
 
   _getUniqueContributors(allRepos) {
     const promiseUniqueContributors = map(allRepos, (repo) => {
-      // get contributors for each repo
+      //Get contributors for each repo
       return getContributors(repo.name)
         .then(oneRepoContributors => {
           //creates non-duplicate list of contributors and additional list of all repos and contributors
           addRepoContributors(oneRepoContributors, repo.name);
         });
     });
-    //when done, change status and get additional info about every contributor
+    //When done, change status and get additional info about every contributor
     Promise.all(promiseUniqueContributors)
       .then(() => {
         changePageStatus(this.ALERTS.STAGE_TWO);
@@ -89,7 +89,7 @@ class HomePage extends React.Component {
         .then(contributorInfo => {
           addContributorInfo({...contributor, ...contributorInfo})
         })});
-    //when done, retrieve max values for filters and change status
+    //When done, retrieve max values for filters and change status
     Promise.all(promiseAllInfo)
       .then(()=> {this._getMaxValues()})
   }
@@ -128,7 +128,7 @@ class HomePage extends React.Component {
 
           <PageTitle>
             {pageStatus === 'done' ?
-              `${currentOwner.login}'s top contributors` :
+              `${currentOwner.login}'s top contributors:` :
               'loading...'}
           </PageTitle>
 
@@ -146,5 +146,6 @@ class HomePage extends React.Component {
     );
   }
 }
+
 
 export default connect(mapStateToProps)(HomePage);

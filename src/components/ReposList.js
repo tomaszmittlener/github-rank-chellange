@@ -11,7 +11,6 @@ import GoQuestion from 'react-icons/lib/go/question';
 import map from 'lodash/map';
 
 class UserReposList extends React.Component {
-
   render() {
     let { repos } = this.props;
 
@@ -37,16 +36,14 @@ class UserReposList extends React.Component {
               <div className="list-item__details">
                 <h4 className="list-item-detail--repo">
                   {repo.language?
-                    <GoCode className="icon"/>
-                    :
+                    <GoCode className="icon"/> :
                     null}
                   {repo.language}
                 </h4>
 
                 <h6 className="list-item-detail--repo">
                   {repo.description?
-                    <GoQuestion className="icon"/>
-                    :
+                    <GoQuestion className="icon"/> :
                     null}
                   {repo.description}
                 </h6>
@@ -64,7 +61,5 @@ class UserReposList extends React.Component {
   }
 }
 
-UserReposList.PropTypes = {
-};
 
 export default UserReposList;

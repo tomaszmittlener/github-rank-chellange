@@ -34,9 +34,13 @@
     }
 
     &__current {
+      margin: 0 0 0 $unit-1;
+      color: $accentActiveColor;
     }
 
     &__max {
+      font-weight: bold;
+
     }
   }
 }

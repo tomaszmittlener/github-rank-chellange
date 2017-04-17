@@ -1,12 +1,10 @@
 //react
 import React from 'react';
 import { Link } from 'react-router-dom'
-
 //icons
 import GoMarkGithub from 'react-icons/lib/go/mark-github'
 
 class Page extends React.Component {
-
   render() {
     return (
       <section className="page">
@@ -33,5 +31,6 @@ class Page extends React.Component {
 Page.PropTypes = {
   pageTitle: React.PropTypes.string
 };
+
 
 export default Page;

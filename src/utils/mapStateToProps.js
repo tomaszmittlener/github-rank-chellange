@@ -1,3 +1,5 @@
-export default function mapStateToProps(state) {
+function mapStateToProps(state) {
   return state;
 }
+
+export default mapStateToProps

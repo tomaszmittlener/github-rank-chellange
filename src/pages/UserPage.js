@@ -16,7 +16,6 @@ import find from 'lodash/find'
 import some from 'lodash/some'
 import filter from 'lodash/filter'
 
-
 class UserPage extends React.Component {
   constructor() {
     super();
@@ -24,24 +23,31 @@ class UserPage extends React.Component {
       userInfo: {},
       userRepos: []
     };
+  }
+
+  //Will redirect to HomePage if Redux store is empty/reset due to page refresh.
+  componentWillMount() {
+    if (!this.props.root.contributors.length > 0) {
+      this.props.history.push('/');
     }
+  }
 
-  componentDidMount () {
-      let { contributorsWithRepos, contributors, repos } = this.props.root;
-      const uniqueRepos = filter(contributorsWithRepos, o => {
-        return o.contributor === this.props.match.params.userName
-      });
+  componentDidMount() {
+    let { contributorsWithRepos, contributors, repos } = this.props.root;
+    const uniqueRepos = filter(contributorsWithRepos, o => {
+      return o.contributor === this.props.match.params.userName
+    });
 
-      this.setState({
-        userInfo: find(contributors, contributor => {
-          return contributor.login === this.props.match.params.userName
-        }),
-        userRepos: filter(repos, repo => {
-          return some(uniqueRepos, reposTwo => {
-            return reposTwo.repo === repo.name
-          });
-        })
-      });
+    this.setState({
+      userInfo: find(contributors, contributor => {
+        return contributor.login === this.props.match.params.userName
+      }),
+      userRepos: filter(repos, repo => {
+        return some(uniqueRepos, reposTwo => {
+          return reposTwo.repo === repo.name
+        });
+      })
+    });
   }
 
   render() {
@@ -49,14 +55,12 @@ class UserPage extends React.Component {
 
     return (
       <Page className="page--userPage"
-            pageTitle={
-              `.../users/${this.props.match.params.userName}`
-            }>
+            pageTitle={`.../users/${this.props.match.params.userName}`}>
         <InfoPanel className="infoPanel--userPage"
                    person={userInfo}/>
 
         <MainPanel className="mainPanel--userPage">
-          <PageTitle>repos:</PageTitle>
+          <PageTitle>contributed to {this.props.root.currentOwner.login}'s repos:</PageTitle>
 
           <ReposList className="userReposList--userPage"
                      repos={userRepos}/>

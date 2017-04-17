@@ -25,8 +25,7 @@ class InfoPanel extends React.Component {
               <dt className="title">full name:</dt>
               <dd className="description">
                 {repo.full_name ?
-                  repo.full_name
-                  :
+                  repo.full_name :
                   'N/A'}
               </dd>
 
@@ -38,15 +37,14 @@ class InfoPanel extends React.Component {
               <dt className="title">status:</dt>
               <dd className="description">
                 {repo.private ?
-                  repo.location
-                  :
+                  repo.location :
                   'public'}
               </dd>
 
               <dt className="title">www:</dt>
               <dd className="description">
-                {repo.homepage ? repo.homepage
-                  :
+                {repo.homepage ?
+                  <a className="link" href={repo.homepage}>{repo.homepage}</a> :
                   'N/A'}
               </dd>
 
@@ -57,38 +55,33 @@ class InfoPanel extends React.Component {
 
               <dt className="title">language:</dt>
               <dd className="description">
-                {repo.language ? repo.language
-                  :
+                {repo.language ? repo.language :
                   'unknown'}
               </dd>
               <dt className="title">gists:</dt>
               <dd className="description">
-                {repo.public_gists ? repo.public_gists
-                  :
+                {repo.public_gists ? repo.public_gists :
                   'none'}
               </dd>
 
               <dt className="title">open issues:</dt>
               <dd className="description">
                 {repo.open_issues_count ?
-                  repo.open_issues_count
-                  :
+                  repo.open_issues_count :
                   'none'}
               </dd>
 
               <dt className="title">subscribers:</dt>
               <dd className="description">
                 {repo.subscribers ?
-                  repo.subscribers
-                  :
+                  repo.subscribers :
                   'none'}
               </dd>
 
               <dt className="title">description:</dt>
               <dd className="description">
                 {repo.description ?
-                  repo.description
-                  :
+                  repo.description :
                   'none'}
               </dd>
             </dl>
@@ -113,8 +106,7 @@ class InfoPanel extends React.Component {
               <dt className="title">name:</dt>
               <dd className="description">
                 {person.name ?
-                  person.name
-                  :
+                  person.name :
                   'N/A'}
               </dd>
 
@@ -126,47 +118,42 @@ class InfoPanel extends React.Component {
               <dt className="title">location:</dt>
               <dd className="description">
                 {person.location ?
-                  person.location
-                  :
+                  person.location :
                   'N/A'}
               </dd>
 
               <dt className="title">www:</dt>
               <dd className="description">
-                {person.blog? person.blog
-                  :
+                {person.blog?
+                  <a className="link" href={person.blog}>{person.blog}</a> :
                   'N/A'}
               </dd>
 
               <dt className="title">repos:</dt>
               <dd className="description">
                 {person.public_repos ?
-                  person.public_repos
-                  :
+                  person.public_repos :
                   'none'}
               </dd>
 
               <dt className="title">gists:</dt>
               <dd className="description">
                 {person.public_gists ?
-                  person.public_gists
-                  :
+                  person.public_gists :
                   'none'}
               </dd>
 
               <dt className="title">followers:</dt>
               <dd className="description">
                 {person.followers ?
-                  person.followers
-                  :
+                  person.followers :
                   'none'}
               </dd>
 
               <dt className="title">following:</dt>
               <dd className="description">
                 {person.following ?
-                  person.following
-                  :
+                  person.following :
                   'none'}
               </dd>
             </dl>

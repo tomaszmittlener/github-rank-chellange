@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 //icons
 import MdAccountCircle from 'react-icons/lib/md/account-circle';
-import MdContentCut from 'react-icons/lib/md/content-cut';
+import MdSync from 'react-icons/lib/md/sync';
 import GoOrganization from 'react-icons/lib/go/organization';
 import GoGist from 'react-icons/lib/go/gist';
 import MdFolder from 'react-icons/lib/md/folder';
@@ -68,8 +68,8 @@ class TopContributorsList extends React.Component {
     };
   }
 
-  //starts in th case of redirection from other page
-  //get contributors and if filters required 1) get max values for filters, 2) set default values
+  //Start in the case of redirection from other page.
+  //Get contributors for the list and if filters required 1) get max values for filters, 2) set initial values to max
   componentDidMount() {
     if(this.props) {
       this.setState({
@@ -87,12 +87,11 @@ class TopContributorsList extends React.Component {
         this.FILTERS.repos.lastResults = this.props.filterReposMaxValue ;
         this.FILTERS.gists.lastResults = this.props.filterGistsMaxValue;
       }
-
     }
   }
 
-  //starts at first time
-  //get contributors and if filters required 1) get max values for filters, 2) set default values
+  //Start at the first time.
+  //Get contributors for the list and if filters required 1) get max values for filters, 2) set initial values to max
   componentWillReceiveProps(nextProps){
     this.setState({
       contributors: nextProps.contributors
@@ -111,7 +110,7 @@ class TopContributorsList extends React.Component {
     }
   }
 
-  //On submit the list will be filtered in accordance with chosen criteria.
+  //Filter list based on chosen parameters. Results are stored in this.FILTERS object for next filter session.
   _filter(e) {
     e.preventDefault();
     this.setState({
@@ -124,7 +123,7 @@ class TopContributorsList extends React.Component {
             contributor.public_gists < e.target.filterGists.value
         })
     });
-    //gather data to display current settings
+    //Add current settings for the next filter session to prevent reset to default values.
     this.FILTERS.contributions.lastResults = e.target.filterContributions.value;
     this.FILTERS.followers.lastResults = e.target.filterFollowers.value;
     this.FILTERS.repos.lastResults = e.target.filterRepos.value;
@@ -157,18 +156,16 @@ class TopContributorsList extends React.Component {
                     {filter.icon}{`${filter.title} < `}
                     {typeof filter.lastResults === typeof undefined &&
                     typeof filter.maxValue === 'number'  ?
-                      filter.maxValue
-                      :
+                      filter.maxValue :
                       filter.lastResults}
+                    <output className="filters-title__current" id={filter.outputId}/>
                   </span>
 
                   <span className="filters-title__values">
                     {pageStatus === 'done' ?
                       <span>
-                        <output className="filters-title__current" id={filter.outputId}/>
-                        <span className="filters-title__max"> / {filter.maxValue} </span>
-                      </span>
-                      :
+                        <span className="filters-title__max">{filter.maxValue} </span>
+                      </span> :
                       'loading...'}
                   </span>
 
@@ -178,7 +175,7 @@ class TopContributorsList extends React.Component {
 
             <div className="filters-button">
               <button className="button">
-                <MdContentCut className="button-icon"/>
+                <MdSync className="button-icon"/>
               </button>
             </div>
           </div>
@@ -229,14 +226,12 @@ class TopContributorsList extends React.Component {
                       'loading...'}
                   </h5>
 
-
                   <h5 className="list-item-detail--person">
                     <GoGist className="icon"/>
                     {typeof contributor.public_gists === 'number' ?
                       contributor.public_gists :
                       'loading...'}
                   </h5>
-
 
               </div>
             </div>
@@ -274,7 +269,6 @@ TopContributorsList.defaultProps = {
     filterGistsMaxValue: ''
   }
 };
-
 
 
 export default TopContributorsList;

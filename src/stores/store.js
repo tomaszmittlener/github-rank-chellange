@@ -8,10 +8,10 @@ import reducers from '../reducers';
 
 const middleware = applyMiddleware(routerMiddleware(history));
 
-
 const store = createStore(
   combineReducers(reducers),
   composeWithDevTools(middleware)
 );
+
 
 export default store
