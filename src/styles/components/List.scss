@@ -28,7 +28,7 @@
 
     &__title {
       @include span(8 of 12 last);
-      //word-wrap: break-word;
+      word-wrap: break-word;
     }
 
     &__details {
