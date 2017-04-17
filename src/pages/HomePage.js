@@ -7,195 +7,137 @@ import MainPanel from '../components/MainPanel';
 import PageTitle from '../components/PageTilte';
 import ContributorsList from '../components/ContributorsList';
 
+//redux
+import { connect } from 'react-redux';
+
+//redux actions
+import {
+  changeCurrentOwner,
+  changePageStatus,
+  addRepos,
+  addRepoContributors,
+  addContributorInfo,
+  addFilterMaxValues
+} from '../actions/actions';
+
 //tools
+import mapStateToProps from '../utils/mapStateToProps';
+
+//services
 import { getRepos, getContributors, getUserInfo } from '../services/getData';
 
 //lodash
-import differenceBy from 'lodash/differenceBy';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-import intersectionBy from 'lodash/intersectionBy';
 import map from 'lodash/map';
-import maxBy from 'lodash/maxBy';
-import sortBy from 'lodash/sortBy';
+
 
 class HomePage extends React.Component {
   constructor() {
     super();
-    this.allerts = {
-      initialInfo: 'please wait',
-      stageOne: 'downloading contributors',
-      stageTwo: 'downloading contributors info',
-      success: 'done'
+    this.ALERTS = {
+      INITIAL_INFO: 'please wait',
+      STAGE_ONE: 'downloading contributors',
+      STAGE_TWO: 'downloading contributors info',
+      SUCCESS: 'done'
     };
-    this.state = {
-      repos: [],
-      reposOwner: {},
-      contributors: [],
-      usersInfo: [],
-      filterContributionsMax: {},
-      filterFollowersMax: {},
-      filterReposMax: {},
-      filterGistsMax: {},
-      pageStatus: this.allerts.initialInfo
-    }
   }
 
   componentDidMount() {
     //this will initiate series of promises.
-    // The order is important: get repos-> get contributors -> get additional info -> retrieve max values for filters
-    this._downloadData();
+    //The order is important: get repos-> get contributors -> get additional info -> retrieve max values for filters
+    if(!this.props.root.contributors.length > 0) {
+      this._downloadData();
+    }
   }
 
   _downloadData() {
-    //get repos Owners' info
+    //get Owners' info
     getUserInfo()
       .then(ownerInfo=> {
-          this.setState({
-            reposOwner: ownerInfo
-          })
-        }
-      );
-
-    //get all repositories
+        changeCurrentOwner(ownerInfo);
+      });
+    //get all repositories and change status
     getRepos()
       .then(allRepos => {
-        this.setState({
-          allRepos: allRepos,
-          pageStatus: this.allerts.stageOne
-        });
-
-        //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
-        this._getUniqueContributors(this.state.allRepos);
-      });
+        addRepos(allRepos);
+        changePageStatus(this.ALERTS.STAGE_ONE);
+        return allRepos;
+      })
+      //get all contributors without duplicates -> get all contributors info -> retrieve max values for filters
+      .then(allRepos => {this._getUniqueContributors(allRepos)});
   }
 
   _getUniqueContributors(allRepos) {
     const promiseUniqueContributors = map(allRepos, (repo) => {
-      // get contributors for repo
+      // get contributors for each repo
       return getContributors(repo.name)
-        .then(contributorsRepo => {
-          //get unique and duplicate contributors
-          const _contributorsUniques = differenceBy(contributorsRepo, this.state.contributors, 'login');
-          const _contributorsDuplicates = intersectionBy(contributorsRepo, this.state.contributors, 'login');
-
-          //add contributions
-          const _contributorsAddContributions = map(this.state.contributors, contributor => {
-            const _duplicate = find(_contributorsDuplicates, duplicate => {
-              return duplicate.login === contributor.login;
-            });
-
-            return _duplicate ?
-              { ...contributor, contributions: contributor.contributions + _duplicate.contributions}
-              :
-              contributor
-          });
-          //set state
-          this.setState({
-            contributors: sortBy([ ..._contributorsUniques,
-              ..._contributorsAddContributions ], 'contributions').reverse()
-          });
+        .then(oneRepoContributors => {
+          //creates non-duplicate list of contributors and additional list of all repos and contributors
+          addRepoContributors(oneRepoContributors, repo.name);
         });
     });
-    //when done, get additional info about every contributor
+    //when done, change status and get additional info about every contributor
     Promise.all(promiseUniqueContributors)
       .then(() => {
-        this.setState({
-          pageStatus: this.allerts.stageTwo
-        });
-        this._getContributorsInfo(this.state.contributors)
-      })
+        changePageStatus(this.ALERTS.STAGE_TWO);
+        return this.props.root.contributors})
+      .then(this._getContributorsInfo.bind(this));
   }
 
-  _getContributorsInfo(contributorsCollection) {
-    const promiseAllInfo = map(contributorsCollection, (contributor) => {
+  _getContributorsInfo(contributors) {
+    const promiseAllInfo = map(contributors, (contributor) => {
       return getUserInfo(contributor.login)
         .then(contributorInfo => {
-
-          const contributorWithAdditionalInfo =  { ...contributor, ...contributorInfo };
-
-          this.setState({
-            contributors: sortBy([ ...filter(this.state.contributors,
-              contributorToRemove => contributorToRemove.login !== contributor.login),
-                contributorWithAdditionalInfo ],
-              'contributions')
-              .reverse()
-          });
-        })
-    });
-
-    //when done, retrieve highest number of contributions, followers, repos and gists for filters
+          addContributorInfo({...contributor, ...contributorInfo})
+        })});
+    //when done, retrieve max values for filters and change status
     Promise.all(promiseAllInfo)
-      .then(()=> { this._getMaxValues() })
+      .then(()=> {this._getMaxValues()})
   }
 
-  _getMaxValues(){
-    this.setState({
-      filterContributionsMax:
-        maxBy(this.state.contributors, contributor => {
-          return contributor.contributions
-        }),
-
-      filterFollowersMax:
-        maxBy(this.state.contributors, contributor => {
-          return contributor.followers
-        }),
-
-      filterReposMax:
-        maxBy(this.state.contributors, contributor => {
-          return contributor.public_repos
-
-        }),
-
-      filterGistsMax:
-        maxBy(this.state.contributors, contributor => {
-          return contributor.public_gists
-        }),
-
-      pageStatus: this.allerts.success
-    });
-
+  _getMaxValues() {
+    addFilterMaxValues();
+    changePageStatus(this.ALERTS.SUCCESS);
   }
 
   render() {
     let {
-      reposOwner,
+      filterContributionsMaxValue,
+      filterFollowersMaxValue,
+      filterReposMaxValue,
+      filterGistsMaxValue
+    } = this.props.root.filterMaxValues;
+
+    let {
+      currentOwner,
       contributors,
-      filterContributionsMax,
-      filterFollowersMax,
-      filterReposMax,
-      filterGistsMax,
       pageStatus
-    } = this.state;
+    } = this.props.root;
 
     return (
       <Page className="page--homePage"
             pageTitle={
               pageStatus === 'done' ?
-                `.../${reposOwner.login}/contributors_list`
-                :
-                `${pageStatus}...`
-            }
+                `.../${currentOwner.login}/contributors_list` :
+                `${pageStatus}...`}
             pageStatus={pageStatus}>
+
         <InfoPanel className="infoPanel--homePage"
-                   person={reposOwner}/>
+                   person={currentOwner}/>
 
         <MainPanel className="mainPanel--homePage">
+
           <PageTitle>
-            {
-              pageStatus === 'done' ?
-                '/top contributors'
-                :
-                'loading...'
-            }
+            {pageStatus === 'done' ?
+              `${currentOwner.login}'s top contributors` :
+              'loading...'}
           </PageTitle>
 
           <ContributorsList className="topContributorsList--homePage"
                             contributors={contributors}
-                            filterContributionsMax={filterContributionsMax}
-                            filterFollowersMax={filterFollowersMax}
-                            filterReposMax={filterReposMax}
-                            filterGistsMax={filterGistsMax}
+                            filterContributionsMaxValue={filterContributionsMaxValue}
+                            filterFollowersMaxValue={filterFollowersMaxValue}
+                            filterReposMaxValue={filterReposMaxValue}
+                            filterGistsMaxValue={filterGistsMaxValue}
                             pageStatus={pageStatus}
                             requireFilters={true}
                             requireDetails={true}/>
@@ -205,4 +147,4 @@ class HomePage extends React.Component {
   }
 }
 
-export default HomePage;
+export default connect(mapStateToProps)(HomePage);

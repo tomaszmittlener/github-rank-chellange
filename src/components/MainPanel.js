@@ -1,3 +1,4 @@
+//react
 import React from 'react';
 
 class RightPanel extends React.Component {

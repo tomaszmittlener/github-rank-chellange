@@ -17,7 +17,7 @@ class InfoPanel extends React.Component {
         <div className="infoPanel__container">
           <div className="infoPanel-basics">
             <MdFolder className="infoPanel-basics__picture"/>
-            <h2 className="infoPanel-basics__login">/{repo.name}</h2>
+            <h3 className="infoPanel-basics__login">/{repo.name}</h3>
           </div>
           <div className="infoPanel-details">
             <dl className="details__list">
@@ -103,7 +103,7 @@ class InfoPanel extends React.Component {
         <div className="infoPanel__container">
           <div className="infoPanel-basics">
             <img className="infoPanel-basics__picture" src={person.avatar_url}/>
-            <h2 className="infoPanel-basics__login">/{person.login}</h2>
+            <h3 className="infoPanel-basics__login">/{person.login}</h3>
             {person.type === 'Organization'?
               <MdAccountBalance className="infoPanel-basics__icon"/>:
               <MdAccountCircle className="infoPanel-basics__icon"/>}
@@ -178,8 +178,7 @@ class InfoPanel extends React.Component {
     return (
       <section className="infoPanel">
         {this.props.person ?
-          <PersonDetails/>
-          :
+          <PersonDetails/> :
           <RepoDetails/> }
       </section>
     );

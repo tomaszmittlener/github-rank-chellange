@@ -7,8 +7,15 @@ import MainPanel from '../components/MainPanel';
 import PageTitle from '../components/PageTilte';
 import ReposList from '../components/ReposList';
 
-//tools
-import { getUserInfo, getRepos } from '../services/getData'
+//redux
+import { connect } from 'react-redux';
+import mapStateToProps from '../utils/mapStateToProps';
+
+//lodash
+import find from 'lodash/find'
+import some from 'lodash/some'
+import filter from 'lodash/filter'
+
 
 class UserPage extends React.Component {
   constructor() {
@@ -16,23 +23,25 @@ class UserPage extends React.Component {
     this.state = {
       userInfo: {},
       userRepos: []
+    };
     }
-  }
 
   componentDidMount () {
-    getUserInfo(this.props.match.params.userName)
-      .then(userInfo => {
-        this.setState({
-          userInfo: userInfo
-        })
+      let { contributorsWithRepos, contributors, repos } = this.props.root;
+      const uniqueRepos = filter(contributorsWithRepos, o => {
+        return o.contributor === this.props.match.params.userName
       });
 
-    getRepos(this.props.match.params.userName)
-      .then(reposList => {
-        this.setState({
-          userRepos: reposList
+      this.setState({
+        userInfo: find(contributors, contributor => {
+          return contributor.login === this.props.match.params.userName
+        }),
+        userRepos: filter(repos, repo => {
+          return some(uniqueRepos, reposTwo => {
+            return reposTwo.repo === repo.name
+          });
         })
-      })
+      });
   }
 
   render() {
@@ -47,10 +56,10 @@ class UserPage extends React.Component {
                    person={userInfo}/>
 
         <MainPanel className="mainPanel--userPage">
-          <PageTitle>/repos:</PageTitle>
+          <PageTitle>repos:</PageTitle>
 
           <ReposList className="userReposList--userPage"
-                         repos={userRepos}/>
+                     repos={userRepos}/>
         </MainPanel>
       </Page>
     );
@@ -60,4 +69,4 @@ class UserPage extends React.Component {
 UserPage.PropTypes = {
 };
 
-export default UserPage;
+export default connect(mapStateToProps)(UserPage);

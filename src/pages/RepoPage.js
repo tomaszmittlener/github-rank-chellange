@@ -7,36 +7,48 @@ import MainPanel from '../components/MainPanel';
 import PageTitle from '../components/PageTilte';
 import TopContributorsList from '../components/ContributorsList';
 
-//tools
-import { getContributors, getRepoInfo } from '../services/getData'
+//redux
+import { connect } from 'react-redux';
+import mapStateToProps from '../utils/mapStateToProps';
+
+
+//lodash
+import find from 'lodash/find'
+import some from 'lodash/some'
+import filter from 'lodash/filter'
+
 
 class RepoPage extends React.Component {
   constructor() {
     super();
     this.state = {
       repoInfo: {},
-      userAvatar: '',
       repoContributors: []
     }
   }
 
   componentDidMount () {
-    let {repoName, userName } = this.props.match.params;
 
-    getRepoInfo(repoName, userName)
-      .then(repoInfo => {
-        this.setState({
-          repoInfo: repoInfo,
-          userAvatar: repoInfo.owner.avatar_url
-        })
-      });
+    let { repoName } = this.props.match.params;
+    let { contributorsWithRepos, contributors, repos } = this.props.root;
 
-    getContributors(repoName, userName)
-      .then(contributorsCollection => {
-        this.setState({
-          repoContributors: contributorsCollection
-        })
-      });
+
+    const uniqueContributors = filter(contributorsWithRepos, o => {
+      return o.repo === repoName
+    });
+
+
+    this.setState({
+      repoInfo: find(repos, repo => {
+        return repo.name === repoName
+      }),
+      repoContributors: filter(contributors, contributor => {
+        return some(uniqueContributors, contributorsTwo => {
+          return contributorsTwo.contributor === contributor.login
+        });
+      })
+    });
+
   }
 
   render() {
@@ -50,12 +62,11 @@ class RepoPage extends React.Component {
         <InfoPanel className="infoPanel--RepoPage"
                    repo={repoInfo}/>
         <MainPanel className="mainPanel--RepoPage">
-          <PageTitle>/contributors:</PageTitle>
+          <PageTitle>contributors:</PageTitle>
 
-          <TopContributorsList className="userReposList--RepoPage"
+          <TopContributorsList className="userContributorsList--RepoPage"
                                contributors={repoContributors}
-                               requireFilters={false}
-                               requireDetails={false}/>
+                               requireFilters={false}/>
         </MainPanel>
       </Page>
     );
@@ -67,4 +78,5 @@ RepoPage.propTypes = {
   userName: React.PropTypes.string
 };
 
-export default RepoPage;
+
+export default connect(mapStateToProps)(RepoPage);

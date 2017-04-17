@@ -115,18 +115,16 @@ input[type=range]::-webkit-slider-runnable-track {
   height: 6px;
   cursor: pointer;
   //slider color
-  background: $accentPassiveColor;
-  border: none;
-  box-shadow: $lightPassiveShadows;
+  background: $mainThemeColor;
+  border: 1px solid $accentPassiveColor;
 }
 
 input[type=range]::-moz-range-track {
   width: span(12);
   height: 6px;
   cursor: pointer;
-  background: $accentPassiveColor;
-  border: none;
-  box-shadow: $lightPassiveShadows;
+  background: $mainThemeColor;
+  border: 1px solid $accentPassiveColor;
 }
 
 input[type=range]::-ms-track {
@@ -134,14 +132,10 @@ input[type=range]::-ms-track {
   height: 6px;
   cursor: pointer;
   background: $accentPassiveColor;
-  border-color: transparent;
-  border-width: 16px 0;
-  color: transparent;
-  box-shadow: $lightPassiveShadows;
+  border: 1px solid $accentPassiveColor;
 }
 
 input[type=range]::-ms-fill-lower {
-  background: $accentPassiveColor;
+  background: $mainThemeColor;
   border: none;
-  box-shadow: $lightPassiveShadows;
 }

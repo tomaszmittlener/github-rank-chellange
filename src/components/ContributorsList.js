@@ -36,7 +36,7 @@ class TopContributorsList extends React.Component {
         outputId: 'filterContributionsOutput',
         inputId: 'filterContributionsInput',
         maxValue: '',
-        filerResults: ''
+        lastResults: ''
       },
       followers:{
         icon: <GoOrganization className="icon"/>,
@@ -45,8 +45,7 @@ class TopContributorsList extends React.Component {
         outputId: 'filterFollowersOutput',
         inputId: 'filterFollowersInput',
         maxValue: '',
-        filerResults: ''
-
+        lastResults: ''
       },
       repos: {
         icon: <MdFolder className="icon"/>,
@@ -55,8 +54,7 @@ class TopContributorsList extends React.Component {
         outputId: 'filterReposOutput',
         inputId: 'filterReposInput',
         maxValue: '',
-        filerResults: ''
-
+        lastResults: ''
       },
       gists: {
         icon: <GoGist className="icon"/>,
@@ -65,23 +63,51 @@ class TopContributorsList extends React.Component {
         outputId: 'filterGistsOutput',
         inputId: 'filterGistsInput',
         maxValue: '',
-        filerResults: ''
+        lastResults: ''
       }
     };
   }
 
+  //starts in th case of redirection from other page
+  //get contributors and if filters required 1) get max values for filters, 2) set default values
+  componentDidMount() {
+    if(this.props) {
+      this.setState({
+        contributors: this.props.contributors
+      });
 
-  //get contributors and if filters required - get max values for filters.
+      if (this.props.requireFilters === true) {
+        this.FILTERS.contributions.maxValue = this.props.filterContributionsMaxValue;
+        this.FILTERS.followers.maxValue = this.props.filterFollowersMaxValue;
+        this.FILTERS.repos.maxValue = this.props.filterReposMaxValue;
+        this.FILTERS.gists.maxValue = this.props.filterGistsMaxValue;
+
+        this.FILTERS.contributions.lastResults = this.props.filterContributionsMaxValue;
+        this.FILTERS.followers.lastResults = this.props.filterFollowersMaxValue;
+        this.FILTERS.repos.lastResults = this.props.filterReposMaxValue ;
+        this.FILTERS.gists.lastResults = this.props.filterGistsMaxValue;
+      }
+
+    }
+  }
+
+  //starts at first time
+  //get contributors and if filters required 1) get max values for filters, 2) set default values
   componentWillReceiveProps(nextProps){
     this.setState({
       contributors: nextProps.contributors
     });
 
     if (nextProps.requireFilters === true) {
-      this.FILTERS.contributions.maxValue = nextProps.filterContributionsMax.contributions;
-      this.FILTERS.followers.maxValue = nextProps.filterFollowersMax.followers;
-      this.FILTERS.repos.maxValue = nextProps.filterReposMax.public_repos;
-      this.FILTERS.gists.maxValue = nextProps.filterGistsMax.public_gists;
+      this.FILTERS.contributions.maxValue = nextProps.filterContributionsMaxValue;
+      this.FILTERS.followers.maxValue = nextProps.filterFollowersMaxValue;
+      this.FILTERS.repos.maxValue = nextProps.filterReposMaxValue;
+      this.FILTERS.gists.maxValue = nextProps.filterGistsMaxValue;
+
+      this.FILTERS.contributions.lastResults = nextProps.filterContributionsMaxValue;
+      this.FILTERS.followers.lastResults = nextProps.filterFollowersMaxValue;
+      this.FILTERS.repos.lastResults = nextProps.filterReposMaxValue;
+      this.FILTERS.gists.lastResults = nextProps.filterGistsMaxValue;
     }
   }
 
@@ -106,7 +132,7 @@ class TopContributorsList extends React.Component {
   }
 
   render() {
-    let { requireDetails, requireFilters, pageStatus } = this.props;
+    let { requireFilters, pageStatus } = this.props;
     let { contributors } = this.state;
 
     const Filters = () => {
@@ -122,16 +148,16 @@ class TopContributorsList extends React.Component {
                        type="range"
                        min="0"
                        step="1"
-                       max={filter.maxValue + 1}
+                       max={filter.maxValue}
                        onChange={e => document.getElementById(filter.outputId).value = e.target.value}
-                       defaultValue={filter.maxValue + 1}/>
+                       defaultValue={filter.lastResults}/>
                 <div className="filters-title">
 
                   <span className="filters-title__state">
                     {filter.icon}{`${filter.title} < `}
                     {typeof filter.lastResults === typeof undefined &&
-                     typeof filter.maxValue === 'number'  ?
-                      filter.maxValue + 1
+                    typeof filter.maxValue === 'number'  ?
+                      filter.maxValue
                       :
                       filter.lastResults}
                   </span>
@@ -140,7 +166,7 @@ class TopContributorsList extends React.Component {
                     {pageStatus === 'done' ?
                       <span>
                         <output className="filters-title__current" id={filter.outputId}/>
-                        <span className="filters-title__max"> / {filter.maxValue + 1} </span>
+                        <span className="filters-title__max"> / {filter.maxValue} </span>
                       </span>
                       :
                       'loading...'}
@@ -189,34 +215,28 @@ class TopContributorsList extends React.Component {
                 </h4>
 
                 {/*display followers, repos and gists if required in props.*/}
-                {requireDetails?
                   <h5 className="list-item-detail--person">
                     <GoOrganization className="icon"/>
                     {typeof contributor.followers === 'number' ?
                       contributor.followers:
                       'loading...'}
                   </h5>
-                  :
-                  null}
 
-                {requireDetails? (
                   <h5 className="list-item-detail--person">
                     <MdFolder className="icon"/>
                     {typeof contributor.public_repos === 'number' ?
                       contributor.public_repos:
                       'loading...'}
                   </h5>
-                ) :(null)}
 
-                {requireDetails? (
+
                   <h5 className="list-item-detail--person">
                     <GoGist className="icon"/>
                     {typeof contributor.public_gists === 'number' ?
                       contributor.public_gists :
                       'loading...'}
                   </h5>
-                ) : (
-                  null)}
+
 
               </div>
             </div>
@@ -240,11 +260,21 @@ TopContributorsList.PropTypes = {
   pageStatus: React.PropTypes.bool,
   contributors: React.PropTypes.array,
   requireFilters: React.PropTypes.bool.isRequired,
-  requireDetails: React.PropTypes.bool.isRequired,
   filterContributionsMax: React.PropTypes.object,
   filterFollowersMax: React.PropTypes.object,
   filterReposMax: React.PropTypes.object,
   filterGistsMax: React.PropTypes.object
 };
+
+TopContributorsList.defaultProps = {
+  filterMaxValues: {
+    filterContributionsMaxValue: '',
+    filterFollowersMaxValue: '',
+    filterReposMaxValue: '',
+    filterGistsMaxValue: ''
+  }
+};
+
+
 
 export default TopContributorsList;
